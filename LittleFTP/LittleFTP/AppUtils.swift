@@ -17,7 +17,7 @@ class AppUtils {
 	}
 	
 	/* MARK: Methods that don't fit in other classes
-	* [goal] := Generalize these methods as much as possibl
+	* [goal] := Generalize these methods as much as possible
 	*/
     class func dateToStr(date:NSDate) -> String {
         let formatter = NSDateFormatter()
