@@ -12,7 +12,7 @@ class AppUtils {
 	
 	enum localStorageKeys: String {
 		case keyServerUsers = "serverUsers"
-			, keyConnectedPathObjects = "ConnectedPathObjects"
+			, keyConnectedPathObjects = "connectedPathObjs"
 			, keyActiveServer = "ACTIVE_SERVER"
 	}
 	
