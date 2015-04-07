@@ -11,10 +11,8 @@ import Cocoa
 
 class ServerManager {
 	
-	// MARK: Constants
-	
-
-	// MARK: Server variables
+	// MARK: public variables
+    
 	private struct _activerServer { static var server: FMServer = FMServer() }
 	class var activeServer: FMServer {
 		get { return _activerServer.server }
@@ -32,6 +30,7 @@ class ServerManager {
 		get { return _ftpManager.manager }
 	}
 	
+    // public func
 	class func getAllServers() -> [FMServer] {
 		var allServers = [FMServer]()
 		
@@ -48,13 +47,14 @@ class ServerManager {
 		
 		return allServers
 	}
-	
+
 	class var keyServerNameStringVal:String {
 		get {
 			return (ServerManager.activeServer.destination == nil) ? "" : (ServerManager.activeServer.destination).stripCharactersInSet([".", ":", "/"])
 		}
 	}
 	
+    // MARK: self contained function
 	
 	class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
 		

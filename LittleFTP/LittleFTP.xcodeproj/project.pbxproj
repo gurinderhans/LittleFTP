@@ -129,10 +129,10 @@
 		418A97F61AB91639006DC8BE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				411BE7C71ACB94F400C4903F /* ServerManager.swift */,
 				417D6FAE1ABD4EE100C9167B /* ServerUserTableViewController.swift */,
 				418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */,
 				411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */,
-				411BE7C71ACB94F400C4903F /* ServerManager.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

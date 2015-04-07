@@ -12,7 +12,7 @@ import Cocoa
 class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 	
 	// MARK: Constants
-	let standardUserDefaults = NSUserDefaults.standardUserDefaults()
+	let userDefaults = NSUserDefaults.standardUserDefaults()
 	let ACTION_CANCEL_TEXT = "Cancel"
 	let ACTION_DELETE_TEXT = "Delete"
 	let TITLE_EDIT_SERVER = "Edit Server"
@@ -97,7 +97,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
         super.init()
 		
 		// load saved servers
-		if let data = standardUserDefaults.objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
+		if let data = userDefaults.objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
 			allServers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [ServerModel]
 		}
 		
@@ -179,7 +179,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	
 	// MARK: Custom methods
 	func saveServers() {
-		standardUserDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allServers),
+		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allServers),
 			forKey: AppUtils.localStorageKeys.keyServerUsers.rawValue)
 	}
     
