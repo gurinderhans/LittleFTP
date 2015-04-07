@@ -68,6 +68,11 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		mPopover.showRelativeToRect(sender.bounds, ofView: sender as NSView, preferredEdge: NSMaxXEdge)
 		secondaryButton.title = ACTION_CANCEL_TEXT
 		popoverTitle.stringValue = TITLE_ADD_SERVER
+        // clear all fields
+        serverUrl.stringValue = ""
+        serverPort.intValue = 21
+        serverUsername.stringValue = ""
+        serverPassword.stringValue = ""
 		editingRow = -1
 	}
 	// switch current server

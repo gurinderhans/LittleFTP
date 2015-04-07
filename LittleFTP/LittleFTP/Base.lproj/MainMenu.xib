@@ -811,7 +811,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZbQ-Di-O3N">
-                                                            <rect key="frame" x="225" y="13" width="27" height="19"/>
+                                                            <rect key="frame" x="240" y="13" width="21" height="19"/>
                                                             <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" alternateImage="NSRemoveTemplate" state="on" borderStyle="border" imageScaling="proportionallyDown" sound="Blow" inset="2" id="kgF-W4-TGd">
                                                                 <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="systemBold" size="12"/>
