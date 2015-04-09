@@ -22,7 +22,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	// MARK: Outlets and Actions
 	@IBOutlet weak var connectedPathsTable: NSTableView!
 	@IBAction func deleteConnectedPath(sender: AnyObject) {
-		let selectedRow = connectedPathsTable?.rowForView(sender as NSView)
+		let selectedRow = connectedPathsTable?.rowForView(sender as! NSView)
 		allConnectedPaths.removeAtIndex(selectedRow!)
 
 		// overwrite with new data
@@ -44,7 +44,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		mWatcher.onFileChange = {numEvents, changedPaths in
 			for i in changedPaths {
 				for j in self.allConnectedPaths {
-					if j.localPath! == i as String {
+					if j.localPath! == i as! String {
 						// upload contents from j.localpath to j.remotePath
 						 ServerManager.uploadData(localPath: j.localPath!, remotePath: j.remotePath!)
 						let notification = NSUserNotification()
@@ -60,10 +60,10 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		
 		// load saved ConnectedPaths
 		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue) as? NSData {
-			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [ConnectedPathModel]
+			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
 			
 			for i in allConnectedPaths {
-				let connectionValue = (i.isEnabled? == true) ? i.localPath! : ""
+				let connectionValue = (i.isEnabled == true) ? i.localPath! : ""
 				enabledConnections.append(connectionValue)
 			}
 		}
@@ -90,7 +90,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	// MARK: Selector methods
 	func updateConnectedPaths(notification: NSNotification){
 		//load data here
-		for i in notification.object as [ConnectedPathModel] {
+		for i in notification.object as! [ConnectedPathModel] {
 			allConnectedPaths.append(i)
 			enabledConnections.append("") // append empty because all connections by default are `OFF`
 		}
@@ -132,9 +132,9 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		allConnectedPaths = []
 		// load saved ConnectedPaths
 		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue) as? NSData {
-			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [ConnectedPathModel]
+			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
 			for i in allConnectedPaths {
-				let connectionValue = (i.isEnabled? == true) ? i.localPath! : ""
+				let connectionValue = (i.isEnabled == true) ? i.localPath! : ""
 				enabledConnections.append(connectionValue)
 			}
 		}
@@ -154,7 +154,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	// MARK: NSTableViewDelegate methods
 	func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		
-		let cellView:ConnectedTableCellView = tableView.makeViewWithIdentifier("ConnectedFoldersCell", owner: self) as ConnectedTableCellView
+		let cellView:ConnectedTableCellView = tableView.makeViewWithIdentifier("ConnectedFoldersCell", owner: self) as! ConnectedTableCellView
 		let cPath = allConnectedPaths[row]
 		
 		cellView.localTitle.stringValue = cPath.localPath!

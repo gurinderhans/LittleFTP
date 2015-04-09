@@ -72,8 +72,8 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     }
 	
 	func overlayProgress(sender:AnyObject) {
-		ServerManager.isCreateDirsAndUploadFiles = sender.object as Bool
-		self.progressPanel.hidden = !(sender.object as Bool)
+		ServerManager.isCreateDirsAndUploadFiles = sender.object as! Bool
+		self.progressPanel.hidden = !(sender.object as! Bool)
 		self.progressPanel_fileNameLabel.stringValue = "Loading..." // reset label
 		self.progressPanelProgressBar.doubleValue = 0.0 // reset progress bar
 		fBrowserTableView?.enabled = !ServerManager.isCreateDirsAndUploadFiles
@@ -89,12 +89,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // MARK: NSTableViewDataSource methods
     func numberOfRowsInTableView(tableView: NSTableView) -> Int { return mRemoteResources.count }
     
-    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation operation: NSTableViewDropOperation) -> NSDragOperation { return NSDragOperation.All }
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation operation: NSTableViewDropOperation) -> NSDragOperation { return NSDragOperation.Every }
     
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation operation: NSTableViewDropOperation) -> Bool {
 		
 		var droppedURLs = (info.draggingPasteboard()
-			.propertyListForType(NSFilenamesPboardType)! as [String])
+			.propertyListForType(NSFilenamesPboardType)! as! [String])
 			.map { NSURL(string: $0) }
 
 		var tmpConnectionObjs = [ConnectedPathModel]()
@@ -105,7 +105,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 			let attribs: NSDictionary? = fm.attributesOfItemAtPath((droppedURLs[i]?.absoluteString)!, error: nil)
 			
 			if let fileattribs = attribs { // removing file name from path if it's a file
-				if (fileattribs["NSFileType"] as String) == "NSFileTypeRegular" {
+				if (fileattribs["NSFileType"] as! String) == "NSFileTypeRegular" {
 					droppedURLs[i] = droppedURLs[i]?.URLByDeletingLastPathComponent
 				}
 			}
@@ -177,12 +177,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 					for i in data {
 						
 						let remoteResource = RemoteResource(
-							resourceName: i["kCFFTPResourceName"] as String,
-							resourceLastChanged: i["kCFFTPResourceModDate"] as NSDate,
-							resourceSize: i["kCFFTPResourceSize"] as NSInteger,
-							resourceType: i["kCFFTPResourceType"] as NSInteger,
-							resourceOwner: i["kCFFTPResourceOwner"] as String,
-							resourceMode: i["kCFFTPResourceMode"] as NSInteger)
+							resourceName: i["kCFFTPResourceName"] as! String,
+							resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
+							resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
+							resourceType: i["kCFFTPResourceType"] as! NSInteger,
+							resourceOwner: i["kCFFTPResourceOwner"] as! String,
+							resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
 						self.mRemoteResources.append(remoteResource)
 					}
 					

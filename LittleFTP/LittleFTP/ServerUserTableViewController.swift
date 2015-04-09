@@ -65,7 +65,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
 	// add server action
 	@IBAction func addServer(sender: AnyObject) {
-		mPopover.showRelativeToRect(sender.bounds, ofView: sender as NSView, preferredEdge: NSMaxXEdge)
+		mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
 		secondaryButton.title = ACTION_CANCEL_TEXT
 		popoverTitle.stringValue = TITLE_ADD_SERVER
         // clear all fields
@@ -77,7 +77,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
 	// switch current server
 	@IBAction func switchServer(sender: AnyObject) {
-		let selectedRow = serverTableView?.rowForView(sender as NSView)
+		let selectedRow = serverTableView?.rowForView(sender as! NSView)
 
 		// change button states and stuff in the UI
 		if allServers[selectedRow!].serverState! != 1 {
@@ -103,7 +103,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		
 		// load saved servers
 		if let data = userDefaults.objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
-			allServers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [ServerModel]
+			allServers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
 		}
 		
 		// load active server
@@ -146,7 +146,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		secondaryButton.title = ACTION_DELETE_TEXT
 		popoverTitle.stringValue = TITLE_EDIT_SERVER
 		
-		let view = notification.object as NSView
+		let view = notification.object as! NSView
 		let selectedRow = serverTableView?.rowForView(view)
 		editingRow = selectedRow!
 		// load saved values in to their respective values

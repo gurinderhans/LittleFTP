@@ -35,7 +35,7 @@ class ServerManager {
 		var allServers = [FMServer]()
 		
 		if let data = NSUserDefaults.standardUserDefaults().objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
-			let serverModels = NSKeyedUnarchiver.unarchiveObjectWithData(data) as [ServerModel]
+			let serverModels = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
 			for i in serverModels {
 				allServers.append(FMServer(
 					destination: i.serverURL!,
@@ -127,7 +127,7 @@ class ServerManager {
 			let attribs: NSDictionary? = fm.attributesOfItemAtPath((localURL?.absoluteString)!, error: nil)
 			
 			if let fileattribs = attribs {
-				let type = fileattribs["NSFileType"] as String
+				let type = fileattribs["NSFileType"] as! String
 				
 				if type == "NSFileTypeRegular" { // file
 					filesQueue.enQueue([localURL!:remoteURL!])
