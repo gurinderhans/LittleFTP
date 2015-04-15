@@ -20,6 +20,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 	@IBOutlet weak var progressPanel: NSView!
 	@IBOutlet weak var progressPanel_fileNameLabel: NSTextField!
 	@IBOutlet weak var progressPanelProgressBar: NSProgressIndicator!
+    @IBOutlet weak var appWindow: NSWindow!
     
     
     // MARK: App initialize methods
@@ -59,15 +60,18 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     func fbBrowser_dblClick(sender:AnyObject){
         let row = (fBrowserTableView?.clickedRow)!
         if row == -1 {return} // empty cell clicked
-        self.progress?.hidden = false
         
         let clickedResource = mRemoteResources[row]
         
         if clickedResource.resourceType! == 4 {
-            let subPath = clickedResource.resourceName!+"/"
+            self.progress?.hidden = false
+
 			if (!ServerManager.isCreateDirsAndUploadFiles) { // dont allow switching dirs when there's an upload going on
-				fetchDirContents(path: subPath)
+				fetchDirContents(path: clickedResource.resourceName!)
 			}
+            
+        } else {
+            // download file ?
         }
     }
 	
@@ -118,11 +122,11 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 			
 			if (operation.rawValue == 0 && mRemoteResources[row].resourceType == 4) { // if droppedOnTheCell
 				tmpConnectionObj.remotePath = AppUtils.parseServerURL(
-					relativePath: ServerManager.activeServer.relativePath,
+					relativePath: ServerManager.activeServer.absolutePath,
 					clickedItemPath: mRemoteResources[row].resourceName! )
 			}
 			else {
-				tmpConnectionObj.remotePath = (ServerManager.activeServer.relativePath == "") ? "/": ServerManager.activeServer.relativePath
+				tmpConnectionObj.remotePath = (ServerManager.activeServer.absolutePath == "") ? "/": ServerManager.activeServer.absolutePath
 			}
 	
 			tmpConnectionObjs.append(tmpConnectionObj)
@@ -150,29 +154,41 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 	
     // MARK: Custom methods
 	func fetchDirContents(path:String = "") {
-		// path parsing
-		var subPath = ServerManager.activeServer.relativePath+path
-		if path == "../" {
-			// TODO: fix the null keyword -> perhaps some crazy hash
-			ServerManager.activeServer.relativePath = (ServerManager.activeServer.relativePath == "" ) ? "null":ServerManager.activeServer.relativePath
-			let tmp = NSURL(string: ServerManager.activeServer.relativePath)?.URLByDeletingLastPathComponent
-			subPath = (tmp?.absoluteString!)!
-			subPath = (subPath == "./") ? "" : subPath
-		}
-		subPath = (path == "./") ? ServerManager.activeServer.relativePath: subPath
+
+        
+        // create goto path
+        var gotoPath = NSURL(string: path, relativeToURL: NSURL(string: ServerManager.activeServer.absolutePath)?.URLByAppendingPathComponent(""))
+        
 		
 		dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-			let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: subPath)
+            
+			let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: gotoPath?.absoluteString)
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
 				
 				self.progress?.hidden = true
 				
 				if let data:[NSDictionary] = resources as? [NSDictionary] {
-					ServerManager.activeServer.relativePath = subPath
 					
 					self.mRemoteResources = []
-					ServerManager.activeServer.relativePath = subPath
+					ServerManager.activeServer.absolutePath = gotoPath?.absoluteString
+                    
+                    // set window title to show current server directory that we are in
+                    var windowTitle = (gotoPath?.absoluteString)!
+                    
+                    if count(windowTitle) > 1 {
+//                        let index = advance(windowTitle.startIndex, 2)
+//                        windowTitle = windowTitle.substringFromIndex(index)
+                        
+//                        var range = windowTitle.rangeOfString(".")
+//                        windowTitle = windowTitle.substringWithRange(range!)
+                        
+//                        println("range: \(range)")
+
+                    }
+
+                    
+                    self.appWindow.title = windowTitle
 					
 					for i in data {
 						
@@ -185,6 +201,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 							resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
 						self.mRemoteResources.append(remoteResource)
 					}
+                    
 					
 					// sorting by folders up top followed by files
 					self.mRemoteResources.sort({$0.resourceType < $1.resourceType})
@@ -196,8 +213,6 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 						self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
 						
 					}
-					
-					
 					
 					self.fBrowserTableView?.reloadData()
 				}

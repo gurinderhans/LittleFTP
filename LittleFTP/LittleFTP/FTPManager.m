@@ -900,7 +900,7 @@ result;})
 #pragma mark -
 
 @implementation FMServer
-@synthesize password, username, destination, port, relativePath;
+@synthesize password, username, destination, port, absolutePath;
 - (id)init
 {
 	self = [super init];
@@ -915,7 +915,7 @@ result;})
 	server.port = port;
 	server.username = user;
 	server.password = pass;
-	server.relativePath = @"";
+	server.absolutePath = @"";
 	return server;
 }
 + (FMServer*) anonymousServerWithDestination:(NSString*)dest {

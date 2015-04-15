@@ -44,4 +44,8 @@ class AppUtils {
         
         return subPath
     }
+    
+    class func parseURL() -> String {
+        return ""
+    }
 }

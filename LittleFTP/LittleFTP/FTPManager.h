@@ -121,7 +121,7 @@
 	NSString* password;
 	NSString* username;
 	int port;
-	NSString* relativePath;
+	NSString* absolutePath;
 }
 
 /**
@@ -147,7 +147,7 @@
 /**
  *  The relative path for the FMServer.
  */
-@property (strong) NSString* relativePath;
+@property (strong) NSString* absolutePath;
 
 /**
  *  Returns a FMServer initialized with the given URL and credentials.

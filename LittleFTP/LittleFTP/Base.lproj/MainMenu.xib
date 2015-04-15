@@ -695,7 +695,7 @@
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
                                         <tableColumn identifier="MainColumn" width="273" minWidth="40" maxWidth="1000" id="VPl-MU-gqZ">
-                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="RemoteFiles">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="FileBrowser">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -749,7 +749,7 @@
                             <rect key="frame" x="1" y="106.91894483566284" width="214" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="9e0-Qz-i6N">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="9e0-Qz-i6N">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -991,6 +991,7 @@
         </window>
         <customObject id="dAM-RU-dCI" customClass="ServerBrowserTableViewController" customModule="LittleFTP" customModuleProvider="target">
             <connections>
+                <outlet property="appWindow" destination="gAT-iw-xw9" id="3hq-9o-NZS"/>
                 <outlet property="fBrowserTableView" destination="qg5-YY-Td4" id="KH0-av-HoX"/>
                 <outlet property="progress" destination="Q58-YZ-UCz" id="1qX-zK-f62"/>
                 <outlet property="progressPanel" destination="nce-ZU-Vbk" id="gkC-zo-qxl"/>
@@ -1082,7 +1083,7 @@
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="tk4-ye-xf6">
-                    <rect key="frame" x="11" y="148" width="249" height="4"/>
+                    <rect key="frame" x="11" y="148" width="249" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
