@@ -11,7 +11,7 @@ import Cocoa
 
 class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     
-    // FIXME: unlockFocus called too many times. Called on <NSButton: 0x608000140630>
+    // FIXME: "unlockFocus called too many times. Called on <NSButton: 0x608000140630>"
     
 	
 	// MARK: Table data variables
