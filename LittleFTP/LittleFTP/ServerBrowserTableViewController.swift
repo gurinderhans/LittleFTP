@@ -29,6 +29,8 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // MARK: App initialize methods
     override init() {
         super.init()
+        
+        ServerManager.fetchDir("/")
 		
         // initiate get files
 		if ServerManager.activeServer.destination != nil { fetchDirContents(path: "/") }
@@ -130,6 +132,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 			)
 			
 			if (operation.rawValue == 0 && mRemoteResources[row].resourceType == 4) { // if droppedOnTheCell
+                // FIXME: remove the use of `parseServerURL`
 				tmpConnectionObj.remotePath = AppUtils.parseServerURL(
 					relativePath: ServerManager.activeServer.absolutePath,
 					clickedItemPath: mRemoteResources[row].resourceName! )
@@ -197,7 +200,6 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 					
                     
 					for i in data {
-                        
 						let remoteResource = RemoteResource(
 							resourceName: i["kCFFTPResourceName"] as! String,
 							resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,

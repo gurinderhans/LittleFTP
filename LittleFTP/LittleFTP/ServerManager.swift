@@ -84,8 +84,34 @@ class ServerManager {
     
     
     //
-    // MARK: self contained function
+    // MARK: class funcs
     //
+    
+    
+    class func fetchDir(path: String) {
+        let server = ServerManager.allServers().last
+        
+        var host:String? = server?.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
+        var session: NMSSHSession = NMSSHSession.connectToHost(host, port: (server?.serverPort)!, withUsername: server?.userName)
+        
+        if session.connected {
+            session.authenticateByPassword(server?.userPass)
+        } else {
+            println("sdfsdf - Not connected")
+        }
+        
+        let response = session.channel.execute("ls -l /var/www", error: nil)
+        let folderContents = split(response) {$0 == "\n"}
+        for i in folderContents {
+            if i.contains("total") == false {
+                var resourceArr = split(i) {$0 == " "}
+//                RemoteResource(resourceName: resourceArr.last, resourceLastChanged: ServerManager.getResourceDate(resourceArr), resourceSize: (resourceArr[4] == 4096) ? 0 : resourceArr[4], resourceType: <#NSInteger#>, resourceOwner: <#String#>, resourceMode: <#NSInteger#>)
+            }
+        }
+        
+        println("\n")
+        session.disconnect()
+    }
     
     class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
         
@@ -194,6 +220,30 @@ class ServerManager {
             })
         })
         
+    }
+    
+    
+    class func getResourceDate(resources: [String]) -> NSDate {
+        var dt = ",".join(resources[5..<8])
+        
+        var dtFormat = ""
+        if resources[7].contains(":") == true {
+            let tmSplit = split(resources[7]) {$0 == ":"}
+            if tmSplit.first?.toInt() > 12 {
+                dtFormat = "MMM,dd,HH:mm"
+            } else {
+                dtFormat = "MMM,dd,hh:mm"
+            }
+            
+        } else {
+            dtFormat = "MMM,dd,YYYY"
+        }
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = dtFormat
+        let date = dateFormatter.dateFromString(dt)
+        
+        return date!
     }
 }
 
