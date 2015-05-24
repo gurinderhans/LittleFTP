@@ -11,7 +11,9 @@ import Cocoa
 
 class ServerManager {
     
-    // MARK: public variables
+    //
+    // MARK: public class variables
+    //
     
     private struct _activerServer { static var server: FMServer = FMServer() }
     class var activeServer: FMServer {
@@ -30,7 +32,7 @@ class ServerManager {
         get { return _ftpManager.manager }
     }
     
-    // public func
+    // @returns - list of all servers that the program stores
     class func getAllServers() -> [FMServer] {
         var allServers = [FMServer]()
         
@@ -48,22 +50,36 @@ class ServerManager {
         return allServers
     }
     
+    // @returns - stripped string of the server name
     class var keyServerNameStringVal:String {
         get {
+            // FIXME: returning empty ?
             return (ServerManager.activeServer.destination == nil) ? "" : (ServerManager.activeServer.destination).stripCharactersInSet([".", ":", "/"])
         }
     }
     
+    
+    
+    //
     // MARK: self contained function
+    //
     
     class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
         
+        //
         // MARK: function declarations with no-op definitions
+        //
+        
         var uploadFile: (fQueue:Queue<Dictionary<NSURL, NSURL>>) -> () = { _ in }
         var	createDirsAndUploadFiles: (dirs:Queue<Dictionary<NSURL, NSURL>>, files:Queue<Dictionary<NSURL, NSURL>>) -> () = { _ in }
         
-        // MARK: assign operations to functions definitions
         
+        //
+        // MARK: assign operations to functions definitions
+        //
+        
+        
+        // iterates through a file queue & uploads each file
         uploadFile = { flQ in
             if (flQ.isEmpty()) {
                 ServerManager.isCreateDirsAndUploadFiles = false
@@ -87,6 +103,9 @@ class ServerManager {
             })
         }
         
+        
+        // iterates through a folder queue & creates each folder
+        // ** NOTE: this starts the file uploads once the folder queue is emptied
         createDirsAndUploadFiles = { dirQ, flQ in
             ServerManager.isCreateDirsAndUploadFiles = true
             if (dirQ.isEmpty()) {
@@ -156,7 +175,16 @@ class ServerManager {
 }
 
 
+
+//
+// MARK: Extensions
+//
+
+
+// custom String.class extension
 extension String {
+    
+    // removes all given characters from string
     func stripCharactersInSet(chars: [Character]) -> String {
         return String(filter(self) {find(chars, $0) == nil})
     }

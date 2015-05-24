@@ -106,6 +106,7 @@
 				410FCAD31ABEC828005118DF /* MSwiftFileWatcher.m */,
 			);
 			name = MSwiftFileWatcher;
+			path = LittleFTP;
 			sourceTree = "<group>";
 		};
 		4165BB091ABAA5BC00FA9E8E /* Models */ = {
@@ -121,6 +122,8 @@
 		417D6FAD1ABD38AE00C9167B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				410FCAD11ABEC7E7005118DF /* MSwiftFileWatcher */,
+				41D824131AC28E420021EACF /* FTPManager */,
 				416C59581ABD26EE007E341F /* NMSSH.framework */,
 			);
 			name = Frameworks;
@@ -144,6 +147,7 @@
 				41DDEF8C1AC647B00092527D /* FTPManager.m */,
 			);
 			name = FTPManager;
+			path = LittleFTP;
 			sourceTree = "<group>";
 		};
 		41EE9EA51AB8C65400C96D7D = {
@@ -168,9 +172,7 @@
 		41EE9EB01AB8C65400C96D7D /* LittleFTP */ = {
 			isa = PBXGroup;
 			children = (
-				41D824131AC28E420021EACF /* FTPManager */,
 				41F5C7D21AC114D8003504C5 /* Factories */,
-				410FCAD11ABEC7E7005118DF /* MSwiftFileWatcher */,
 				4165BB091ABAA5BC00FA9E8E /* Models */,
 				41EE9ED01AB8CAEF00C96D7D /* Views */,
 				418A97F61AB91639006DC8BE /* Controllers */,

@@ -145,7 +145,7 @@
 @property  (unsafe_unretained) int port;
 
 /**
- *  The relative path for the FMServer.
+ *  The absolute path for the FMServer.
  */
 @property (strong) NSString* absolutePath;
 

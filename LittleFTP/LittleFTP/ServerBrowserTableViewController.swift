@@ -10,6 +10,9 @@ import Foundation
 import Cocoa
 
 class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+    
+    // FIXME: unlockFocus called too many times. Called on <NSButton: 0x608000140630>
+    
 	
 	// MARK: Table data variables
 	var mRemoteResources = [RemoteResource]()
@@ -32,13 +35,14 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		
 		// notification observer for adding overlay on browser table
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "overlayProgress:", name:"setOverlay", object: nil)
-		// server change observer
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTable:", name:"serverChanged", object: nil)
+
+        // server change observer
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetTable:", name:"serverChanged", object: nil)
 		
 		// listen for upload progress
 		ServerManager.ftpManager.onProgress = {totalProgress, fileName in
-			// get Action enum value from onProgress
-			self.progressPanel_fileNameLabel.stringValue = fileName // not feeling so good about this line
+			// TODO: get Action enum value from onProgress
+			self.progressPanel_fileNameLabel.stringValue = fileName
 			self.progressPanelProgressBar.doubleValue = totalProgress
 		}
 		
@@ -71,10 +75,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 			}
             
         } else {
-            // download file ?
+            // TODO: download file
         }
     }
 	
+    
+    // puts an overlay above the file browser
 	func overlayProgress(sender:AnyObject) {
 		ServerManager.isCreateDirsAndUploadFiles = sender.object as! Bool
 		self.progressPanel.hidden = !(sender.object as! Bool)
@@ -83,14 +89,17 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		fBrowserTableView?.enabled = !ServerManager.isCreateDirsAndUploadFiles
 	}
 	
-	func reloadTable(sender:AnyObject) {
+    // resets the file browser table
+	func resetTable(sender:AnyObject) {
 		self.progress?.hidden = false
 		fetchDirContents(path: "/")
 	}
     
     
-    
+    //
     // MARK: NSTableViewDataSource methods
+    //
+    
     func numberOfRowsInTableView(tableView: NSTableView) -> Int { return mRemoteResources.count }
     
     func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation operation: NSTableViewDropOperation) -> NSDragOperation { return NSDragOperation.Every }
@@ -137,7 +146,10 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		return true
     }
     
+    //
     // MARK: NSTableViewDelegate methods
+    //
+    
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		
 		let cellView: RemoteResourceCellView? = tableView.makeViewWithIdentifier("MainCell", owner: self)
@@ -152,20 +164,27 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		return cellView
     }
 	
+    //
     // MARK: Custom methods
+    //
+    
 	func fetchDirContents(path:String = "") {
-
+    
         
         // create goto path
         var gotoPath = NSURL(string: path, relativeToURL: NSURL(string: ServerManager.activeServer.absolutePath)?.URLByAppendingPathComponent(""))
+        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
         
 		
 		dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             
+            // fetch content
 			let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: gotoPath?.absoluteString)
 			
 			dispatch_async(dispatch_get_main_queue(), { () -> Void in
 				
+                // ON: content fetched
+                
 				self.progress?.hidden = true
 				
 				if let data:[NSDictionary] = resources as? [NSDictionary] {
@@ -174,24 +193,11 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 					ServerManager.activeServer.absolutePath = gotoPath?.absoluteString
                     
                     // set window title to show current server directory that we are in
-                    var windowTitle = (gotoPath?.absoluteString)!
-                    
-                    if count(windowTitle) > 1 {
-//                        let index = advance(windowTitle.startIndex, 2)
-//                        windowTitle = windowTitle.substringFromIndex(index)
-                        
-//                        var range = windowTitle.rangeOfString(".")
-//                        windowTitle = windowTitle.substringWithRange(range!)
-                        
-//                        println("range: \(range)")
-
-                    }
-
-                    
-                    self.appWindow.title = windowTitle
+                    self.appWindow.title = (gotoPath?.absoluteString)!
 					
+                    
 					for i in data {
-						
+                        
 						let remoteResource = RemoteResource(
 							resourceName: i["kCFFTPResourceName"] as! String,
 							resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
@@ -199,7 +205,9 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 							resourceType: i["kCFFTPResourceType"] as! NSInteger,
 							resourceOwner: i["kCFFTPResourceOwner"] as! String,
 							resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
+                        
 						self.mRemoteResources.append(remoteResource)
+                        
 					}
                     
 					
