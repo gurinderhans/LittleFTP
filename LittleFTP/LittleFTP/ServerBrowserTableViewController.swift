@@ -14,10 +14,20 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // FIXME: "unlockFocus called too many times. Called on <NSButton: 0x608000140630>"
     
 	
-	// MARK: Table data variables
+	
+    //
+    // MARK: Table data variables
+    //
+    
+    
 	var mRemoteResources = [RemoteResource]()
 	
+    
+    //
     // MARK: Outlets & Actions
+    //
+    
+    
     @IBOutlet var fBrowserTableView:NSTableView?
     @IBOutlet var progress:NSProgressIndicator?
 	@IBOutlet weak var progressPanel: NSView!
@@ -26,14 +36,17 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     @IBOutlet weak var appWindow: NSWindow!
     
     
+    
+    //
     // MARK: App initialize methods
+    //
+    
+    
     override init() {
         super.init()
-        
-        ServerManager.fetchDir("/")
 		
         // initiate get files
-		if ServerManager.activeServer.destination != nil { fetchDirContents(path: "/") }
+		if ServerManager.activeServer.destination != nil { fetchDirContents("/") }
 		
 		// notification observer for adding overlay on browser table
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "overlayProgress:", name:"setOverlay", object: nil)
@@ -61,8 +74,13 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		progressPanel.layer?.opacity = 0.95
     }
 	
-	
+    
+    
+	//
 	// MARK: Selector methods
+    //
+    
+    
     func fbBrowser_dblClick(sender:AnyObject){
         let row = (fBrowserTableView?.clickedRow)!
         if row == -1 {return} // empty cell clicked
@@ -73,7 +91,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
             self.progress?.hidden = false
 
 			if (!ServerManager.isCreateDirsAndUploadFiles) { // dont allow switching dirs when there's an upload going on
-				fetchDirContents(path: clickedResource.resourceName!)
+				fetchDirContents(clickedResource.resourceName!)
 			}
             
         } else {
@@ -94,13 +112,15 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // resets the file browser table
 	func resetTable(sender:AnyObject) {
 		self.progress?.hidden = false
-		fetchDirContents(path: "/")
+		fetchDirContents("/")
 	}
+  
     
     
     //
     // MARK: NSTableViewDataSource methods
     //
+    
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int { return mRemoteResources.count }
     
@@ -149,9 +169,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		return true
     }
     
+    
+    
     //
     // MARK: NSTableViewDelegate methods
     //
+    
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		
@@ -167,68 +190,40 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		return cellView
     }
 	
+    
+    
     //
     // MARK: Custom methods
     //
     
-	func fetchDirContents(path:String = "") {
     
+	func fetchDirContents(path:String) {
         
-        // create goto path
-        var gotoPath = NSURL(string: path, relativeToURL: NSURL(string: ServerManager.activeServer.absolutePath)?.URLByAppendingPathComponent(""))
-        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
-        
-		
-		dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+        ServerManager.fetchDir(path, onFetched: { results -> Void in
+            // hide progress
+//            println("fetched")
+            self.progress?.hidden = true
+            // set window title to show current server directory that we are in
+            println("sfsdfsdfsdf: [\(ServerManager.usingServer.serverAbsoluteURL)]")
+//            self.appWindow.title = "\(ServerManager.usingServer.serverAbsoluteURL)"
             
-            // fetch content
-			let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: gotoPath?.absoluteString)
-			
-			dispatch_async(dispatch_get_main_queue(), { () -> Void in
-				
-                // ON: content fetched
-                
-				self.progress?.hidden = true
-				
-				if let data:[NSDictionary] = resources as? [NSDictionary] {
-					
-					self.mRemoteResources = []
-					ServerManager.activeServer.absolutePath = gotoPath?.absoluteString
-                    
-                    // set window title to show current server directory that we are in
-                    self.appWindow.title = (gotoPath?.absoluteString)!
-					
-                    
-					for i in data {
-						let remoteResource = RemoteResource(
-							resourceName: i["kCFFTPResourceName"] as! String,
-							resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
-							resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
-							resourceType: i["kCFFTPResourceType"] as! NSInteger,
-							resourceOwner: i["kCFFTPResourceOwner"] as! String,
-							resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
-                        
-						self.mRemoteResources.append(remoteResource)
-                        
-					}
-                    
-					
-					// sorting by folders up top followed by files
-					self.mRemoteResources.sort({$0.resourceType < $1.resourceType})
-					
-					// insert only if server doesn't give us these
-					// doing with a quick and dirty check
-					if self.mRemoteResources.first?.resourceName != "." {
-						self.mRemoteResources.insert(RemoteResource(resourceName: ".", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 0)
-						self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
-						
-					}
-					
-					self.fBrowserTableView?.reloadData()
-				}
+            
+            var remoteResources: [RemoteResource] = results as [RemoteResource]
+            
+            remoteResources.sort({$0.resourceType < $1.resourceType})
+            
+            self.mRemoteResources = remoteResources
 
-			})
-		})
+            // insert only if server doesn't give us these
+            // doing with a quick and dirty check
+            if self.mRemoteResources.first?.resourceName != "." {
+                self.mRemoteResources.insert(RemoteResource(resourceName: ".", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 0)
+                self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
+
+            }
+
+            self.fBrowserTableView?.reloadData()
+        })
     }
 }
 

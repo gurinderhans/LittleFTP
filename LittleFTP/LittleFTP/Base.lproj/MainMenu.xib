@@ -991,7 +991,7 @@
         </window>
         <customObject id="dAM-RU-dCI" customClass="ServerBrowserTableViewController" customModule="LittleFTP" customModuleProvider="target">
             <connections>
-                <outlet property="appWindow" destination="gAT-iw-xw9" id="3hq-9o-NZS"/>
+                <outlet property="appWindow" destination="gAT-iw-xw9" id="n2o-PP-WV9"/>
                 <outlet property="fBrowserTableView" destination="qg5-YY-Td4" id="KH0-av-HoX"/>
                 <outlet property="progress" destination="Q58-YZ-UCz" id="1qX-zK-f62"/>
                 <outlet property="progressPanel" destination="nce-ZU-Vbk" id="gkC-zo-qxl"/>
@@ -1083,7 +1083,7 @@
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="tk4-ye-xf6">
-                    <rect key="frame" x="11" y="148" width="249" height="4"/>
+                    <rect key="frame" x="11" y="148" width="249" height="5"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>

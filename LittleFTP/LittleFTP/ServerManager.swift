@@ -87,30 +87,85 @@ class ServerManager {
     // MARK: class funcs
     //
     
-    
-    class func fetchDir(path: String) {
-        let server = ServerManager.allServers().last
+    class func fetchDir(path: String, onFetched: ([RemoteResource]) -> Void) {
         
-        var host:String? = server?.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-        var session: NMSSHSession = NMSSHSession.connectToHost(host, port: (server?.serverPort)!, withUsername: server?.userName)
+        // create goto path
+        var gotoPath = NSURL(string: path, relativeToURL: NSURL(string: ServerManager.usingServer.serverAbsoluteURL)?.URLByAppendingPathComponent(""))
+        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
+        println(gotoPath?.absoluteString)
+        var foundResources = [RemoteResource]() // we return this
         
-        if session.connected {
-            session.authenticateByPassword(server?.userPass)
+        if ServerManager.usingServer.serverType == ServerType.FTP {
+            // FTP fetching
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+                
+                // fetch dir content
+                let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: gotoPath?.absoluteString)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    // ON: content fetched
+                    
+                    if let data:[NSDictionary] = resources as? [NSDictionary] {
+                        
+//                        ServerManager.activeServer.absolutePath = gotoPath?.absoluteString
+                        ServerManager.usingServer.serverAbsoluteURL = (gotoPath?.absoluteString)!
+                        
+                        
+                        for i in data {
+                            let remoteResource = RemoteResource(
+                                resourceName: i["kCFFTPResourceName"] as! String,
+                                resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
+                                resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
+                                resourceType: i["kCFFTPResourceType"] as! NSInteger,
+                                resourceOwner: i["kCFFTPResourceOwner"] as! String,
+                                resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
+                            
+                            foundResources.append(remoteResource)
+                            
+                        }
+                        
+                        // send resources to the other side
+                        onFetched(foundResources)
+                    }
+                    
+                })
+            })
         } else {
-            println("sdfsdf - Not connected")
-        }
-        
-        let response = session.channel.execute("ls -l /var/www", error: nil)
-        let folderContents = split(response) {$0 == "\n"}
-        for i in folderContents {
-            if i.contains("total") == false {
-                var resourceArr = split(i) {$0 == " "}
-//                RemoteResource(resourceName: resourceArr.last, resourceLastChanged: ServerManager.getResourceDate(resourceArr), resourceSize: (resourceArr[4] == 4096) ? 0 : resourceArr[4], resourceType: <#NSInteger#>, resourceOwner: <#String#>, resourceMode: <#NSInteger#>)
+            // SFTP fetching
+            
+            let host:String? = ServerManager.usingServer.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
+            var session: NMSSHSession = NMSSHSession.connectToHost(host, port: ServerManager.usingServer.serverPort!, withUsername: ServerManager.usingServer.userName)
+            
+            if session.connected {
+                session.authenticateByPassword(ServerManager.usingServer.userPass)
+            } else {
+                println("SSH ERR::Not connected")
             }
+            
+            let response = session.channel.execute("ls -al \((gotoPath?.absoluteString)!)", error: nil)
+            if response != "" {
+                
+                ServerManager.usingServer.serverAbsoluteURL = (gotoPath?.absoluteString)!
+                
+                let folderContents = split(response) {$0 == "\n"}
+                
+                for i in folderContents {
+                    println(i)
+                    if i.contains("total") == false {
+                        var resourceArr = split(i) {$0 == " "}
+                        
+                        let sz = (resourceArr[4].toInt() == 4096) ? 1 : 0
+                        let createdResource = RemoteResource(resourceName: resourceArr.last!, resourceLastChanged: SFTPManager.getResourceDate(resourceArr), resourceSize: sz, resourceType: SFTPManager.getResourceType(resourceArr), resourceOwner: resourceArr[2], resourceMode: -1)
+                        
+                        foundResources.append(createdResource)
+                    }
+                }
+                
+                onFetched(foundResources)
+            }
+            //        session.disconnect()
         }
-        
-        println("\n")
-        session.disconnect()
     }
     
     class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
@@ -223,28 +278,7 @@ class ServerManager {
     }
     
     
-    class func getResourceDate(resources: [String]) -> NSDate {
-        var dt = ",".join(resources[5..<8])
-        
-        var dtFormat = ""
-        if resources[7].contains(":") == true {
-            let tmSplit = split(resources[7]) {$0 == ":"}
-            if tmSplit.first?.toInt() > 12 {
-                dtFormat = "MMM,dd,HH:mm"
-            } else {
-                dtFormat = "MMM,dd,hh:mm"
-            }
-            
-        } else {
-            dtFormat = "MMM,dd,YYYY"
-        }
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = dtFormat
-        let date = dateFormatter.dateFromString(dt)
-        
-        return date!
-    }
+    
 }
 
 

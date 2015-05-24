@@ -95,7 +95,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 			
 			// update and tell table controllers
             ServerManager.usingServer = ServerManager.allServers()[selectedRow!]
-//			ServerManager.activeServer = ServerManager.getAllServers()[selectedRow!]
+			ServerManager.activeServer = ServerManager.getAllServers()[selectedRow!]
 			NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
 			
 		} else {
@@ -128,11 +128,11 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		if let server = activeServer {
             ServerManager.usingServer = server
             
-//			ServerManager.activeServer = FMServer(
-//				destination: server.serverURL!,
-//				onPort: Int32(server.serverPort!),
-//				username: server.userName!,
-//				password: server.userPass!)
+			ServerManager.activeServer = FMServer(
+				destination: server.serverURL!,
+				onPort: Int32(server.serverPort!),
+				username: server.userName!,
+				password: server.userPass!)
 		}
 		
 		// notification observer for listening right clicks on switch Button
