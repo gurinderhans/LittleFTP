@@ -13,6 +13,10 @@ let keyServerPort = "serverPort"
 let keyUserName = "userName"
 let keyUserPass = "userPass"
 let keyServerState = "serverState"
+let keyServerType = "serverType"
+
+let keyServerTypeFTP = "FTP"
+let keyServerTypeSFTP = "SFTP"
 
 class ServerModel: NSObject, NSCoding {
 
@@ -22,13 +26,30 @@ class ServerModel: NSObject, NSCoding {
     var userPass:String?
 	var serverState:Int?
     
+    // is server FTP or SFTP ?
+    var serverType: String?
+    
+    // empty constructor
+    override init() {
+        super.init()
+    }
+    
+    // custom constructor
 	init(serverURL: String, serverPort:Int, userName: String, userPass:String, serverState:Int) {
-		
+        super.init()
+        
 		self.serverURL = serverURL
 		self.serverPort = serverPort
         self.userName = userName
 		self.userPass = userPass
 		self.serverState = serverState
+        
+        // set server type
+        if self.serverURL?.uppercaseString.contains(keyServerTypeSFTP) == true {
+            self.serverType = keyServerTypeSFTP
+        } else {
+            self.serverType = keyServerTypeFTP
+        }
     }
 	
 	required init(coder aDecoder: NSCoder) {
@@ -37,6 +58,7 @@ class ServerModel: NSObject, NSCoding {
 		self.userName = aDecoder.decodeObjectForKey(keyUserName) as? String
 		self.userPass = aDecoder.decodeObjectForKey(keyUserPass) as? String
 		self.serverState = aDecoder.decodeObjectForKey(keyServerState) as? Int
+        self.serverType = aDecoder.decodeObjectForKey(keyServerType) as? String
 	}
 	
 	func encodeWithCoder(coder: NSCoder) {
@@ -45,5 +67,19 @@ class ServerModel: NSObject, NSCoding {
 		coder.encodeObject(self.userName, forKey: keyUserName)
 		coder.encodeObject(self.userPass, forKey: keyUserPass)
 		coder.encodeObject(self.serverState, forKey: keyServerState)
+        coder.encodeObject(self.serverType, forKey: keyServerType)
 	}
+}
+
+
+
+//
+// MARK: Extensions
+//
+
+extension String {
+    
+    func contains(find: String) -> Bool{
+        return self.rangeOfString(find) != nil
+    }
 }

@@ -63,18 +63,25 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		self.mPopover.close()
 
 	}
+    
+    
 	// add server action
 	@IBAction func addServer(sender: AnyObject) {
-		mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
-		secondaryButton.title = ACTION_CANCEL_TEXT
+		// show popover where the view is
+        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
+		
+        // set title's and stuff
+        secondaryButton.title = ACTION_CANCEL_TEXT
 		popoverTitle.stringValue = TITLE_ADD_SERVER
-        // clear all fields
+        
+        // clear all fields and reset editing row
         serverUrl.stringValue = ""
         serverPort.intValue = 21
         serverUsername.stringValue = ""
         serverPassword.stringValue = ""
 		editingRow = -1
 	}
+    
 	// switch current server
 	@IBAction func switchServer(sender: AnyObject) {
 		let selectedRow = serverTableView?.rowForView(sender as! NSView)
@@ -87,7 +94,8 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 			saveServers() // also save
 			
 			// update and tell table controllers
-			ServerManager.activeServer = ServerManager.getAllServers()[selectedRow!]
+            ServerManager.usingServer = ServerManager.allServers()[selectedRow!]
+//			ServerManager.activeServer = ServerManager.getAllServers()[selectedRow!]
 			NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
 			
 		} else {
@@ -97,7 +105,12 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
 	
 	
+    
+    //
 	// MARK: App init methods
+    //
+    
+    
     override init() {
         super.init()
 		
@@ -111,12 +124,15 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		for i in allServers {
 			if i.serverState == 1 { activeServer = i }
 		}
+        
 		if let server = activeServer {
-			ServerManager.activeServer = FMServer(
-				destination: server.serverURL!,
-				onPort: Int32(server.serverPort!),
-				username: server.userName!,
-				password: server.userPass!)
+            ServerManager.usingServer = server
+            
+//			ServerManager.activeServer = FMServer(
+//				destination: server.serverURL!,
+//				onPort: Int32(server.serverPort!),
+//				username: server.userName!,
+//				password: server.userPass!)
 		}
 		
 		// notification observer for listening right clicks on switch Button

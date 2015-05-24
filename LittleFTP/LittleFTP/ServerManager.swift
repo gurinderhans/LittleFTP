@@ -11,9 +11,19 @@ import Cocoa
 
 class ServerManager {
     
+    // TODO: do ftp/sftp decision stuff here
+    
+    
     //
     // MARK: public class variables
     //
+    
+    
+    private struct _usingServer { static var server: ServerModel = ServerModel() }
+    class var usingServer: ServerModel {
+        get { return _usingServer.server }
+        set { _usingServer.server = newValue }
+    }
     
     private struct _activerServer { static var server: FMServer = FMServer() }
     class var activeServer: FMServer {
@@ -30,6 +40,19 @@ class ServerManager {
     private struct _ftpManager { static var manager: FTPManager = FTPManager() }
     class var ftpManager: FTPManager {
         get { return _ftpManager.manager }
+    }
+    
+    
+    // @returns - list of servers
+    class func allServers() -> [ServerModel] {
+
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
+            let serverModels = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
+            
+            return serverModels
+        }
+        
+        return [ServerModel]()
     }
     
     // @returns - list of all servers that the program stores

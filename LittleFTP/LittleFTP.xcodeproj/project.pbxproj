@@ -11,6 +11,7 @@
 		411BE7C61ACB7FF500C4903F /* ConnectedPathsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */; };
 		411BE7C81ACB94F400C4903F /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411BE7C71ACB94F400C4903F /* ServerManager.swift */; };
 		414901901ABE08FB001550A1 /* ServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149018F1ABE08FB001550A1 /* ServerModel.swift */; };
+		415A68961B1192B9009254D8 /* FTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415A68951B1192B9009254D8 /* FTPManager.swift */; };
 		4165BB0B1ABAA5E300FA9E8E /* RemoteResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4165BB0A1ABAA5E300FA9E8E /* RemoteResource.swift */; };
 		416B85AE1AC27A7200E0813D /* TestsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416B85AD1AC27A7200E0813D /* TestsFile.swift */; };
 		416C59591ABD26EE007E341F /* NMSSH.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 416C59581ABD26EE007E341F /* NMSSH.framework */; };
@@ -58,6 +59,7 @@
 		411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectedPathsTableViewController.swift; sourceTree = "<group>"; };
 		411BE7C71ACB94F400C4903F /* ServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		4149018F1ABE08FB001550A1 /* ServerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerModel.swift; sourceTree = "<group>"; };
+		415A68951B1192B9009254D8 /* FTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPManager.swift; sourceTree = "<group>"; };
 		4165BB0A1ABAA5E300FA9E8E /* RemoteResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteResource.swift; sourceTree = "<group>"; };
 		416B85AD1AC27A7200E0813D /* TestsFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsFile.swift; sourceTree = "<group>"; };
 		416C59581ABD26EE007E341F /* NMSSH.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NMSSH.framework; sourceTree = "<group>"; };
@@ -109,6 +111,14 @@
 			path = LittleFTP;
 			sourceTree = "<group>";
 		};
+		415A68921B119058009254D8 /* NetworkProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				415A68951B1192B9009254D8 /* FTPManager.swift */,
+			);
+			name = NetworkProtocols;
+			sourceTree = "<group>";
+		};
 		4165BB091ABAA5BC00FA9E8E /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +142,7 @@
 		418A97F61AB91639006DC8BE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				415A68921B119058009254D8 /* NetworkProtocols */,
 				411BE7C71ACB94F400C4903F /* ServerManager.swift */,
 				417D6FAE1ABD4EE100C9167B /* ServerUserTableViewController.swift */,
 				418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */,
@@ -341,6 +352,7 @@
 				41DDEF8D1AC647B00092527D /* FTPManager.m in Sources */,
 				416B85AE1AC27A7200E0813D /* TestsFile.swift in Sources */,
 				41F6EF871ABE6A32007DE265 /* ConnectedPathModel.swift in Sources */,
+				415A68961B1192B9009254D8 /* FTPManager.swift in Sources */,
 				411BE7C61ACB7FF500C4903F /* ConnectedPathsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
