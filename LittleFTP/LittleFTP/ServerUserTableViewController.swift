@@ -1,5 +1,5 @@
 //
-//  UserTableViewController.swift
+//  ServerUserTableViewController.swift
 //  LittleFTP
 //
 //  Created by Gurinder Hans on 3/21/15.
@@ -12,19 +12,28 @@ import Cocoa
 class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 	
 	// MARK: Constants
-	let userDefaults = NSUserDefaults.standardUserDefaults()
 	let ACTION_CANCEL_TEXT = "Cancel"
 	let ACTION_DELETE_TEXT = "Delete"
 	let TITLE_EDIT_SERVER = "Edit Server"
 	let TITLE_ADD_SERVER = "Add Server"
+    let userDefaults = NSUserDefaults.standardUserDefaults()
 	
+    
+    //
 	// MARK: TableView data variables
-	var allServers = [ServerModel]()
+    //
+    
+	var createdServers = [ServerModel]()
 	var editingRow:Int = -1
 	
+    
+    //
 	// MARK: Outlets & Actions
+    //
+    
     @IBOutlet var serverTableView:NSTableView?
 	@IBOutlet weak var mPopover: NSPopover!
+    
 	// popover text fields
 	@IBOutlet weak var serverUrl: NSTextField!
 	@IBOutlet weak var serverPort: NSTextField!
@@ -42,13 +51,13 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 			let pass = (serverPassword.stringValue != "") ? serverPassword.stringValue : ""
 			
 			if popoverTitle.stringValue == TITLE_EDIT_SERVER {
-				let editingServer = allServers[editingRow]
+				let editingServer = createdServers[editingRow]
 				editingServer.serverURL = serverUrl.stringValue
 				editingServer.serverPort = port
 				editingServer.userName = uname
 				editingServer.userPass = pass
 			} else {
-				self.allServers.append( ServerModel(
+				self.createdServers.append( ServerModel(
 					serverURL: serverUrl.stringValue,
 					serverPort: port,
 					userName: uname,
@@ -65,61 +74,49 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
     
     
-	// add server action
+	// add new server button action
 	@IBAction func addServer(sender: AnyObject) {
-		// show popover where the view is
-        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
-		
+
         // set title's and stuff
+        popoverTitle.stringValue = TITLE_ADD_SERVER
         secondaryButton.title = ACTION_CANCEL_TEXT
-		popoverTitle.stringValue = TITLE_ADD_SERVER
         
         // clear all fields and reset editing row
         serverUrl.stringValue = ""
         serverPort.intValue = 21
         serverUsername.stringValue = ""
         serverPassword.stringValue = ""
+        
+        // we aren't editing any server right now
 		editingRow = -1
+        
+        // show popover where the view is, where we clicked
+        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
 	}
     
-	// switch current server
+    
+	// switch from this server to another
 	@IBAction func switchServer(sender: AnyObject) {
-		let selectedRow = serverTableView?.rowForView(sender as! NSView)
+		
+        if let selectedRow = serverTableView?.rowForView(sender as! NSView) {
+            
+            //
+            // change button states and stuff in the UI
+            //
+            
+            
+            // reset all to 0
+            for i in self.createdServers { i.serverState = 0 }
+            
+            // set this to 1 and save changes
+            self.createdServers[selectedRow].serverState = 1
+            saveServers()
+            
+            // update and tell table controllers
+            ServerManager.activeServer = createdServers[selectedRow]
+            NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
 
-		// change button states and stuff in the UI
-		if allServers[selectedRow!].serverState! != 1 {
-			let state = (self.allServers[selectedRow!].serverState == 0) ? 1:0
-			for i in self.allServers { i.serverState = 0 }
-			self.allServers[selectedRow!].serverState = state
-			saveServers() // also save
-			
-			// update and tell table controllers
-            ServerManager.activeServer = ServerManager.allServers()[selectedRow!]
-			NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
-			
-		} else {
-			allServers[selectedRow!].serverState = 1
-		}
-        
-        // if server is type SFTP then set SSH session
-//        if ServerManager.activeServer.serverType == ServerType.SFTP {
-//            // set ssh session
-//            let host: String? = ServerManager.activeServer.serverURL!.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-//            let port = ServerManager.activeServer.serverPort
-//            let username = ServerManager.activeServer.userName
-//            ServerManager.activeServer.sftp_manager = NMSSHSession.connectToHost(host, port: port!, withUsername: username)
-//            
-//            if (ServerManager.activeServer.sftp_manager?.connected != nil) {
-//                ServerManager.activeServer.sftp_manager?.authenticateByPassword(ServerManager.activeServer.userPass)
-//                
-//                if (ServerManager.activeServer.sftp_manager?.authorized != nil) {
-//                    println("auth success")
-//                }
-//            }
-//        } else {
-//            // FTP so set that
-//        }
-        
+        }
         
 		self.serverTableView?.reloadData()
 	}
@@ -134,21 +131,17 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
         super.init()
 		
 		// load saved servers
-		if let data = userDefaults.objectForKey(Storage.SERVERS) as? NSData {
-			allServers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
-		}
+		createdServers = ServerManager.allServers()
 		
 		// load active server
 		var activeServer:ServerModel?
-		for i in allServers {
+		for i in createdServers {
 			if i.serverState == 1 { activeServer = i }
 		}
-        
-		if let server = activeServer {
-            ServerManager.activeServer = server
-		}
+        ServerManager.activeServer = activeServer!
 		
 		// notification observer for listening right clicks on switch Button
+        // notification gets sent from the button view
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchRightClick:", name:"switchRClick", object: nil)
 		
     }
@@ -168,7 +161,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
     
     func manageSecondaryButton(sender: AnyObject) {
 		if self.secondaryButton.title == ACTION_DELETE_TEXT {
-			allServers.removeAtIndex(editingRow)
+			createdServers.removeAtIndex(editingRow)
 			saveServers()
 			
 			self.serverTableView?.reloadData()
@@ -178,24 +171,30 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
 	
 	func switchRightClick(notification: NSNotification) {
+        
+        // set title and secondary button action value
 		secondaryButton.title = ACTION_DELETE_TEXT
 		popoverTitle.stringValue = TITLE_EDIT_SERVER
 		
+        // get selected row index
 		let view = notification.object as! NSView
 		let selectedRow = serverTableView?.rowForView(view)
+        
+        // we are editing this row
 		editingRow = selectedRow!
+        
 		// load saved values in to their respective values
-		let selectedServer = allServers[selectedRow!]
+		let selectedServer = createdServers[selectedRow!]
 		serverUrl.stringValue = selectedServer.serverURL!
 		serverPort.integerValue = selectedServer.serverPort!
 		serverUsername.stringValue = selectedServer.userName!
 		serverPassword.stringValue = selectedServer.userPass!
 		
+        // show popover where the view is, where we clicked
 		mPopover.showRelativeToRect(view.bounds, ofView: view, preferredEdge: NSMaxXEdge)
 		
 	}
-
-	
+    
 	
     
     //
@@ -203,7 +202,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	//
     
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return allServers.count }
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return createdServers.count }
 	
 	
     
@@ -221,15 +220,19 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let cellView:ServerUserTableCellView? = tableView.makeViewWithIdentifier("ServerUserCell", owner: self) as? ServerUserTableCellView
         cellView?.serverUserImage?.image = NSImage(named: "server")
-		cellView?.serverState.state = allServers[row].serverState!
+		cellView?.serverState.state = createdServers[row].serverState!
         return cellView
     }
 	
     
+    //
 	// MARK: Custom methods
+    //
+    
+    
 	func saveServers() {
-		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allServers),
-			forKey: Storage.CONNECTED_PATH_OBJS)
+		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(createdServers),
+			forKey: Storage.SERVERS)
 	}
     
 

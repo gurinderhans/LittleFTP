@@ -15,7 +15,7 @@ class ServerModel: NSObject, NSCoding {
 	var serverPort:Int? // port used to make a conn with the server
 	var userName:String? // username
     var userPass:String? // password
-	var serverState:Int? // is this server currently being used ?
+	var serverState:Int? // is this server currently being used ? 1 (if it is) : 0 (if not)
     var serverType: String? // is server FTP or SFTP ?
     
     // tmp vars only kept in memory

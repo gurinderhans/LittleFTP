@@ -38,7 +38,11 @@ FSEventStreamRef stream;
 
 + (MSwiftFileWatcher *)createWatcher
 {
-    return [[MSwiftFileWatcher alloc]initPrivate];
+    if (globalSelf == nil) {
+        globalSelf = [[MSwiftFileWatcher alloc] initPrivate];
+    }
+    
+    return globalSelf;
 }
 
 

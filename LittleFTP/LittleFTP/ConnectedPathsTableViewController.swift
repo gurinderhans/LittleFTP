@@ -13,7 +13,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	
     
     //
-	// MARK: Constants
+	// MARK: Singletons
     //
     
 	let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -33,7 +33,9 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
     //
     
 	@IBOutlet weak var connectedPathsTable: NSTableView!
+    
 	@IBAction func deleteConnectedPath(sender: AnyObject) {
+        
 		let selectedRow = connectedPathsTable?.rowForView(sender as! NSView)
 		allConnectedPaths.removeAtIndex(selectedRow!)
 
@@ -58,16 +60,18 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		super.init()
 		// listen for file system changes
 		mWatcher.onFileChange = {numEvents, changedPaths in
+            println(changedPaths)
 			for i in changedPaths {
 				for j in self.allConnectedPaths {
-					if j.localPath! == i as! String {
+                    let changedPath:String = AppUtils.makeURL(i as! String, relativePath: "").absoluteString!
+					if j.localPath! == changedPath {
 						// upload contents from j.localpath to j.remotePath
-						 ServerManager.uploadData(localPath: j.localPath!, remotePath: j.remotePath!)
+                        ServerManager.uploadData(localPath: j.localPath!, remotePath: j.remotePath!, onServer: ServerManager.activeServer)
 						let notification = NSUserNotification()
 						notification.title = "File Change"
 						notification.informativeText = j.localPath!
 						notification.soundName = NSUserNotificationDefaultSoundName
-						
+
 						NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
 					}
 				}
@@ -92,10 +96,10 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		}
 		
 		// observe for the file drop data
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateConnectedPaths:", name:"load", object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateConnectedPaths:", name:Observers.NEW_CONNECTION_PATH, object: nil)
 		
 		// server changed observer
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTable:", name:"serverChanged", object: nil)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTable:", name:Observers.CURRENT_SERVER_CHANGED, object: nil)
 	}
 	
 	override func awakeFromNib() {

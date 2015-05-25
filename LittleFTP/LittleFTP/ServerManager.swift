@@ -16,20 +16,22 @@ class ServerManager {
     //
     
     
+    // @returns - the active server currently being used
     private struct _activeServer { static var server: ServerModel = ServerModel() }
     class var activeServer: ServerModel {
         get { return _activeServer.server }
         set { _activeServer.server = newValue }
     }
     
-    private struct _isCreateDirsAndUploadFiles { static var data: Bool = false }
-    class var isCreateDirsAndUploadFiles:Bool {
-        get { return _isCreateDirsAndUploadFiles.data }
-        set { _isCreateDirsAndUploadFiles.data = newValue }
+    // @returns - true if the server is currently working (uploading / downloading files)
+    private struct _isSpinning { static var data: Bool = false }
+    class var isSpinning:Bool {
+        get { return _isSpinning.data }
+        set { _isSpinning.data = newValue }
     }
     
     
-    // @returns - list of all created servers
+    // @returns - provied list of all saved servers
     class func allServers() -> [ServerModel] {
 
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(Storage.SERVERS) as? NSData {
@@ -81,122 +83,19 @@ class ServerManager {
         }
     }
     
+    // progress block
+    static var progressBlock:((type: String, progress:Double, filename:String) -> ())!
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    class func fetchDir(path: String, onFetched: ([RemoteResource]) -> Void) {
-//        
-//        // fetched resources from server
-//        var fetchedResources = [RemoteResource]() // we return this
-//        
-//        if ServerManager.activeServer.serverType == ServerType.FTP { // FTP fetching
-//            
-//            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-//                
-//                // fetch dir content
-////                let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.usingS, atLocation: path)
-////                
-////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-////                    // finished fetching
-////                    if let data:[NSDictionary] = resources as? [NSDictionary] {
-////                        
-////                        ServerManager.usingServer.serverAbsoluteURL = path
-////                        
-////                        for i in data {
-////                            let remoteResource = RemoteResource(
-////                                resourceName: i["kCFFTPResourceName"] as! String,
-////                                resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
-////                                resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
-////                                resourceType: i["kCFFTPResourceType"] as! NSInteger,
-////                                resourceOwner: i["kCFFTPResourceOwner"] as! String,
-////                                resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
-////                            
-////                            fetchedResources.append(remoteResource)
-////                            
-////                        }
-////                        
-////                        // send resources to the other side
-////                        onFetched(fetchedResources)
-////                    }
-////                    
-////                })
-//            })
-//        } else { // SFTP fetching
-//            
-//            let response = ServerManager.activeServer.sftp_manager!.channel.execute("ls -al \(path)", error: nil)
-//            println(response)
-//            if response != "" { // FIXME: how to check for no response ?
-//                
-//                ServerManager.activeServer.serverAbsoluteURL = path
-//                
-//                var folderContents = split(response) {$0 == "\n"}
-//                
-//                if folderContents.first?.contains("total") == true {
-//                    folderContents.removeAtIndex(folderContents.startIndex)
-//                }
-//                
-//                for i in folderContents {
-//                    let resourceArr = split(i) {$0 == " "}
-//                    
-//                    let sz = (resourceArr[4].toInt() == 4096) ? 1 : 0
-//                    let createdResource = RemoteResource(
-//                        resourceName: resourceArr.last!,
-//                        resourceLastChanged: SFTPManager.getResourceDate(resourceArr),
-//                        resourceSize: sz,
-//                        resourceType: SFTPManager.getResourceType(resourceArr),
-//                        resourceOwner: resourceArr[2],
-//                        resourceMode: -1)
-//                    
-//                    fetchedResources.append(createdResource)
-//                }
-//                
-//                onFetched(fetchedResources)
-//            }
-////            session.disconnect()
-//            // insert only if server doesn't give us these
-//            // doing with a quick and dirty check
-////            if self.mRemoteResources.first?.resourceName != "." {
-////                self.mRemoteResources.insert(RemoteResource(resourceName: ".", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 0)
-////                self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
-////            }
-//
-//        }
-//    }
-    
-    
-    
-    class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
+    // uploader
+    class func uploadData(localPath pathFrom: String, remotePath pathTo:String, onServer server: ServerModel) {
         
         //
         // MARK: function declarations with no-op definitions
         //
         
         var uploadFile: (fQueue:Queue<Dictionary<NSURL, NSURL>>) -> () = { _ in }
-        var	createDirsAndUploadFiles: (dirs:Queue<Dictionary<NSURL, NSURL>>, files:Queue<Dictionary<NSURL, NSURL>>) -> () = { _ in }
+        var	createDirs: (dirs:Queue<Dictionary<NSURL, NSURL>>, files:Queue<Dictionary<NSURL, NSURL>>) -> () = { _ in }
         
         
         //
@@ -207,47 +106,60 @@ class ServerManager {
         // iterates through a file queue & uploads each file
         uploadFile = { flQ in
             if (flQ.isEmpty()) {
-                ServerManager.isCreateDirsAndUploadFiles = false
-                NSNotificationCenter.defaultCenter().postNotificationName("setOverlay", object: false)
+                ServerManager.isSpinning = false
+                NSNotificationCenter.defaultCenter().postNotificationName(Observers.FILE_BROWSER_OVERLAY_PANEL, object: false)
                 return
             }
             
+            // the file <dict>
             let urlConn = flQ.deQueue()
             
-            let localFile = (urlConn?.keys.first)!,
-            remoteFile = (urlConn?.values.first?.absoluteString)!
+            // get local & remote file URLs
+            let localFile = (urlConn?.keys.first)!
+            let remoteFile = (urlConn?.values.first?.absoluteString)!
             
-            
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+            // choose server type
+            if server.serverType == ServerType.FTP {
                 
-//                ServerManager.ftpManager.uploadFile(localFile, toServer: ServerManager.activeServer, atLocation: remoteFile)
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let ftpController = FTPController.sharedController(server)
+                ftpController.uploadFile(localFile, toPath: remoteFile, completed: { () -> Void in
+                    
                     uploadFile(fQueue: flQ)
                 })
-            })
+                
+            } else if server.serverType == ServerType.SFTP {
+                //
+            }
         }
         
         
         // iterates through a folder queue & creates each folder
-        // ** NOTE: this starts the file uploads once the folder queue is emptied
-        createDirsAndUploadFiles = { dirQ, flQ in
-            ServerManager.isCreateDirsAndUploadFiles = true
+        // ** NOTE: this starts the file uploads once the folder queue is empty
+        createDirs = { dirQ, flQ in
+            
+            ServerManager.isSpinning = true
+            
             if (dirQ.isEmpty()) {
+                
+                // start uploading files now
                 uploadFile(fQueue: flQ)
+                
             } else {
-                let remotePath = dirQ.deQueue()?.values.first!
-                
-                dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+                // get remote path of folder
+                let remotePath: NSURL = (dirQ.deQueue()?.values.first)!
+            
+                // decide which type to use
+                if server.serverType == ServerType.FTP {
                     
-                    //errors for this most likely will be because folder already exists - thus ignore
-//                    ServerManager.ftpManager.createNewFolder(remotePath?.absoluteString!, atServer: ServerManager.activeServer)
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        createDirsAndUploadFiles(dirs: dirQ, files: flQ)
+                    let ftpController = FTPController.sharedController(server)
+                    ftpController.createFolder(remotePath.absoluteString!, completed: { success -> Void in
+                        println(success)
+                        createDirs(dirs: dirQ, files: flQ)
                     })
-                })
-                
+                    
+                } else if server.serverType == ServerType.SFTP {
+                    //
+                }
             }
         }
         
@@ -255,42 +167,65 @@ class ServerManager {
         /**
         * 1. Create all folders [ this will fail if dir exists, but then who cares? ]
         * 2. Start uploading the files [ they get replaced automatically ]
+        * 3. TODO: show progress or something while indexing...
         */
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             
-            // establish a new queue <type: dict> for files and folders
+            
+            //
+            // MARK: index through file / folders from in a seperate thread
+            //
+            
+            
+            // create a new queue <type: dict> for files and folders
             var filesQueue = Queue<Dictionary<NSURL, NSURL>>(),
             foldersQueue = Queue<Dictionary<NSURL, NSURL>>()
             
-            let fm = NSFileManager.defaultManager(),
-            enumerator:NSDirectoryEnumerator = fm.enumeratorAtPath(pathFrom)!
+            // create an enumerator to index through file paths
+            let fm = NSFileManager.defaultManager()
+            let enumerator = fm.enumeratorAtPath(pathFrom)!
             
+            // start iterating...
             while let element = enumerator.nextObject() as? String {
+                
+                // we can ignore certain files here
                 if (element as NSString).containsString(".DS_Store") { continue } // because...
                 
-                let localURL = NSURL(string: pathFrom)?.URLByAppendingPathComponent(element),
-                remoteURL = NSURL(string: pathTo)?.URLByAppendingPathComponent(element)
+                // create a local & remote url for each element (file / folder)
+                let localURL = NSURL(string: pathFrom)?.URLByAppendingPathComponent(element)
+                let remoteURL = NSURL(string: pathTo)?.URLByAppendingPathComponent(element)
                 
-                let attribs: NSDictionary? = fm.attributesOfItemAtPath((localURL?.absoluteString)!, error: nil)
-                
-                if let fileattribs = attribs {
-                    let type = fileattribs["NSFileType"] as! String
+                // get element attributes to check if type is file or folder
+                if let attribs = fm.attributesOfItemAtPath((localURL?.absoluteString)!, error: nil) {
+                    // the type
+                    let type = attribs["NSFileType"] as! String
                     
-                    if type == "NSFileTypeRegular" { // file
-                        filesQueue.enQueue([localURL!:remoteURL!])
-                    } else if type == "NSFileTypeDirectory" { // directory
-                        foldersQueue.enQueue([localURL!:remoteURL!])
+                    // if type == file add to file queue
+                    if type == "NSFileTypeRegular" {
+                        filesQueue.enQueue([localURL! : remoteURL!])
+                    } else if type == "NSFileTypeDirectory" {
+                        // else add to folder queue
+                        foldersQueue.enQueue([localURL! : remoteURL!])
                     }
                 }
             }
             
+            
+            
+            //
+            // MARK: on indexing complete, jump back to main thread
+            //
+            
+            
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
-                // start the upload process
-                if (!ServerManager.isCreateDirsAndUploadFiles) {
+                // we have finished indexing...
+                
+                // start the upload process if the server is currently
+                if (!ServerManager.isSpinning) {
                     NSNotificationCenter.defaultCenter().postNotificationName("setOverlay", object: true)
-                    createDirsAndUploadFiles(dirs: foldersQueue, files: filesQueue)
+                    createDirs(dirs: foldersQueue, files: filesQueue)
                 }
                 
             })
@@ -302,6 +237,11 @@ class ServerManager {
     
 }
 
+
+struct ProgressType {
+    static let UPLOAD = "progTypeUpload"
+    static let DOWNLOAD = "progTypeDownload"
+}
 
 
 //

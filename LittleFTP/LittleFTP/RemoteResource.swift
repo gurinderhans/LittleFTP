@@ -10,10 +10,10 @@ import Foundation
 
 class RemoteResource: NSObject {
     
-    var resourceName:String?
-    var resourceLastChanged:NSDate?
-    var resourceSize:NSInteger?
-    var resourceType:NSInteger?
+    var resourceName:String!
+    var resourceLastChanged:NSDate!
+    var resourceSize:NSInteger!
+    var resourceType:NSInteger!
     var resourceOwner:String?
     var resourceMode:NSInteger?
     

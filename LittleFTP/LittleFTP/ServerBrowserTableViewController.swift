@@ -9,6 +9,13 @@
 import Foundation
 import Cocoa
 
+struct Observers {
+    static let FILE_BROWSER_OVERLAY_PANEL = "setOverlay"
+    static let CURRENT_SERVER_CHANGED = "serverChanged"
+    static let NEW_CONNECTION_PATH = "newConnectionPath"
+}
+
+
 class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     
     // FIXME: "unlockFocus called too many times. Called on <NSButton: 0x608000140630>"
@@ -20,7 +27,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     //
     
     
-	var mRemoteResources = [RemoteResource]()
+	var remoteResources = [RemoteResource]()
 	
     
     //
@@ -28,68 +35,52 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     //
     
     
-    @IBOutlet var fBrowserTableView:NSTableView?
-    @IBOutlet var progress:NSProgressIndicator?
+    @IBOutlet var fileBrowserTblView:NSTableView?
+    @IBOutlet var progressSpinner:NSProgressIndicator?
+    
+    // panel overlays file browser table view to show file upload progress
 	@IBOutlet weak var progressPanel: NSView!
 	@IBOutlet weak var progressPanel_fileNameLabel: NSTextField!
-	@IBOutlet weak var progressPanelProgressBar: NSProgressIndicator!
+	@IBOutlet weak var progressPanelHorizontalProgress: NSProgressIndicator!
+    
+    // app window
     @IBOutlet weak var appWindow: NSWindow!
     
     
     
     //
-    // MARK: App initialize methods
+    // MARK: App init
     //
     
     
     override init() {
         super.init()
 		
+		// when we start uploading files add a progress overlay
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "addProgressOverlay:", name: Observers.FILE_BROWSER_OVERLAY_PANEL, object: nil)
+
+        // listen for server changes, and reset table when it does
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetFileBrowserTable:", name: Observers.CURRENT_SERVER_CHANGED, object: nil)
         
-//        // if server is type SFTP then set SSH session
-//        if ServerManager.activeServer.serverType == ServerType.SFTP {
-//            // set ssh session
-//            let host: String? = ServerManager.activeServer.serverURL!.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-//            let port = ServerManager.activeServer.serverPort
-//            let username = ServerManager.activeServer.userName
-//            ServerManager.activeServer.sftp_manager = NMSSHSession.connectToHost(host, port: port!, withUsername: username)
-//            
-//            if (ServerManager.activeServer.sftp_manager?.connected != nil) {
-//                ServerManager.activeServer.sftp_manager?.authenticateByPassword(ServerManager.activeServer.userPass)
-//                
-//                if (ServerManager.activeServer.sftp_manager?.authorized != nil) {
-//                    println("auth success")
-//                }
-//            }
-//        }
+        // add file upload / download progress listener
+        ServerManager.progressBlock = { type, progress, filename -> () in
+            println("\nprogress update: \n[type]:\(type), \n[prog]:\(progress), \n[fname]:\(filename)")
+        }
+        
         
         // initiate get files
         if ServerManager.activeServer.serverURL != nil { fetchDirContents("/") }
-		
-		// notification observer for adding overlay on browser table
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "overlayProgress:", name:"setOverlay", object: nil)
-
-        // server change observer
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetTable:", name:"serverChanged", object: nil)
-		
-		// listen for upload progress
-//		ServerManager.ftpManager.onProgress = {totalProgress, fileName in
-//			// TODO: get Action enum value from onProgress
-//			self.progressPanel_fileNameLabel.stringValue = fileName
-//			self.progressPanelProgressBar.doubleValue = totalProgress
-//		}
-		
 	}
 	
     override func awakeFromNib() {
 		
-		fBrowserTableView?.target = self
-        fBrowserTableView?.doubleAction = "fbBrowser_dblClick:"
-        fBrowserTableView?.registerForDraggedTypes([kUTTypeFileURL])
+        // register tableview for drag/drop & for double click on each cell
+		fileBrowserTblView?.target = self
+        fileBrowserTblView?.doubleAction = "fileBrowserTblView_dblClick:"
+        fileBrowserTblView?.registerForDraggedTypes([kUTTypeFileURL]) // for only files
 		
-        progress?.startAnimation(self)
-		progressPanel.layer?.backgroundColor = NSColor.whiteColor().CGColor
-		progressPanel.layer?.opacity = 0.95
+        // start spinning the spinner
+        progressSpinner?.startAnimation(self)
     }
 	
     
@@ -99,93 +90,58 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     //
     
     
-    func fbBrowser_dblClick(sender:AnyObject){
-        let row = (fBrowserTableView?.clickedRow)!
-        if row == -1 {return} // empty cell clicked
+    func fileBrowserTblView_dblClick(sender:AnyObject){
         
-        let clickedResource = mRemoteResources[row]
-        
-        if clickedResource.resourceType! == 4 {
-            self.progress?.hidden = false
-
-			if (!ServerManager.isCreateDirsAndUploadFiles) { // dont allow switching dirs when there's an upload going on
-				fetchDirContents(clickedResource.resourceName!)
-			}
+        if let row = fileBrowserTblView?.clickedRow {
             
-        } else {
-            // TODO: download file
+            // we have clicked on a valid row
+            if row != -1 {
+                
+                // get clicked item
+                let clickedResource = remoteResources[row]
+                
+                // if we clicked on a folder, cd into it
+                if clickedResource.resourceType == 4 {
+                    // show progress and fetch dir
+                    self.progressSpinner?.hidden = false
+                    
+                    // prevent switching when FTP is working
+                    if (!ServerManager.isSpinning) {
+                        fetchDirContents(clickedResource.resourceName)
+                    }
+                    
+                } else {
+                    // TODO: download file
+                }
+            }
         }
     }
 	
     
-    // puts an overlay above the file browser
-	func overlayProgress(sender:AnyObject) {
-		ServerManager.isCreateDirsAndUploadFiles = sender.object as! Bool
+    // puts an overlay above the file browser table view
+	func addProgressOverlay(sender:AnyObject) {
+        
+        // TODO: clean up
+		ServerManager.isSpinning = sender.object as! Bool
 		self.progressPanel.hidden = !(sender.object as! Bool)
 		self.progressPanel_fileNameLabel.stringValue = "Loading..." // reset label
-		self.progressPanelProgressBar.doubleValue = 0.0 // reset progress bar
-		fBrowserTableView?.enabled = !ServerManager.isCreateDirsAndUploadFiles
+		self.progressPanelHorizontalProgress.doubleValue = 0.0 // reset progress bar
+		fileBrowserTblView?.enabled = !ServerManager.isSpinning
+        
 	}
 	
-    // resets the file browser table
-	func resetTable(sender:AnyObject) {
-		self.progress?.hidden = false
+    
+    // resets the file browser table by loading stuff from `/`
+	func resetFileBrowserTable(sender:AnyObject) {
+        
+        // show the progress spinner
+		self.progressSpinner?.hidden = false
+        
+        // fetch contents of new server
 		fetchDirContents("/")
 	}
   
     
-    
-    //
-    // MARK: NSTableViewDataSource methods
-    //
-    
-    
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return mRemoteResources.count }
-    
-    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation operation: NSTableViewDropOperation) -> NSDragOperation { return NSDragOperation.Every }
-    
-    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation operation: NSTableViewDropOperation) -> Bool {
-		
-		var droppedURLs = (info.draggingPasteboard()
-			.propertyListForType(NSFilenamesPboardType)! as! [String])
-			.map { NSURL(string: $0) }
-
-		var tmpConnectionObjs = [ConnectedPathModel]()
-		
-		let fm = NSFileManager.defaultManager()
-		
-//		for i in 0...(droppedURLs.count-1) {
-//			let attribs: NSDictionary? = fm.attributesOfItemAtPath((droppedURLs[i]?.absoluteString)!, error: nil)
-//			
-//			if let fileattribs = attribs { // removing file name from path if it's a file
-//				if (fileattribs["NSFileType"] as! String) == "NSFileTypeRegular" {
-//					droppedURLs[i] = droppedURLs[i]?.URLByDeletingLastPathComponent
-//				}
-//			}
-//			
-//			var tmpConnectionObj:ConnectedPathModel = ConnectedPathModel (
-//				isEnabled: false,
-//				localPath: ((droppedURLs[i]?.URLByAppendingPathComponent(""))?.absoluteString)!, // by appending "" we add a / to the path
-//				remotePath: ""
-//			)
-//			
-//			if (operation.rawValue == 0 && mRemoteResources[row].resourceType == 4) { // if droppedOnTheCell
-//                // FIXME: remove the use of `parseServerURL`
-//				tmpConnectionObj.remotePath = AppUtils.parseServerURL(
-//					relativePath: ServerManager.activeServer.absolutePath,
-//					clickedItemPath: mRemoteResources[row].resourceName! )
-//			}
-//			else {
-//				tmpConnectionObj.remotePath = (ServerManager.activeServer.absolutePath == "") ? "/": ServerManager.activeServer.absolutePath
-//			}
-//	
-//			tmpConnectionObjs.append(tmpConnectionObj)
-//		}
-		
-		NSNotificationCenter.defaultCenter().postNotificationName("load", object: tmpConnectionObjs)
-		
-		return true
-    }
     
     
     
@@ -195,17 +151,76 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        // create cell view
+        let cellView: RemoteResourceCellView? = tableView.makeViewWithIdentifier("MainCell", owner: self)
+            as? RemoteResourceCellView
+        
+        // get remote resource to attach to cell
+        let remoteResource = remoteResources[row]
+        
+        // fill up cell with the resource object
+        cellView?.resourceTypeIcon.image = (remoteResource.resourceType == 4) ? NSImage(named: "folderIcon") : NSImage(named: "fileIcon")
+        cellView?.resourceName.stringValue = remoteResource.resourceName!
+        cellView?.resourceLastChanged.stringValue = AppUtils.dateToStr(remoteResource.resourceLastChanged!)
+        
+        // return.
+        return cellView
+    }
+    
+    
+    
+    
+    //
+    // MARK: NSTableViewDataSource methods
+    //
+    
+    
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return remoteResources.count }
+    
+    // enable drop ops
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation operation: NSTableViewDropOperation) -> NSDragOperation { return NSDragOperation.Every }
+    
+    // on drop handle stuff
+    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation operation: NSTableViewDropOperation) -> Bool {
+        
+        // ref to file manager
+        let fm = NSFileManager.defaultManager()
 		
-		let cellView: RemoteResourceCellView? = tableView.makeViewWithIdentifier("MainCell", owner: self)
-			as? RemoteResourceCellView
+        // contains list of urls of file(s) / folder(s) that were dropped on the table
+		var droppedURLs = (info.draggingPasteboard()
+			.propertyListForType(NSFilenamesPboardType)! as! [String])
+			.map { NSURL(string: $0) }
+
+        // will hold our temp created connected paths
+		var tmpConnectionObjs = [ConnectedPathModel]()
+        
+        for el in droppedURLs {
+            if let urlAttrs: NSDictionary = fm.attributesOfItemAtPath((el?.absoluteString)!, error: nil) {
+                
+                // now create a connection path
+                var connection: ConnectedPathModel = ConnectedPathModel(isEnabled: false,
+                    localPath: (el?.absoluteString)!,
+                    remotePath: AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: "").absoluteString!)
+                
+                // removing file names from the local path
+                if (urlAttrs["NSFileType"] as! String) == "NSFileTypeRegular" {
+                    connection.localPath = (el?.URLByDeletingLastPathComponent?.absoluteString)!
+                }
+                
+                // if the item is dropped on the cell and the cell is a folder, add that folder to path
+                if operation.rawValue == 0 && remoteResources[row].resourceType == 4 {
+                    connection.remotePath = AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL,
+                        relativePath: remoteResources[row].resourceName).absoluteString
+                }
+                
+                tmpConnectionObjs.append(connection)
+            }
+        }
+
+		NSNotificationCenter.defaultCenter().postNotificationName(Observers.NEW_CONNECTION_PATH, object: tmpConnectionObjs)
 		
-		let remoteResource = mRemoteResources[row]
-		
-		cellView?.resourceTypeIcon.image = (remoteResource.resourceType == 4) ? NSImage(named: "folderIcon") : NSImage(named: "fileIcon")
-		cellView?.resourceName.stringValue = remoteResource.resourceName!
-		cellView?.resourceLastChanged.stringValue = AppUtils.dateToStr(remoteResource.resourceLastChanged!)
-		
-		return cellView
+		return true
     }
 	
     
@@ -216,31 +231,30 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     
 	func fetchDirContents(path:String) {
         
-        println("called")
-        
         // create goto path
-        let serverURL = NSURL(string: ServerManager.activeServer.serverAbsoluteURL)?.URLByAppendingPathComponent("")
-        var gotoPath = NSURL(string: path, relativeToURL: serverURL)
-        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
-        
+        let gotoPath = AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: path).absoluteString!
+
         
         // then fetch dir
-        ServerManager.list_directory((gotoPath?.absoluteString)!, ofServer: ServerManager.activeServer) { contents -> Void in
-            println("fetched")
+        ServerManager.list_directory(gotoPath, ofServer: ServerManager.activeServer) { contents -> Void in
+
             // hide progress
-            self.progress?.hidden = true
+            self.progressSpinner?.hidden = true
+            
+            // update absolute path
+            ServerManager.activeServer.serverAbsoluteURL = gotoPath
             
             // set window title
-//            self.appWindow.title = ServerManager.activeServer.serverAbsoluteURL
+            //
             
             // fill table data
-            self.mRemoteResources = contents as [RemoteResource]
+            self.remoteResources = contents as [RemoteResource]
             
             // sort by type -> folders first, then files
-            self.mRemoteResources.sort({$0.resourceType < $1.resourceType})
+            self.remoteResources.sort({$0.resourceType < $1.resourceType})
             
             // reload table
-            self.fBrowserTableView?.reloadData()
+            self.fileBrowserTblView?.reloadData()
         }
     }
 }

@@ -16,24 +16,10 @@ class AppUtils {
         return formatter.stringFromDate(date)
     }
     
-    class func parseServerURL(relativePath pathA: String, clickedItemPath pathB: String) ->String {
-        var subPath = pathA+pathB
-        
-        if pathB == ".." {
-            
-            // TODO: fix the null keyword -> perhaps some crazy hash
-            let tmppath = (pathA == "" ) ? "null":pathA,
-				tmp = NSURL(string: tmppath)?.URLByDeletingLastPathComponent
-            
-            subPath = (tmp?.absoluteString!)!
-            subPath = (subPath == ".") ? "" : subPath
-        }
-        
-        subPath = (pathB == ".") ? pathA: subPath + "/"
-        subPath = (subPath == ".//") ? "/" : subPath
-        subPath = (subPath == "") ? "/" : subPath
-        
-        return subPath
+    class func makeURL(absolutePath: String, relativePath: String) -> NSURL {
+        let serverURL = NSURL(string: absolutePath)?.URLByAppendingPathComponent("")
+        var gotoPath = NSURL(string: relativePath, relativeToURL: serverURL)
+        return NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)!
     }
     
 }

@@ -992,11 +992,11 @@
         <customObject id="dAM-RU-dCI" customClass="ServerBrowserTableViewController" customModule="LittleFTP" customModuleProvider="target">
             <connections>
                 <outlet property="appWindow" destination="gAT-iw-xw9" id="n2o-PP-WV9"/>
-                <outlet property="fBrowserTableView" destination="qg5-YY-Td4" id="KH0-av-HoX"/>
-                <outlet property="progress" destination="Q58-YZ-UCz" id="1qX-zK-f62"/>
+                <outlet property="fileBrowserTblView" destination="qg5-YY-Td4" id="cEv-Qn-BnQ"/>
                 <outlet property="progressPanel" destination="nce-ZU-Vbk" id="gkC-zo-qxl"/>
-                <outlet property="progressPanelProgressBar" destination="LWj-D6-DWO" id="VBS-02-Gvz"/>
+                <outlet property="progressPanelHorizontalProgress" destination="LWj-D6-DWO" id="vLc-JN-BkN"/>
                 <outlet property="progressPanel_fileNameLabel" destination="8j9-Jj-Dgj" id="R0d-NU-2ww"/>
+                <outlet property="progressSpinner" destination="Q58-YZ-UCz" id="KKO-s3-i8o"/>
             </connections>
         </customObject>
         <customObject id="Awm-YT-uJb" customClass="ServerUserTableViewController" customModule="LittleFTP" customModuleProvider="target">

@@ -12,7 +12,7 @@ class SFTPController {
     
     private static var instance: SFTPController!
     
-    var sftpServer: NMSSHSession!
+    private var sftpServer: NMSSHSession!
     
     // SHARED INSTANCE
     class func sharedController(server: ServerModel) -> SFTPController {
@@ -40,10 +40,7 @@ class SFTPController {
     
     func fetchDir(path:String, completed: ([RemoteResource]) -> Void) {
         // fetch dir
-        
         let response = self.sftpServer.channel.execute("ls -al \(path)", error: nil)
-        
-        println(response)
         
         // FIXME: how to check for no response ?
         if response != "" {
@@ -78,8 +75,6 @@ class SFTPController {
             // on fetching complete
             completed(fetchedResources)
         }
-//        session.disconnect()
-
     }
     
     func uploadFile(file: RemoteResource) {
@@ -94,8 +89,10 @@ class SFTPController {
         // delete file
     }
     
-    func createFolder(folderPath: String) {
+    func createFolder(folderPath: String, completed: (Bool) -> Void) {
         // create folder
+        
+        completed(true)
     }
     
     func deleteFolder(folderPath: String) {
