@@ -1,5 +1,5 @@
 //
-//  UserModel.swift
+//  ServerModel.swift
 //  LittleFTP
 //
 //  Created by Gurinder Hans on 3/21/15.
@@ -9,21 +9,6 @@
 import Foundation
 
 
-struct Server {
-    static let URL          = "serverURL"
-    static let PORT         = "serverPort"
-    static let UNAME        = "userName"
-    static let PASS         = "userPass"
-    static let STATE        = "serverState"
-    static let TYPE         = "serverType"
-    static let ABS_PATH     = "serverAbsolutePath"
-}
-
-struct ServerType {
-    static let FTP      = "FTP"
-    static let SFTP     = "SFTP"
-}
-
 class ServerModel: NSObject, NSCoding {
 
 	var serverURL:String? // server IP address
@@ -32,7 +17,11 @@ class ServerModel: NSObject, NSCoding {
     var userPass:String? // password
 	var serverState:Int? // is this server currently being used ?
     var serverType: String? // is server FTP or SFTP ?
+    
+    // tmp vars only kept in memory
     var serverAbsoluteURL: String = "" // the absolute path for the server where we are currently standing
+    var sftp_manager: NMSSHSession?
+    var ftp_manager: FTPManager?
     
     // empty constructor
     override init() {
@@ -48,12 +37,12 @@ class ServerModel: NSObject, NSCoding {
         self.userName = userName
 		self.userPass = userPass
 		self.serverState = serverState
+        self.serverType = ServerType.FTP
         
-        // set server type
+        // set server type to SFTP is it is
+        // TODO: check for port too
         if self.serverURL?.uppercaseString.contains(ServerType.SFTP) == true {
             self.serverType = ServerType.SFTP
-        } else {
-            self.serverType = ServerType.FTP
         }
     }
 	
@@ -74,6 +63,30 @@ class ServerModel: NSObject, NSCoding {
 		coder.encodeObject(self.serverState, forKey: Server.STATE)
         coder.encodeObject(self.serverType, forKey: Server.TYPE)
 	}
+}
+
+
+//
+// MARK : Structs
+//
+
+
+// server keys
+struct Server {
+    static let URL          = "serverURL"
+    static let PORT         = "serverPort"
+    static let UNAME        = "userName"
+    static let PASS         = "userPass"
+    static let STATE        = "serverState"
+    static let TYPE         = "serverType"
+    static let ABS_PATH     = "serverAbsolutePath"
+}
+
+
+// all server types
+struct ServerType {
+    static let FTP      = "FTP"
+    static let SFTP     = "SFTP"
 }
 
 

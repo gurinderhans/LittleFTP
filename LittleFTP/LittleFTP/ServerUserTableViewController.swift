@@ -94,28 +94,47 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 			saveServers() // also save
 			
 			// update and tell table controllers
-            ServerManager.usingServer = ServerManager.allServers()[selectedRow!]
-			ServerManager.activeServer = ServerManager.getAllServers()[selectedRow!]
+            ServerManager.activeServer = ServerManager.allServers()[selectedRow!]
 			NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
 			
 		} else {
 			allServers[selectedRow!].serverState = 1
 		}
+        
+        // if server is type SFTP then set SSH session
+//        if ServerManager.activeServer.serverType == ServerType.SFTP {
+//            // set ssh session
+//            let host: String? = ServerManager.activeServer.serverURL!.stringByReplacingOccurrencesOfString("sftp://", withString: "")
+//            let port = ServerManager.activeServer.serverPort
+//            let username = ServerManager.activeServer.userName
+//            ServerManager.activeServer.sftp_manager = NMSSHSession.connectToHost(host, port: port!, withUsername: username)
+//            
+//            if (ServerManager.activeServer.sftp_manager?.connected != nil) {
+//                ServerManager.activeServer.sftp_manager?.authenticateByPassword(ServerManager.activeServer.userPass)
+//                
+//                if (ServerManager.activeServer.sftp_manager?.authorized != nil) {
+//                    println("auth success")
+//                }
+//            }
+//        } else {
+//            // FTP so set that
+//        }
+        
+        
 		self.serverTableView?.reloadData()
 	}
-	
+    
 	
     
     //
 	// MARK: App init methods
     //
     
-    
     override init() {
         super.init()
 		
 		// load saved servers
-		if let data = userDefaults.objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
+		if let data = userDefaults.objectForKey(Storage.SERVERS) as? NSData {
 			allServers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
 		}
 		
@@ -126,13 +145,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		}
         
 		if let server = activeServer {
-            ServerManager.usingServer = server
-            
-			ServerManager.activeServer = FMServer(
-				destination: server.serverURL!,
-				onPort: Int32(server.serverPort!),
-				username: server.userName!,
-				password: server.userPass!)
+            ServerManager.activeServer = server
 		}
 		
 		// notification observer for listening right clicks on switch Button
@@ -146,8 +159,14 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		secondaryButton.action = "manageSecondaryButton:"
 	}
 	
+    
+    
+    //
 	// MARK: selector methods
-	func manageSecondaryButton(sender: AnyObject) {
+	//
+    
+    
+    func manageSecondaryButton(sender: AnyObject) {
 		if self.secondaryButton.title == ACTION_DELETE_TEXT {
 			allServers.removeAtIndex(editingRow)
 			saveServers()
@@ -177,31 +196,40 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 	}
 
 	
-	// MARK: NSTableViewDataSource methods
-	func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-		return allServers.count
-	}
 	
-	// MARK: NSTableView methods
+    
+    //
+    // MARK: NSTableViewDataSource methods
+	//
+    
+    
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return allServers.count }
+	
+	
+    
+    //
+    // MARK: NSTableView methods
+    //
+    
+    
     func tableViewSelectionDidChange(notification: NSNotification) {
-        let selectedRow = (notification.object?.selectedRow)!
-        if selectedRow == -1 { return }
+        if let selectedRow = notification.object?.selectedRow {
+            if selectedRow == -1 { return }
+        }
     }
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-
 		let cellView:ServerUserTableCellView? = tableView.makeViewWithIdentifier("ServerUserCell", owner: self) as? ServerUserTableCellView
-        
         cellView?.serverUserImage?.image = NSImage(named: "server")
 		cellView?.serverState.state = allServers[row].serverState!
-		
         return cellView
     }
 	
+    
 	// MARK: Custom methods
 	func saveServers() {
 		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allServers),
-			forKey: AppUtils.localStorageKeys.keyServerUsers.rawValue)
+			forKey: Storage.CONNECTED_PATH_OBJS)
 	}
     
 

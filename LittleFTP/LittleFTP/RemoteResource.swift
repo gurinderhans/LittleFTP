@@ -17,8 +17,7 @@ class RemoteResource: NSObject {
     var resourceOwner:String?
     var resourceMode:NSInteger?
     
-    init(resourceName: String, resourceLastChanged: NSDate, resourceSize: NSInteger,
-        resourceType: NSInteger, resourceOwner: String, resourceMode: NSInteger) {
+    init(resourceName: String, resourceLastChanged: NSDate, resourceSize: NSInteger, resourceType: NSInteger, resourceOwner: String, resourceMode: NSInteger) {
             
             self.resourceName = resourceName
             self.resourceLastChanged = resourceLastChanged

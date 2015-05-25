@@ -20,6 +20,8 @@
 		418747811ABFBC0C00E12407 /* ServerBrowserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */; };
 		418811291AC0DE4A003E16A6 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418811281AC0DE4A003E16A6 /* AppUtils.swift */; };
 		41A214D21B124137004FA963 /* SFTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A214D11B124137004FA963 /* SFTPManager.swift */; };
+		41CB7AD71B12A5F2009A715F /* FTPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB7AD61B12A5F2009A715F /* FTPController.swift */; };
+		41CB7AD91B12A829009A715F /* SFTPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB7AD81B12A829009A715F /* SFTPController.swift */; };
 		41DDEF8D1AC647B00092527D /* FTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 41DDEF8C1AC647B00092527D /* FTPManager.m */; };
 		41EE9EB41AB8C65500C96D7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE9EB31AB8C65500C96D7D /* AppDelegate.swift */; };
 		41EE9EB61AB8C65500C96D7D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41EE9EB51AB8C65500C96D7D /* Images.xcassets */; };
@@ -68,6 +70,8 @@
 		418811281AC0DE4A003E16A6 /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
 		41A214D11B124137004FA963 /* SFTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPManager.swift; sourceTree = "<group>"; };
 		41C419BE1ABA7055005AFCD3 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		41CB7AD61B12A5F2009A715F /* FTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPController.swift; sourceTree = "<group>"; };
+		41CB7AD81B12A829009A715F /* SFTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPController.swift; sourceTree = "<group>"; };
 		41DDEF8B1AC647B00092527D /* FTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTPManager.h; sourceTree = "<group>"; };
 		41DDEF8C1AC647B00092527D /* FTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTPManager.m; sourceTree = "<group>"; };
 		41EE9EAE1AB8C65400C96D7D /* LittleFTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittleFTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				41A214D11B124137004FA963 /* SFTPManager.swift */,
+				41CB7AD61B12A5F2009A715F /* FTPController.swift */,
+				41CB7AD81B12A829009A715F /* SFTPController.swift */,
 			);
 			name = NetworkProtocols;
 			sourceTree = "<group>";
@@ -143,12 +149,20 @@
 			isa = PBXGroup;
 			children = (
 				415A68921B119058009254D8 /* NetworkProtocols */,
+				41CB7AD51B129816009A715F /* TableControllers */,
 				411BE7C71ACB94F400C4903F /* ServerManager.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		41CB7AD51B129816009A715F /* TableControllers */ = {
+			isa = PBXGroup;
+			children = (
 				417D6FAE1ABD4EE100C9167B /* ServerUserTableViewController.swift */,
 				418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */,
 				411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */,
 			);
-			name = Controllers;
+			name = TableControllers;
 			sourceTree = "<group>";
 		};
 		41D824131AC28E420021EACF /* FTPManager */ = {
@@ -346,11 +360,13 @@
 				41F5C7D41AC114F2003504C5 /* Queue.swift in Sources */,
 				41869B7E1AD121A200200297 /* ServerButton.swift in Sources */,
 				41EE9EB41AB8C65500C96D7D /* AppDelegate.swift in Sources */,
+				41CB7AD91B12A829009A715F /* SFTPController.swift in Sources */,
 				411BE7C81ACB94F400C4903F /* ServerManager.swift in Sources */,
 				418811291AC0DE4A003E16A6 /* AppUtils.swift in Sources */,
 				410FCAD41ABEC828005118DF /* MSwiftFileWatcher.m in Sources */,
 				417D6FAF1ABD4EE100C9167B /* ServerUserTableViewController.swift in Sources */,
 				41DDEF8D1AC647B00092527D /* FTPManager.m in Sources */,
+				41CB7AD71B12A5F2009A715F /* FTPController.swift in Sources */,
 				416B85AE1AC27A7200E0813D /* TestsFile.swift in Sources */,
 				41F6EF871ABE6A32007DE265 /* ConnectedPathModel.swift in Sources */,
 				411BE7C61ACB7FF500C4903F /* ConnectedPathsTableViewController.swift in Sources */,

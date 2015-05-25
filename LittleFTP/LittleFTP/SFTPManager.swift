@@ -34,7 +34,10 @@ class SFTPManager: NSObject {
         dateFormatter.dateFormat = dtFormat
         let date = dateFormatter.dateFromString(dt)
         
-        return date!
+        if let dt = date {
+            return dt
+        }
+        return NSDate()
     }
     
     
@@ -49,6 +52,15 @@ class SFTPManager: NSObject {
         let resourcePerms:String = resources.first!
 
         let type = resourcePerms[resourcePerms.startIndex]
+        
+        /* LEGEND:
+        d -> directory
+        l -> symbolic link
+        s -> Unix socket
+        b -> block device
+        p -> pipeline
+        D -> Door
+        */
         
         if type == "d" {
             // type folder

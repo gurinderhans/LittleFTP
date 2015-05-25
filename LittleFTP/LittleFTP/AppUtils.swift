@@ -10,15 +10,6 @@ import Foundation
 
 class AppUtils {
 	
-	enum localStorageKeys: String {
-		case keyServerUsers = "serverUsers"
-			, keyConnectedPathObjects = "connectedPathObjs"
-			, keyActiveServer = "ACTIVE_SERVER"
-	}
-	
-	/* MARK: Methods that don't fit in other classes
-	* [goal] := Generalize these methods as much as possible
-	*/
     class func dateToStr(date:NSDate) -> String {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "EE hh:mm a dd/yy"
@@ -45,4 +36,11 @@ class AppUtils {
         return subPath
     }
     
+}
+
+
+struct Storage {
+    static let SERVERS = "serverUsers"
+    static let CONNECTED_PATH_OBJS = "connectedPathObjs"
+    static let ACTIVE_SERVER = "ACTIVE_SERVER"
 }

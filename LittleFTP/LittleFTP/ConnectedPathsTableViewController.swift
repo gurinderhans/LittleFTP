@@ -11,15 +11,27 @@ import Cocoa
 
 class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 	
+    
+    //
 	// MARK: Constants
+    //
+    
 	let userDefaults = NSUserDefaults.standardUserDefaults()
 	let mWatcher:MSwiftFileWatcher = MSwiftFileWatcher.createWatcher()
 	
+    
+    //
 	// MARK: Table data variables
+    //
+    
 	var allConnectedPaths = [ConnectedPathModel]()
 	var enabledConnections:[String] = []
 	
+    
+    //
 	// MARK: Outlets and Actions
+    //
+    
 	@IBOutlet weak var connectedPathsTable: NSTableView!
 	@IBAction func deleteConnectedPath(sender: AnyObject) {
 		let selectedRow = connectedPathsTable?.rowForView(sender as! NSView)
@@ -27,12 +39,16 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 
 		// overwrite with new data
 		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths),
-			forKey: ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue)
+			forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 
 		connectedPathsTable?.reloadData()
 	}
 	
-	// MARK: Table View Object init methods
+    
+    //
+	// MARK: init
+    //
+    
 	override init() {
 		/** Init:
 		* 1. start listening for file changes
@@ -59,7 +75,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		}
 		
 		// load saved ConnectedPaths
-		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue) as? NSData {
+		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS) as? NSData {
 			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
 			
 			for i in allConnectedPaths {
@@ -96,7 +112,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		}
 		
 		let data = NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths)
-		userDefaults.setObject(data, forKey: ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue)
+		userDefaults.setObject(data, forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 		connectedPathsTable?.reloadData()
 		
 	}
@@ -115,7 +131,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		enabledConnections[row] = (clickedPath.isEnabled! == true) ? allConnectedPaths[row].localPath! : ""
 		
 		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths),
-			forKey: ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue)
+			forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 		
 		let watchPaths = enabledConnections.filter { $0 != "" }
 		if watchPaths.count > 0 {
@@ -131,7 +147,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		enabledConnections = []
 		allConnectedPaths = []
 		// load saved ConnectedPaths
-		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+AppUtils.localStorageKeys.keyConnectedPathObjects.rawValue) as? NSData {
+		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS) as? NSData {
 			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
 			for i in allConnectedPaths {
 				let connectionValue = (i.isEnabled == true) ? i.localPath! : ""

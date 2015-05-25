@@ -45,8 +45,26 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     override init() {
         super.init()
 		
+        
+//        // if server is type SFTP then set SSH session
+//        if ServerManager.activeServer.serverType == ServerType.SFTP {
+//            // set ssh session
+//            let host: String? = ServerManager.activeServer.serverURL!.stringByReplacingOccurrencesOfString("sftp://", withString: "")
+//            let port = ServerManager.activeServer.serverPort
+//            let username = ServerManager.activeServer.userName
+//            ServerManager.activeServer.sftp_manager = NMSSHSession.connectToHost(host, port: port!, withUsername: username)
+//            
+//            if (ServerManager.activeServer.sftp_manager?.connected != nil) {
+//                ServerManager.activeServer.sftp_manager?.authenticateByPassword(ServerManager.activeServer.userPass)
+//                
+//                if (ServerManager.activeServer.sftp_manager?.authorized != nil) {
+//                    println("auth success")
+//                }
+//            }
+//        }
+        
         // initiate get files
-		if ServerManager.activeServer.destination != nil { fetchDirContents("/") }
+        if ServerManager.activeServer.serverURL != nil { fetchDirContents("/") }
 		
 		// notification observer for adding overlay on browser table
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "overlayProgress:", name:"setOverlay", object: nil)
@@ -55,11 +73,11 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetTable:", name:"serverChanged", object: nil)
 		
 		// listen for upload progress
-		ServerManager.ftpManager.onProgress = {totalProgress, fileName in
-			// TODO: get Action enum value from onProgress
-			self.progressPanel_fileNameLabel.stringValue = fileName
-			self.progressPanelProgressBar.doubleValue = totalProgress
-		}
+//		ServerManager.ftpManager.onProgress = {totalProgress, fileName in
+//			// TODO: get Action enum value from onProgress
+//			self.progressPanel_fileNameLabel.stringValue = fileName
+//			self.progressPanelProgressBar.doubleValue = totalProgress
+//		}
 		
 	}
 	
@@ -136,33 +154,33 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		
 		let fm = NSFileManager.defaultManager()
 		
-		for i in 0...(droppedURLs.count-1) {
-			let attribs: NSDictionary? = fm.attributesOfItemAtPath((droppedURLs[i]?.absoluteString)!, error: nil)
-			
-			if let fileattribs = attribs { // removing file name from path if it's a file
-				if (fileattribs["NSFileType"] as! String) == "NSFileTypeRegular" {
-					droppedURLs[i] = droppedURLs[i]?.URLByDeletingLastPathComponent
-				}
-			}
-			
-			var tmpConnectionObj:ConnectedPathModel = ConnectedPathModel (
-				isEnabled: false,
-				localPath: ((droppedURLs[i]?.URLByAppendingPathComponent(""))?.absoluteString)!, // by appending "" we add a / to the path
-				remotePath: ""
-			)
-			
-			if (operation.rawValue == 0 && mRemoteResources[row].resourceType == 4) { // if droppedOnTheCell
-                // FIXME: remove the use of `parseServerURL`
-				tmpConnectionObj.remotePath = AppUtils.parseServerURL(
-					relativePath: ServerManager.activeServer.absolutePath,
-					clickedItemPath: mRemoteResources[row].resourceName! )
-			}
-			else {
-				tmpConnectionObj.remotePath = (ServerManager.activeServer.absolutePath == "") ? "/": ServerManager.activeServer.absolutePath
-			}
-	
-			tmpConnectionObjs.append(tmpConnectionObj)
-		}
+//		for i in 0...(droppedURLs.count-1) {
+//			let attribs: NSDictionary? = fm.attributesOfItemAtPath((droppedURLs[i]?.absoluteString)!, error: nil)
+//			
+//			if let fileattribs = attribs { // removing file name from path if it's a file
+//				if (fileattribs["NSFileType"] as! String) == "NSFileTypeRegular" {
+//					droppedURLs[i] = droppedURLs[i]?.URLByDeletingLastPathComponent
+//				}
+//			}
+//			
+//			var tmpConnectionObj:ConnectedPathModel = ConnectedPathModel (
+//				isEnabled: false,
+//				localPath: ((droppedURLs[i]?.URLByAppendingPathComponent(""))?.absoluteString)!, // by appending "" we add a / to the path
+//				remotePath: ""
+//			)
+//			
+//			if (operation.rawValue == 0 && mRemoteResources[row].resourceType == 4) { // if droppedOnTheCell
+//                // FIXME: remove the use of `parseServerURL`
+//				tmpConnectionObj.remotePath = AppUtils.parseServerURL(
+//					relativePath: ServerManager.activeServer.absolutePath,
+//					clickedItemPath: mRemoteResources[row].resourceName! )
+//			}
+//			else {
+//				tmpConnectionObj.remotePath = (ServerManager.activeServer.absolutePath == "") ? "/": ServerManager.activeServer.absolutePath
+//			}
+//	
+//			tmpConnectionObjs.append(tmpConnectionObj)
+//		}
 		
 		NSNotificationCenter.defaultCenter().postNotificationName("load", object: tmpConnectionObjs)
 		
@@ -196,34 +214,34 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // MARK: Custom methods
     //
     
-    
 	func fetchDirContents(path:String) {
         
-        ServerManager.fetchDir(path, onFetched: { results -> Void in
+        println("called")
+        
+        // create goto path
+        let serverURL = NSURL(string: ServerManager.activeServer.serverAbsoluteURL)?.URLByAppendingPathComponent("")
+        var gotoPath = NSURL(string: path, relativeToURL: serverURL)
+        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
+        
+        
+        // then fetch dir
+        ServerManager.list_directory((gotoPath?.absoluteString)!, ofServer: ServerManager.activeServer) { contents -> Void in
+            println("fetched")
             // hide progress
-//            println("fetched")
             self.progress?.hidden = true
-            // set window title to show current server directory that we are in
-            println("sfsdfsdfsdf: [\(ServerManager.usingServer.serverAbsoluteURL)]")
-//            self.appWindow.title = "\(ServerManager.usingServer.serverAbsoluteURL)"
             
+            // set window title
+//            self.appWindow.title = ServerManager.activeServer.serverAbsoluteURL
             
-            var remoteResources: [RemoteResource] = results as [RemoteResource]
+            // fill table data
+            self.mRemoteResources = contents as [RemoteResource]
             
-            remoteResources.sort({$0.resourceType < $1.resourceType})
+            // sort by type -> folders first, then files
+            self.mRemoteResources.sort({$0.resourceType < $1.resourceType})
             
-            self.mRemoteResources = remoteResources
-
-            // insert only if server doesn't give us these
-            // doing with a quick and dirty check
-            if self.mRemoteResources.first?.resourceName != "." {
-                self.mRemoteResources.insert(RemoteResource(resourceName: ".", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 0)
-                self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
-
-            }
-
+            // reload table
             self.fBrowserTableView?.reloadData()
-        })
+        }
     }
 }
 

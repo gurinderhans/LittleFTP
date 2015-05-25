@@ -11,24 +11,15 @@ import Cocoa
 
 class ServerManager {
     
-    // TODO: do ftp/sftp decision stuff here
-    
-    
     //
     // MARK: public class variables
     //
     
     
-    private struct _usingServer { static var server: ServerModel = ServerModel() }
-    class var usingServer: ServerModel {
-        get { return _usingServer.server }
-        set { _usingServer.server = newValue }
-    }
-    
-    private struct _activerServer { static var server: FMServer = FMServer() }
-    class var activeServer: FMServer {
-        get { return _activerServer.server }
-        set { _activerServer.server = newValue }
+    private struct _activeServer { static var server: ServerModel = ServerModel() }
+    class var activeServer: ServerModel {
+        get { return _activeServer.server }
+        set { _activeServer.server = newValue }
     }
     
     private struct _isCreateDirsAndUploadFiles { static var data: Bool = false }
@@ -37,16 +28,11 @@ class ServerManager {
         set { _isCreateDirsAndUploadFiles.data = newValue }
     }
     
-    private struct _ftpManager { static var manager: FTPManager = FTPManager() }
-    class var ftpManager: FTPManager {
-        get { return _ftpManager.manager }
-    }
     
-    
-    // @returns - list of servers
+    // @returns - list of all created servers
     class func allServers() -> [ServerModel] {
 
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey(Storage.SERVERS) as? NSData {
             let serverModels = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
             
             return serverModels
@@ -55,29 +41,11 @@ class ServerManager {
         return [ServerModel]()
     }
     
-    // @returns - list of all servers that the program stores
-    class func getAllServers() -> [FMServer] {
-        var allServers = [FMServer]()
-        
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey(AppUtils.localStorageKeys.keyServerUsers.rawValue) as? NSData {
-            let serverModels = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ServerModel]
-            for i in serverModels {
-                allServers.append(FMServer(
-                    destination: i.serverURL!,
-                    onPort: Int32(i.serverPort!),
-                    username: i.userName!,
-                    password: i.userPass!))
-            }
-        }
-        
-        return allServers
-    }
-    
     // @returns - stripped string of the server name
     class var keyServerNameStringVal:String {
         get {
             // FIXME: returning empty ?
-            return (ServerManager.activeServer.destination == nil) ? "" : (ServerManager.activeServer.destination).stripCharactersInSet([".", ":", "/"])
+            return (ServerManager.activeServer.serverURL == nil) ? "" : (ServerManager.activeServer.serverURL)!.stripCharactersInSet([".", ":", "/"])
         }
     }
     
@@ -87,86 +55,139 @@ class ServerManager {
     // MARK: class funcs
     //
     
-    class func fetchDir(path: String, onFetched: ([RemoteResource]) -> Void) {
-        
-        // create goto path
-        var gotoPath = NSURL(string: path, relativeToURL: NSURL(string: ServerManager.usingServer.serverAbsoluteURL)?.URLByAppendingPathComponent(""))
-        gotoPath = NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)
-        println(gotoPath?.absoluteString)
-        var foundResources = [RemoteResource]() // we return this
-        
-        if ServerManager.usingServer.serverType == ServerType.FTP {
-            // FTP fetching
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-                
-                // fetch dir content
-                let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.activeServer, atLocation: gotoPath?.absoluteString)
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    // ON: content fetched
-                    
-                    if let data:[NSDictionary] = resources as? [NSDictionary] {
-                        
-//                        ServerManager.activeServer.absolutePath = gotoPath?.absoluteString
-                        ServerManager.usingServer.serverAbsoluteURL = (gotoPath?.absoluteString)!
-                        
-                        
-                        for i in data {
-                            let remoteResource = RemoteResource(
-                                resourceName: i["kCFFTPResourceName"] as! String,
-                                resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
-                                resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
-                                resourceType: i["kCFFTPResourceType"] as! NSInteger,
-                                resourceOwner: i["kCFFTPResourceOwner"] as! String,
-                                resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
-                            
-                            foundResources.append(remoteResource)
-                            
-                        }
-                        
-                        // send resources to the other side
-                        onFetched(foundResources)
-                    }
-                    
-                })
-            })
-        } else {
-            // SFTP fetching
+    
+    /**
+    Reads contents of a folder
+    
+    :param: path The folder path to read from
+    :param: onFetched The completion block, gets called when we have fetched the read data
+    :returns: List<RemoteResources> containing the read contents
+    */
+    
+    class func list_directory(path: String, ofServer server: ServerModel, onFetched: ([RemoteResource]) -> Void) {
+        if server.serverType == ServerType.FTP {
             
-            let host:String? = ServerManager.usingServer.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-            var session: NMSSHSession = NMSSHSession.connectToHost(host, port: ServerManager.usingServer.serverPort!, withUsername: ServerManager.usingServer.userName)
+            // create controller from the server
+            let ftp = FTPController.sharedController(server)
+            // fetch
+            ftp.fetchDir(path, completed: onFetched)
+
+        } else if server.serverType == ServerType.SFTP {
             
-            if session.connected {
-                session.authenticateByPassword(ServerManager.usingServer.userPass)
-            } else {
-                println("SSH ERR::Not connected")
-            }
-            
-            let response = session.channel.execute("ls -al \((gotoPath?.absoluteString)!)", error: nil)
-            if response != "" {
-                
-                ServerManager.usingServer.serverAbsoluteURL = (gotoPath?.absoluteString)!
-                
-                let folderContents = split(response) {$0 == "\n"}
-                
-                for i in folderContents {
-                    println(i)
-                    if i.contains("total") == false {
-                        var resourceArr = split(i) {$0 == " "}
-                        
-                        let sz = (resourceArr[4].toInt() == 4096) ? 1 : 0
-                        let createdResource = RemoteResource(resourceName: resourceArr.last!, resourceLastChanged: SFTPManager.getResourceDate(resourceArr), resourceSize: sz, resourceType: SFTPManager.getResourceType(resourceArr), resourceOwner: resourceArr[2], resourceMode: -1)
-                        
-                        foundResources.append(createdResource)
-                    }
-                }
-                
-                onFetched(foundResources)
-            }
-            //        session.disconnect()
+            // create controller from the server
+            let sftp = SFTPController.sharedController(server)
+            // fetch
+            sftp.fetchDir(path, completed: onFetched)
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    class func fetchDir(path: String, onFetched: ([RemoteResource]) -> Void) {
+//        
+//        // fetched resources from server
+//        var fetchedResources = [RemoteResource]() // we return this
+//        
+//        if ServerManager.activeServer.serverType == ServerType.FTP { // FTP fetching
+//            
+//            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+//                
+//                // fetch dir content
+////                let resources = ServerManager.ftpManager.contentsOfServer(ServerManager.usingS, atLocation: path)
+////                
+////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+////                    // finished fetching
+////                    if let data:[NSDictionary] = resources as? [NSDictionary] {
+////                        
+////                        ServerManager.usingServer.serverAbsoluteURL = path
+////                        
+////                        for i in data {
+////                            let remoteResource = RemoteResource(
+////                                resourceName: i["kCFFTPResourceName"] as! String,
+////                                resourceLastChanged: i["kCFFTPResourceModDate"] as! NSDate,
+////                                resourceSize: i["kCFFTPResourceSize"] as! NSInteger,
+////                                resourceType: i["kCFFTPResourceType"] as! NSInteger,
+////                                resourceOwner: i["kCFFTPResourceOwner"] as! String,
+////                                resourceMode: i["kCFFTPResourceMode"] as! NSInteger)
+////                            
+////                            fetchedResources.append(remoteResource)
+////                            
+////                        }
+////                        
+////                        // send resources to the other side
+////                        onFetched(fetchedResources)
+////                    }
+////                    
+////                })
+//            })
+//        } else { // SFTP fetching
+//            
+//            let response = ServerManager.activeServer.sftp_manager!.channel.execute("ls -al \(path)", error: nil)
+//            println(response)
+//            if response != "" { // FIXME: how to check for no response ?
+//                
+//                ServerManager.activeServer.serverAbsoluteURL = path
+//                
+//                var folderContents = split(response) {$0 == "\n"}
+//                
+//                if folderContents.first?.contains("total") == true {
+//                    folderContents.removeAtIndex(folderContents.startIndex)
+//                }
+//                
+//                for i in folderContents {
+//                    let resourceArr = split(i) {$0 == " "}
+//                    
+//                    let sz = (resourceArr[4].toInt() == 4096) ? 1 : 0
+//                    let createdResource = RemoteResource(
+//                        resourceName: resourceArr.last!,
+//                        resourceLastChanged: SFTPManager.getResourceDate(resourceArr),
+//                        resourceSize: sz,
+//                        resourceType: SFTPManager.getResourceType(resourceArr),
+//                        resourceOwner: resourceArr[2],
+//                        resourceMode: -1)
+//                    
+//                    fetchedResources.append(createdResource)
+//                }
+//                
+//                onFetched(fetchedResources)
+//            }
+////            session.disconnect()
+//            // insert only if server doesn't give us these
+//            // doing with a quick and dirty check
+////            if self.mRemoteResources.first?.resourceName != "." {
+////                self.mRemoteResources.insert(RemoteResource(resourceName: ".", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 0)
+////                self.mRemoteResources.insert(RemoteResource(resourceName: "..", resourceLastChanged: NSDate(), resourceSize: 0, resourceType: 4, resourceOwner: "", resourceMode: 0), atIndex: 1)
+////            }
+//
+//        }
+//    }
+    
+    
     
     class func uploadData(localPath pathFrom: String, remotePath pathTo:String) {
         
@@ -199,7 +220,7 @@ class ServerManager {
             
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
                 
-                ServerManager.ftpManager.uploadFile(localFile, toServer: ServerManager.activeServer, atLocation: remoteFile)
+//                ServerManager.ftpManager.uploadFile(localFile, toServer: ServerManager.activeServer, atLocation: remoteFile)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     uploadFile(fQueue: flQ)
@@ -220,7 +241,7 @@ class ServerManager {
                 dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
                     
                     //errors for this most likely will be because folder already exists - thus ignore
-                    ServerManager.ftpManager.createNewFolder(remotePath?.absoluteString!, atServer: ServerManager.activeServer)
+//                    ServerManager.ftpManager.createNewFolder(remotePath?.absoluteString!, atServer: ServerManager.activeServer)
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         createDirsAndUploadFiles(dirs: dirQ, files: flQ)
