@@ -24,7 +24,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	// MARK: Table data variables
     //
     
-	var allConnectedPaths = [ConnectedPathModel]()
+	var connectedPaths = [ConnectedPathModel]()
 	var enabledConnections:[String] = []
 	
     
@@ -36,13 +36,16 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
     
 	@IBAction func deleteConnectedPath(sender: AnyObject) {
         
-		let selectedRow = connectedPathsTable?.rowForView(sender as! NSView)
-		allConnectedPaths.removeAtIndex(selectedRow!)
+        // get selected row and remove that row item
+        if let selectedRow = connectedPathsTable?.rowForView(sender as! NSView) {
+            connectedPaths.removeAtIndex(selectedRow)
+        }
 
 		// overwrite with new data
-		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths),
+		userDefaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(connectedPaths),
 			forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 
+        // reload table
 		connectedPathsTable?.reloadData()
 	}
 	
@@ -57,42 +60,55 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		* 2. load connectedPaths into table
 		* 3. start watching on enabled connections
 		*/
-		super.init()
+		
+        super.init()
+        
+        
 		// listen for file system changes
 		mWatcher.onFileChange = {numEvents, changedPaths in
-            println(changedPaths)
-			for i in changedPaths {
-				for j in self.allConnectedPaths {
-                    let changedPath:String = AppUtils.makeURL(i as! String, relativePath: "").absoluteString!
-					if j.localPath! == changedPath {
-						// upload contents from j.localpath to j.remotePath
-                        ServerManager.uploadData(localPath: j.localPath!, remotePath: j.remotePath!, onServer: ServerManager.activeServer)
-						let notification = NSUserNotification()
-						notification.title = "File Change"
-						notification.informativeText = j.localPath!
-						notification.soundName = NSUserNotificationDefaultSoundName
+            
+            // loop through both Sets and find the union
+            for i in self.connectedPaths {
+                for j in changedPaths {
+                    
+                    // to make sure this url is in the same format as our saved ones
+                    let changedPath = AppUtils.makeURL(j as! String, relativePath: "").absoluteString
+                    
+                    
+                    if self.isValidURL(i.localPath!, urlB: changedPath!) == true {
+                        // upload the folder
+                        ServerManager.uploadData(localPath: i.localPath!, remotePath: i.remotePath!, onServer: ServerManager.activeServer)
+                        
+//                        // let the user know we detected the change by posting a notification
+//                        let notification = NSUserNotification()
+//                        notification.title = "File Change"
+//                        notification.informativeText = changedPath
+//                        notification.soundName = NSUserNotificationDefaultSoundName
+//                        
+//                        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
 
-						NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
-					}
-				}
-			}
+                    }
+                    
+                }
+            }
 		}
 		
 		// load saved ConnectedPaths
 		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS) as? NSData {
-			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
+			connectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
 			
-			for i in allConnectedPaths {
+            // figure out enabled connections
+			for i in connectedPaths {
 				let connectionValue = (i.isEnabled == true) ? i.localPath! : ""
 				enabledConnections.append(connectionValue)
 			}
 		}
 		
 		// load enabled watching paths and start watching on those
-		let filteredConns = enabledConnections.filter { $0 != "" }
-		if filteredConns.count > 0 {
+		let filteredConns = enabledConnections.filter { $0 != "" } // filter out empty strings, as these are disabled paths
+		if filteredConns.count > 0 { // if we have enabled paths
 			mWatcher.paths =  NSMutableArray(array: filteredConns)
-			mWatcher.watch()
+			mWatcher.watch() // WATCH
 		}
 		
 		// observe for the file drop data
@@ -103,38 +119,45 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	}
 	
 	override func awakeFromNib() {
+        // add double click on table cell
 		connectedPathsTable.target = self
-		connectedPathsTable.doubleAction = "cPaths_dblClick:"
+		connectedPathsTable.doubleAction = "connectedPathsTblView_dblClick:"
 	}
+    
 	
+    
+    //
 	// MARK: Selector methods
+    //
+    
+    
 	func updateConnectedPaths(notification: NSNotification){
-		//load data here
+		// load data here
 		for i in notification.object as! [ConnectedPathModel] {
-			allConnectedPaths.append(i)
+			connectedPaths.append(i)
 			enabledConnections.append("") // append empty because all connections by default are `OFF`
 		}
 		
-		let data = NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths)
+		let data = NSKeyedArchiver.archivedDataWithRootObject(connectedPaths)
 		userDefaults.setObject(data, forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 		connectedPathsTable?.reloadData()
 		
 	}
 	
-	func cPaths_dblClick(sender:AnyObject){
+	func connectedPathsTblView_dblClick(sender:AnyObject){
 		let row = (connectedPathsTable?.clickedRow)!
 		if row == -1 { return }
 		
-		let clickedPath = allConnectedPaths[row]
+		let clickedPath = connectedPaths[row]
 		clickedPath.isEnabled = !clickedPath.isEnabled!
 		
 		if (enabledConnections.filter {$0 != ""}).count > 0 {
 			mWatcher.stop() // stop so we can change the paths
 		}
 		
-		enabledConnections[row] = (clickedPath.isEnabled! == true) ? allConnectedPaths[row].localPath! : ""
+		enabledConnections[row] = (clickedPath.isEnabled! == true) ? connectedPaths[row].localPath! : ""
 		
-		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(allConnectedPaths),
+		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(connectedPaths),
 			forKey: ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS)
 		
 		let watchPaths = enabledConnections.filter { $0 != "" }
@@ -148,34 +171,56 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 	}
 	
 	func reloadTable(sender:AnyObject) {
-		enabledConnections = []
-		allConnectedPaths = []
-		// load saved ConnectedPaths
+        
+        // clear out data arrays
+		enabledConnections.removeAll(keepCapacity: false)
+		connectedPaths.removeAll(keepCapacity: false)
+        
+		// load new saved connected paths
 		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS) as? NSData {
-			allConnectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
-			for i in allConnectedPaths {
+
+            // set connected paths
+            connectedPaths = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [ConnectedPathModel]
+            
+            // load enabled connections for the new server
+			for i in connectedPaths {
 				let connectionValue = (i.isEnabled == true) ? i.localPath! : ""
 				enabledConnections.append(connectionValue)
 			}
 		}
+        
+        // filter connected array and start watching the enabled ones
 		let filteredConns = enabledConnections.filter { $0 != "" }
 		if filteredConns.count > 0 {
 			mWatcher.paths =  NSMutableArray(array: filteredConns)
 			mWatcher.watch()
 		}
+        
+        // finally reload table
 		connectedPathsTable.reloadData()
 	}
 	
+    
+    
+    //
 	// MARK: NSTableViewDataSource methods
+    //
+    
+    
 	func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-		return allConnectedPaths.count
+		return connectedPaths.count
 	}
 	
+    
+    //
 	// MARK: NSTableViewDelegate methods
+    //
+    
+    
 	func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		
 		let cellView:ConnectedTableCellView = tableView.makeViewWithIdentifier("ConnectedFoldersCell", owner: self) as! ConnectedTableCellView
-		let cPath = allConnectedPaths[row]
+		let cPath = connectedPaths[row]
 		
 		cellView.localTitle.stringValue = cPath.localPath!
 		cellView.remoteTitle.stringValue = cPath.remotePath!
@@ -184,6 +229,25 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		
 		return cellView
 	}
+    
+    
+    //
+    // MARK: Custom methods
+    //
+    
+    func isValidURL(urlA: String, urlB: String) -> Bool {
+        
+        // get index to where we're going to stop
+        let index = advance(urlA.startIndex, count(urlA))
+        
+        let a = urlA
+        let b = urlB.substringToIndex(index)
+        
+        println("a:\(a), b:\(b), res:\(a == b)")
+        
+        // return wheteher the two strings are equal or not
+        return a == b
+    }
 	
 }
 

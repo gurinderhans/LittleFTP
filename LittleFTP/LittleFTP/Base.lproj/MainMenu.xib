@@ -1083,7 +1083,7 @@
                     </textFieldCell>
                 </textField>
                 <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="tk4-ye-xf6">
-                    <rect key="frame" x="11" y="148" width="249" height="5"/>
+                    <rect key="frame" x="11" y="148" width="249" height="4"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>

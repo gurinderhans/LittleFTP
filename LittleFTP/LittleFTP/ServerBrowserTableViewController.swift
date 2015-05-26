@@ -64,7 +64,9 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
         
         // add file upload / download progress listener
         ServerManager.progressBlock = { type, progress, filename -> () in
-            println("\nprogress update: \n[type]:\(type), \n[prog]:\(progress), \n[fname]:\(filename)")
+//            println("\nprogress update: \n[type]:\(type), \n[prog]:\(progress), \n[fname]:\(filename)")
+            self.progressPanel_fileNameLabel.stringValue = filename
+            self.progressPanelHorizontalProgress.doubleValue = progress
         }
         
         

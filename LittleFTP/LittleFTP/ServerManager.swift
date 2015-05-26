@@ -153,7 +153,6 @@ class ServerManager {
                     
                     let ftpController = FTPController.sharedController(server)
                     ftpController.createFolder(remotePath.absoluteString!, completed: { success -> Void in
-                        println(success)
                         createDirs(dirs: dirQ, files: flQ)
                     })
                     
@@ -188,7 +187,7 @@ class ServerManager {
             
             // start iterating...
             while let element = enumerator.nextObject() as? String {
-                
+
                 // we can ignore certain files here
                 if (element as NSString).containsString(".DS_Store") { continue } // because...
                 
