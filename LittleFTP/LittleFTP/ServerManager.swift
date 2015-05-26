@@ -11,6 +11,7 @@ import Cocoa
 
 class ServerManager {
     
+    
     //
     // MARK: public class variables
     //
@@ -21,13 +22,6 @@ class ServerManager {
     class var activeServer: ServerModel {
         get { return _activeServer.server }
         set { _activeServer.server = newValue }
-    }
-    
-    // @returns - true if the server is currently working (uploading / downloading files)
-    private struct _isSpinning { static var data: Bool = false }
-    class var isSpinning:Bool {
-        get { return _isSpinning.data }
-        set { _isSpinning.data = newValue }
     }
     
     
@@ -106,7 +100,7 @@ class ServerManager {
         // iterates through a file queue & uploads each file
         uploadFile = { flQ in
             if (flQ.isEmpty()) {
-                ServerManager.isSpinning = false
+                ServerManager.activeServer.isSpinning = false
                 NSNotificationCenter.defaultCenter().postNotificationName(Observers.FILE_BROWSER_OVERLAY_PANEL, object: false)
                 return
             }
@@ -137,7 +131,7 @@ class ServerManager {
         // ** NOTE: this starts the file uploads once the folder queue is empty
         createDirs = { dirQ, flQ in
             
-            ServerManager.isSpinning = true
+            ServerManager.activeServer.isSpinning = true
             
             if (dirQ.isEmpty()) {
                 
@@ -219,11 +213,12 @@ class ServerManager {
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
-                // we have finished indexing...
+                /* we have finished indexing.
+                */
                 
                 // start the upload process if the server is currently
-                if (!ServerManager.isSpinning) {
-                    NSNotificationCenter.defaultCenter().postNotificationName("setOverlay", object: true)
+                if (!ServerManager.activeServer.isSpinning) {
+                    NSNotificationCenter.defaultCenter().postNotificationName(Observers.FILE_BROWSER_OVERLAY_PANEL, object: true)
                     createDirs(dirs: foldersQueue, files: filesQueue)
                 }
                 
@@ -237,22 +232,3 @@ class ServerManager {
 }
 
 
-struct ProgressType {
-    static let UPLOAD = "progTypeUpload"
-    static let DOWNLOAD = "progTypeDownload"
-}
-
-
-//
-// MARK: Extensions
-//
-
-
-// custom String.class extension
-extension String {
-    
-    // removes all given characters from string
-    func stripCharactersInSet(chars: [Character]) -> String {
-        return String(filter(self) {find(chars, $0) == nil})
-    }
-}

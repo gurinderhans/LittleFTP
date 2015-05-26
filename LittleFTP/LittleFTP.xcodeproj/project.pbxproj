@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		410756171B14DD8600A30ED5 /* ClassExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410756161B14DD8600A30ED5 /* ClassExtensions.swift */; };
+		410756191B14DDAA00A30ED5 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410756181B14DDAA00A30ED5 /* AppConstants.swift */; };
 		410FCAD41ABEC828005118DF /* MSwiftFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 410FCAD31ABEC828005118DF /* MSwiftFileWatcher.m */; };
 		411BE7C61ACB7FF500C4903F /* ConnectedPathsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */; };
 		411BE7C81ACB94F400C4903F /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411BE7C71ACB94F400C4903F /* ServerManager.swift */; };
@@ -56,6 +58,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		410756161B14DD8600A30ED5 /* ClassExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassExtensions.swift; sourceTree = "<group>"; };
+		410756181B14DDAA00A30ED5 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		410FCAD21ABEC828005118DF /* MSwiftFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSwiftFileWatcher.h; sourceTree = "<group>"; };
 		410FCAD31ABEC828005118DF /* MSwiftFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSwiftFileWatcher.m; sourceTree = "<group>"; };
 		411BE7C51ACB7FF500C4903F /* ConnectedPathsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectedPathsTableViewController.swift; sourceTree = "<group>"; };
@@ -249,6 +253,8 @@
 			isa = PBXGroup;
 			children = (
 				41F5C7D31AC114F2003504C5 /* Queue.swift */,
+				410756161B14DD8600A30ED5 /* ClassExtensions.swift */,
+				410756181B14DDAA00A30ED5 /* AppConstants.swift */,
 			);
 			name = Factories;
 			sourceTree = "<group>";
@@ -353,10 +359,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				410756191B14DDAA00A30ED5 /* AppConstants.swift in Sources */,
 				4165BB0B1ABAA5E300FA9E8E /* RemoteResource.swift in Sources */,
 				414901901ABE08FB001550A1 /* ServerModel.swift in Sources */,
 				418747811ABFBC0C00E12407 /* ServerBrowserTableViewController.swift in Sources */,
 				41A214D21B124137004FA963 /* SFTPManager.swift in Sources */,
+				410756171B14DD8600A30ED5 /* ClassExtensions.swift in Sources */,
 				41F5C7D41AC114F2003504C5 /* Queue.swift in Sources */,
 				41869B7E1AD121A200200297 /* ServerButton.swift in Sources */,
 				41EE9EB41AB8C65500C96D7D /* AppDelegate.swift in Sources */,

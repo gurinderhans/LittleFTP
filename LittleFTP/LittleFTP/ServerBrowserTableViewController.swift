@@ -9,17 +9,10 @@
 import Foundation
 import Cocoa
 
-struct Observers {
-    static let FILE_BROWSER_OVERLAY_PANEL = "setOverlay"
-    static let CURRENT_SERVER_CHANGED = "serverChanged"
-    static let NEW_CONNECTION_PATH = "newConnectionPath"
-}
-
 
 class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     
     // FIXME: "unlockFocus called too many times. Called on <NSButton: 0x608000140630>"
-    
 	
 	
     //
@@ -35,10 +28,11 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     //
     
     
+    // file browser table
     @IBOutlet var fileBrowserTblView:NSTableView?
-    @IBOutlet var progressSpinner:NSProgressIndicator?
     
     // panel overlays file browser table view to show file upload progress
+    @IBOutlet weak var progressSpinner:NSProgressIndicator?
 	@IBOutlet weak var progressPanel: NSView!
 	@IBOutlet weak var progressPanel_fileNameLabel: NSTextField!
 	@IBOutlet weak var progressPanelHorizontalProgress: NSProgressIndicator!
@@ -61,14 +55,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 
         // listen for server changes, and reset table when it does
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetFileBrowserTable:", name: Observers.CURRENT_SERVER_CHANGED, object: nil)
-        
+
         // add file upload / download progress listener
         ServerManager.progressBlock = { type, progress, filename -> () in
-//            println("\nprogress update: \n[type]:\(type), \n[prog]:\(progress), \n[fname]:\(filename)")
             self.progressPanel_fileNameLabel.stringValue = filename
             self.progressPanelHorizontalProgress.doubleValue = progress
         }
-        
         
         // initiate get files
         if ServerManager.activeServer.serverURL != nil { fetchDirContents("/") }
@@ -104,11 +96,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
                 
                 // if we clicked on a folder, cd into it
                 if clickedResource.resourceType == 4 {
+                    
                     // show progress and fetch dir
                     self.progressSpinner?.hidden = false
                     
                     // prevent switching when FTP is working
-                    if (!ServerManager.isSpinning) {
+                    if (!ServerManager.activeServer.isSpinning) {
                         fetchDirContents(clickedResource.resourceName)
                     }
                     
@@ -123,12 +116,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // puts an overlay above the file browser table view
 	func addProgressOverlay(sender:AnyObject) {
         
-        // TODO: clean up
-		ServerManager.isSpinning = sender.object as! Bool
+        // set spinning to status of overlay display (true / false) & display / hide overlay
+		ServerManager.activeServer.isSpinning = sender.object as! Bool
 		self.progressPanel.hidden = !(sender.object as! Bool)
 		self.progressPanel_fileNameLabel.stringValue = "Loading..." // reset label
 		self.progressPanelHorizontalProgress.doubleValue = 0.0 // reset progress bar
-		fileBrowserTblView?.enabled = !ServerManager.isSpinning
+		fileBrowserTblView?.enabled = !ServerManager.activeServer.isSpinning
         
 	}
 	
@@ -146,10 +139,10 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     
     
     
-    
     //
     // MARK: NSTableViewDelegate methods
     //
+  
     
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -231,7 +224,11 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
     // MARK: Custom methods
     //
     
+    
 	func fetchDirContents(path:String) {
+        
+        // set server to isSpinning
+        ServerManager.activeServer.isSpinning = true
         
         // create goto path
         let gotoPath = AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: path).absoluteString!
@@ -243,11 +240,14 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
             // hide progress
             self.progressSpinner?.hidden = true
             
+            // set server to not spinning
+            ServerManager.activeServer.isSpinning = false
+            
             // update absolute path
             ServerManager.activeServer.serverAbsoluteURL = gotoPath
             
             // set window title
-            //
+            /* _____ */
             
             // fill table data
             self.remoteResources = contents as [RemoteResource]

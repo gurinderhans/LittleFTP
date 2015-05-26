@@ -8,12 +8,15 @@
 
 import Foundation
 
-class RemoteResource: NSObject {
+class RemoteResource {
     
+    // required
     var resourceName:String!
     var resourceLastChanged:NSDate!
     var resourceSize:NSInteger!
     var resourceType:NSInteger!
+    
+    // optionals
     var resourceOwner:String?
     var resourceMode:NSInteger?
     

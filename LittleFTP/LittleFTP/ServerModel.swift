@@ -23,6 +23,9 @@ class ServerModel: NSObject, NSCoding {
     var sftp_manager: NMSSHSession?
     var ftp_manager: FTPManager?
     
+    // applies mostly to FTP as that blocks the thread, TODO: FTP only?
+    var isSpinning: Bool = false
+    
     // empty constructor
     override init() {
         super.init()
@@ -43,6 +46,10 @@ class ServerModel: NSObject, NSCoding {
         // TODO: check for port too
         if self.serverURL?.uppercaseString.contains(ServerType.SFTP) == true {
             self.serverType = ServerType.SFTP
+            
+            // also set proper url
+            let host: String? = self.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
+            self.serverURL = host
         }
     }
 	
@@ -63,41 +70,4 @@ class ServerModel: NSObject, NSCoding {
 		coder.encodeObject(self.serverState, forKey: Server.STATE)
         coder.encodeObject(self.serverType, forKey: Server.TYPE)
 	}
-}
-
-
-//
-// MARK : Structs
-//
-
-
-// server keys
-struct Server {
-    static let URL          = "serverURL"
-    static let PORT         = "serverPort"
-    static let UNAME        = "userName"
-    static let PASS         = "userPass"
-    static let STATE        = "serverState"
-    static let TYPE         = "serverType"
-    static let ABS_PATH     = "serverAbsolutePath"
-}
-
-
-// all server types
-struct ServerType {
-    static let FTP      = "FTP"
-    static let SFTP     = "SFTP"
-}
-
-
-
-//
-// MARK: Extensions
-//
-
-extension String {
-    
-    func contains(find: String) -> Bool{
-        return self.rangeOfString(find) != nil
-    }
 }

@@ -21,8 +21,7 @@ class SFTPController {
             self.instance = SFTPController()
             
             // assign ssh server
-            let host: String? = server.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-            self.instance.sftpServer = NMSSHSession.connectToHost(host, port: server.serverPort!, withUsername: server.userName)
+            self.instance.sftpServer = NMSSHSession.connectToHost(server.serverURL, port: server.serverPort!, withUsername: server.userName)
             if self.instance.sftpServer.connected {
                 self.instance.sftpServer.authenticateByPassword(server.userPass)
             }
