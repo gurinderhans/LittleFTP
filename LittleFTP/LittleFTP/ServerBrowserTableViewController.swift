@@ -183,7 +183,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
         let fm = NSFileManager.defaultManager()
 		
         // contains list of urls of file(s) / folder(s) that were dropped on the table
-		var droppedURLs = (info.draggingPasteboard()
+		let droppedURLs = (info.draggingPasteboard()
 			.propertyListForType(NSFilenamesPboardType)! as! [String])
 			.map { NSURL(string: $0) }
 
@@ -194,7 +194,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
             if let urlAttrs: NSDictionary = try? fm.attributesOfItemAtPath((el?.absoluteString)!) {
                 
                 // now create a connection path
-                var connection: ConnectedPathModel = ConnectedPathModel(isEnabled: false,
+                let connection: ConnectedPathModel = ConnectedPathModel(isEnabled: false,
                     localPath: (el?.absoluteString)!,
                     remotePath: AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: "").absoluteString)
                 

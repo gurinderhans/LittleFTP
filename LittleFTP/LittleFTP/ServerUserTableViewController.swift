@@ -138,6 +138,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		for i in createdServers {
 			if i.serverState == 1 { activeServer = i }
 		}
+        if let _ = activeServer{}
         
 //        ServerManager.activeServer = activeServer!
 		
