@@ -1,5 +1,5 @@
 //
-//  LittleFTPWindowController.swift
+//  LFWindowController.swift
 //  LittleFTP
 //
 //  Created by Gurinder Hans on 2/12/16.
@@ -9,7 +9,7 @@
 import Cocoa
 import INAppStoreWindow
 
-class LittleFTPWindowController: NSWindowController {
+class LFWindowController: NSWindowController {
 
     override func windowDidLoad() {
         super.windowDidLoad()
