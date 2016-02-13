@@ -1,5 +1,5 @@
 //
-//  LFServerFilesTableViewController.swift
+//  LFFilesTableViewController.swift
 //  LittleFTP
 //
 //  Created by Gurinder Hans on 2/13/16.
@@ -14,7 +14,7 @@ struct TableViewColIds {
     static let DATE_MOD_ID = "ServerFileModDateCol"
 }
 
-class LFServerFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
+class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
     
     override init() {
         super.init()
