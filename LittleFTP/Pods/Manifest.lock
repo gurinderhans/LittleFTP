@@ -1,18 +1,15 @@
 PODS:
   - FTPManager (1.6.5)
-  - NMSSH (2.2.4)
-  - SwiftFSWatcher (0.1.0)
+  - INAppStoreWindow (1.4)
 
 DEPENDENCIES:
   - FTPManager
-  - NMSSH
-  - SwiftFSWatcher
+  - INAppStoreWindow
 
 SPEC CHECKSUMS:
   FTPManager: e820e8880b0cc85d4db8d9c02322a92493e875aa
-  NMSSH: f0ac02333179d07cf99439801e56cf300342abd8
-  SwiftFSWatcher: 355b705eee72623ebb3a2d61713258ac8d6fe5a7
+  INAppStoreWindow: 4fd569f7435557239e78316de139e886ccbaec4d
 
-PODFILE CHECKSUM: 84c37a2d3f180671601b48bb918d7d9cebf58b6f
+PODFILE CHECKSUM: a0440f238dabf9dce7d4b85cb1eb16f511d0e010
 
 COCOAPODS: 1.0.0.beta.2

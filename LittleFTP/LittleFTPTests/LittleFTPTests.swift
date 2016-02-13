@@ -2,12 +2,12 @@
 //  LittleFTPTests.swift
 //  LittleFTPTests
 //
-//  Created by Gurinder Hans on 3/17/15.
-//  Copyright (c) 2015 Gurinder Hans. All rights reserved.
+//  Created by Gurinder Hans on 2/12/16.
+//  Copyright © 2016 Gurinder Hans. All rights reserved.
 //
 
-import Cocoa
 import XCTest
+@testable import LittleFTP
 
 class LittleFTPTests: XCTestCase {
     
@@ -23,12 +23,12 @@ class LittleFTPTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measureBlock {
             // Put the code you want to measure the time of here.
         }
     }

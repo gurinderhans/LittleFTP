@@ -1,15 +1,15 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '8.0'
-# Uncomment this line if you're using Swift
 use_frameworks!
 
 target 'LittleFTP' do
+	pod 'INAppStoreWindow'
 	pod 'FTPManager'
-	pod 'NMSSH'
-	pod 'SwiftFSWatcher'
 end
 
 target 'LittleFTPTests' do
+
+end
+
+target 'LittleFTPUITests' do
 
 end
 
