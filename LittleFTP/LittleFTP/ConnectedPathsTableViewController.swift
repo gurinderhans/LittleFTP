@@ -8,6 +8,7 @@
 
 import Foundation
 import Cocoa
+import SwiftFSWatcher
 
 class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 	
@@ -17,7 +18,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
     //
     
 	let userDefaults = NSUserDefaults.standardUserDefaults()
-	let mWatcher:MSwiftFileWatcher = MSwiftFileWatcher.createWatcher()
+    let mWatcher: SwiftFSWatcher = SwiftFSWatcher.createWatcher()
 	
     
     //
@@ -65,33 +66,33 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
         
         
 		// listen for file system changes
-		mWatcher.onFileChange = {numEvents, changedPaths in
-            
-            // loop through both Sets and find the union
-            for i in self.connectedPaths {
-                for j in changedPaths {
-                    
-                    // to make sure this url is in the same format as our saved ones
-                    let changedPath = AppUtils.makeURL(j as! String, relativePath: "").absoluteString
-                    
-                    
-                    if self.isValidURL(i.localPath!, urlB: changedPath!) == true {
-                        // upload the folder
-                        ServerManager.uploadData(localPath: i.localPath!, remotePath: i.remotePath!, onServer: ServerManager.activeServer)
-                        
-//                        // let the user know we detected the change by posting a notification
-//                        let notification = NSUserNotification()
-//                        notification.title = "File Change"
-//                        notification.informativeText = changedPath
-//                        notification.soundName = NSUserNotificationDefaultSoundName
+//		mWatcher.onFileChange = {numEvents, changedPaths in
+//            
+//            // loop through both Sets and find the union
+//            for i in self.connectedPaths {
+//                for j in changedPaths {
+//                    
+//                    // to make sure this url is in the same format as our saved ones
+//                    let changedPath = AppUtils.makeURL(j as! String, relativePath: "").absoluteString
+//                    
+//                    
+//                    if self.isValidURL(i.localPath!, urlB: changedPath) == true {
+//                        // upload the folder
+//                        ServerManager.uploadData(localPath: i.localPath!, remotePath: i.remotePath!, onServer: ServerManager.activeServer)
 //                        
-//                        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
-
-                    }
-                    
-                }
-            }
-		}
+////                        // let the user know we detected the change by posting a notification
+////                        let notification = NSUserNotification()
+////                        notification.title = "File Change"
+////                        notification.informativeText = changedPath
+////                        notification.soundName = NSUserNotificationDefaultSoundName
+////                        
+////                        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
+//
+//                    }
+//                    
+//                }
+//            }
+//		}
 		
 		// load saved ConnectedPaths
 		if let data = userDefaults.objectForKey(ServerManager.keyServerNameStringVal+Storage.CONNECTED_PATH_OBJS) as? NSData {
@@ -107,8 +108,8 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		// load enabled watching paths and start watching on those
 		let filteredConns = enabledConnections.filter { $0 != "" } // filter out empty strings, as these are disabled paths
 		if filteredConns.count > 0 { // if we have enabled paths
-			mWatcher.paths =  NSMutableArray(array: filteredConns)
-			mWatcher.watch() // WATCH
+//			mWatcher.paths =  NSMutableArray(array: filteredConns)
+//			mWatcher.watch() // WATCH
 		}
 		
 		// observe for the file drop data
@@ -152,7 +153,7 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		clickedPath.isEnabled = !clickedPath.isEnabled!
 		
 		if (enabledConnections.filter {$0 != ""}).count > 0 {
-			mWatcher.stop() // stop so we can change the paths
+//			mWatcher.stop() // stop so we can change the paths
 		}
 		
 		enabledConnections[row] = (clickedPath.isEnabled! == true) ? connectedPaths[row].localPath! : ""
@@ -162,8 +163,8 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
 		
 		let watchPaths = enabledConnections.filter { $0 != "" }
 		if watchPaths.count > 0 {
-			mWatcher.paths = NSMutableArray(array: watchPaths)
-			mWatcher.watch()
+//			mWatcher.paths = NSMutableArray(array: watchPaths)
+//			mWatcher.watch()
 		}
 		
 		connectedPathsTable?.reloadData()
@@ -192,8 +193,8 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
         // filter connected array and start watching the enabled ones
 		let filteredConns = enabledConnections.filter { $0 != "" }
 		if filteredConns.count > 0 {
-			mWatcher.paths =  NSMutableArray(array: filteredConns)
-			mWatcher.watch()
+//			mWatcher.paths =  NSMutableArray(array: filteredConns)
+//			mWatcher.watch()
 		}
         
         // finally reload table
@@ -238,12 +239,12 @@ class ConnectedPathsTableViewController: NSObject, NSTableViewDataSource, NSTabl
     func isValidURL(urlA: String, urlB: String) -> Bool {
         
         // get index to where we're going to stop
-        let index = advance(urlA.startIndex, count(urlA))
+        let index = urlA.startIndex.advancedBy(urlA.characters.count)
         
         let a = urlA
         let b = urlB.substringToIndex(index)
         
-        println("a:\(a), b:\(b), res:\(a == b)")
+        print("a:\(a), b:\(b), res:\(a == b)")
         
         // return wheteher the two strings are equal or not
         return a == b

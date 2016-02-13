@@ -18,8 +18,8 @@ class AppUtils {
     
     class func makeURL(absolutePath: String, relativePath: String) -> NSURL {
         let serverURL = NSURL(string: absolutePath)?.URLByAppendingPathComponent("")
-        var gotoPath = NSURL(string: relativePath, relativeToURL: serverURL)
-        return NSURL(string: (gotoPath?.absoluteString?.stringByStandardizingPath)!)!
+        let gotoPath = NSURL(string: relativePath, relativeToURL: serverURL)
+        return (gotoPath?.standardizedURL)!
     }
     
 }

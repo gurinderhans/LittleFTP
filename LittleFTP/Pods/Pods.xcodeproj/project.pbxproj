@@ -1,0 +1,1112 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		021AB2DE0B3CB21A563CC4B427771D28 /* NMSSHSessionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8076F383068A64CC106464E2AE6DA79B /* NMSSHSessionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		05AE0FC3D0AF53DD9F6E80A9C2800F07 /* libssh2.h in Headers */ = {isa = PBXBuildFile; fileRef = A59DAA9347471411C4B30A912D8FD8D2 /* libssh2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E7DD35F21989FD30CB2F582725A398F /* NMSSHChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = DD63ACE6DD1CFBCA54DBF8C38857DB0F /* NMSSHChannel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		10473E26AE06D60BC4391A181FBA8251 /* Pods-LittleFTPTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0778A8BA0357A2E48B378E711B8AF061 /* Pods-LittleFTPTests-dummy.m */; };
+		1C0E1028FB6618C56537C3C00BE8FA2C /* NMSSHHostConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = F81F01A9423D1BBA1F9BE8B24E354A28 /* NMSSHHostConfig.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		202FB45980CD83044C3AF72208817C47 /* SwiftFSWatcher-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9583365946727155EDA99003CB65E0EC /* SwiftFSWatcher-dummy.m */; };
+		22D54FB10C11341582ADCE73CD7DB7CE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */; };
+		25A3FC3CFB49E2830F82E7958FEA849D /* socket_helper.h in Headers */ = {isa = PBXBuildFile; fileRef = 24AD9D1D2BE3C11E3028E08E80799091 /* socket_helper.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		2ECDB86723BB08B593278BCD061BC609 /* NMSFTPFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B17D976BD56ADADB265FF707C9D5665 /* NMSFTPFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39EACAE57A0D6A35AE7686FF93A81FAD /* libssh2_publickey.h in Headers */ = {isa = PBXBuildFile; fileRef = 06644273259A207FCE1680F6B39B9DA5 /* libssh2_publickey.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D5D20F00D7F40D7840BA6C6B862C300 /* libssh2_sftp.h in Headers */ = {isa = PBXBuildFile; fileRef = 8128391A8837CF95FB968982663DDC40 /* libssh2_sftp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3E7583623EBC183B99ADD1513FCE775F /* NMSSHSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D36C4434D42D3A694A09292AAB3ED2B /* NMSSHSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		426EF85D2C08DA9409E1129C71D13FD9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */; };
+		52CEF69187E42A43395B33BE24B86674 /* NMSSHConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AA861E2D8CA20CCA8497D4C53007F7A1 /* NMSSHConfig.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		52E38A0F7C116F7533A44365CC841BA9 /* NMSSHConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7D853D709C7087AADAA92B51B74BEE /* NMSSHConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5725F1678F1B5E9C4B34D1CF0D3BB28E /* NMSFTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 4902A60E662ADB3CA8A0B98FE0E89AE4 /* NMSFTP.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		5E8F6451C12363CA18A8842FF119C25C /* socket_helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C81F8DC946B11AD12D6FB62ABC4ED41 /* socket_helper.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		66C4E1571F73DBDBC84770C63F868D72 /* FTPManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 37A63CBE173094D914C3A07516F46752 /* FTPManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		67160014164BFD09B27065E5196ADEA3 /* NMSSHLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 344F5F43D2A6D8EAE399DE429F1F8866 /* NMSSHLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		6B07B038FC566D4206A73544C81717F5 /* SwiftFSWatcher-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD00C70D29EEC5F193D9259DA54B850 /* SwiftFSWatcher-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6D3EFA80B089F9BFC8B4888A2343FEFC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */; };
+		6DD1E5114A989E95E050709563F072DB /* NMSSHSession.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1812906E527299B8896A3BB658F5A5 /* NMSSHSession.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		757F25F7F9574AA546C95F81EDB75C1A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBE3B767439E5A25ADF16F2DA10D7691 /* CFNetwork.framework */; };
+		76207F8C48E0F2DF2A4BDAD919652435 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7B54F9AB0900C2BCDC99DFCCF4BA96 /* CoreServices.framework */; };
+		77FA14878E6311AA5D154DAD2B8BBDF9 /* FTPManager-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9146036A195DA2C6532AEF2175E94FCE /* FTPManager-dummy.m */; };
+		841A68F7EF83EF4F4FB98B39DF05E5FA /* NMSSHChannelDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E43A33A4F6173AB649408388205F4C /* NMSSHChannelDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86D3AD8EA2F594FBB868836BB51D4431 /* Pods-LittleFTP-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B29ECFE772904867002CFAE2CEF46A /* Pods-LittleFTP-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B04A2CA5F79824348C671E741793EC48 /* NMSSH-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 79E2AEFC93E99BA87C64268205E2A9DB /* NMSSH-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B8A6224C85FF104CC7761C9CFD428CD1 /* Pods-LittleFTPTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2F69F8B699C087BE55471CB3F1D13423 /* Pods-LittleFTPTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CAF66ED023002643C0D5F2ED444BE054 /* NMSSHLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = D9ABB99426F62341BC72939FC1DAD022 /* NMSSHLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC2FF4C1DB4E61C82ACA561FE3B459FF /* NMSFTPFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888F565D0DF902BD54C22ECD5D03359 /* NMSFTPFile.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		CE84C055D9B681E5E4C100459AC3C913 /* NMSSHHostConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 062E13EBCFF221532BCBC62C3C70EFEC /* NMSSHHostConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CF2C51036FB0E7A01E0E99A334454518 /* SwiftFSWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A14DA40031F54BE0177C12728356527 /* SwiftFSWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3682026B877A7EE0ACCC6A0B4762698 /* NMSSH+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = A00BFA34A9EA954039E68A005941B89C /* NMSSH+Protected.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D70C4A9F6132BE03947EBE6F67E65BE4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */; };
+		D954EFD98BA0DAFBC7264D61CF2975C2 /* Pods-LittleFTP-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D4499040554EB1DC55FCF2CC3A2274 /* Pods-LittleFTP-dummy.m */; };
+		DC1522D0C77124DA867E560764037F3E /* SwiftFSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F6893BE1F3ECBFBBAFC09ACFDA19E8 /* SwiftFSWatcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		DD8EE5864778E81D1DED95E983D46B86 /* FTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABDE3D5D545F1EABA389BAF48B5D434 /* FTPManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		DE685C8D8DA469FCC3A816A8A4F48E4E /* NMSSHChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 484C4A691088CD6F8A40BE9A24F3CAAE /* NMSSHChannel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E55A5F2662F557EA3BED1ACBEBF8D198 /* FTPManager-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BCDD53354496AC6826F94A4CF8BDBE6C /* FTPManager-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EB93CAEB7463B1B7F1BD59EE4CB84C65 /* NMSSH-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F7879AFA1C955468BEF5D7FAC9DA4D /* NMSSH-dummy.m */; };
+		F017B7DCC01A4C2624B045FCA6C787EC /* NMSFTP.h in Headers */ = {isa = PBXBuildFile; fileRef = DB6A606614C89947FE10D7624F39B8B4 /* NMSFTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F70F2029354F3255A681D827DBAE1E79 /* NMSSH.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FECFC54B7F4A991B82AE3252C98225A /* NMSSH.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FF7262FDF4513DDDCE48DED3C379F9D9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		14E922DE729D76A579D8BC39DB6039EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1660B55730347CBA632ABD498F9D148F;
+			remoteInfo = SwiftFSWatcher;
+		};
+		3E4B36B875937EB67D56279D1DF10243 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E3AF62E0F5CBC7634ED1F1BE464492FD;
+			remoteInfo = NMSSH;
+		};
+		B1363F6732E03C105CC38EC4750D27E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5A082EC2257E16C66ADBC0A9A7859418;
+			remoteInfo = FTPManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		024447F554991429522260132E6B0BAC /* Pods-LittleFTP-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LittleFTP-acknowledgements.markdown"; sourceTree = "<group>"; };
+		062E13EBCFF221532BCBC62C3C70EFEC /* NMSSHHostConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHHostConfig.h; path = NMSSH/NMSSHHostConfig.h; sourceTree = "<group>"; };
+		06644273259A207FCE1680F6B39B9DA5 /* libssh2_publickey.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = libssh2_publickey.h; path = "NMSSH-OSX/Libraries/include/libssh2/libssh2_publickey.h"; sourceTree = "<group>"; };
+		0778A8BA0357A2E48B378E711B8AF061 /* Pods-LittleFTPTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LittleFTPTests-dummy.m"; sourceTree = "<group>"; };
+		07E43A33A4F6173AB649408388205F4C /* NMSSHChannelDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHChannelDelegate.h; path = NMSSH/Protocols/NMSSHChannelDelegate.h; sourceTree = "<group>"; };
+		08EE5310DFCAE2B5AE2D7189D7F7E11B /* FTPManager-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FTPManager-prefix.pch"; sourceTree = "<group>"; };
+		122112E3271E840D8309252817BCB230 /* Pods_LittleFTPTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LittleFTPTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13139791A501FD5597101CD1D364AD79 /* Pods-LittleFTPTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-LittleFTPTests.modulemap"; sourceTree = "<group>"; };
+		24AD9D1D2BE3C11E3028E08E80799091 /* socket_helper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = socket_helper.h; path = NMSSH/Config/socket_helper.h; sourceTree = "<group>"; };
+		28B29ECFE772904867002CFAE2CEF46A /* Pods-LittleFTP-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LittleFTP-umbrella.h"; sourceTree = "<group>"; };
+		2C81F8DC946B11AD12D6FB62ABC4ED41 /* socket_helper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = socket_helper.m; path = NMSSH/Config/socket_helper.m; sourceTree = "<group>"; };
+		2F69F8B699C087BE55471CB3F1D13423 /* Pods-LittleFTPTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LittleFTPTests-umbrella.h"; sourceTree = "<group>"; };
+		344F5F43D2A6D8EAE399DE429F1F8866 /* NMSSHLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSSHLogger.m; path = NMSSH/Config/NMSSHLogger.m; sourceTree = "<group>"; };
+		37A63CBE173094D914C3A07516F46752 /* FTPManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FTPManager.h; path = FTPManager/FTPManager.h; sourceTree = "<group>"; };
+		387D8438D312C1256281567523C8E82F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39A455CB27C2419975A0C5463D3CECFA /* Pods-LittleFTP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LittleFTP.debug.xcconfig"; sourceTree = "<group>"; };
+		3D1577770188E96A431A02CD21D51167 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		426D5E14A9DF9686A64315BB02F3F611 /* NMSSH-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NMSSH-prefix.pch"; sourceTree = "<group>"; };
+		484C4A691088CD6F8A40BE9A24F3CAAE /* NMSSHChannel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHChannel.h; path = NMSSH/NMSSHChannel.h; sourceTree = "<group>"; };
+		4902A60E662ADB3CA8A0B98FE0E89AE4 /* NMSFTP.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSFTP.m; path = NMSSH/NMSFTP.m; sourceTree = "<group>"; };
+		49DECF1578C7A90E410AC1B987764760 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A6B544D67347C6C462776DA06EA7FC6 /* FTPManager.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = FTPManager.modulemap; sourceTree = "<group>"; };
+		4D36C4434D42D3A694A09292AAB3ED2B /* NMSSHSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHSession.h; path = NMSSH/NMSSHSession.h; sourceTree = "<group>"; };
+		4FECFC54B7F4A991B82AE3252C98225A /* NMSSH.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSH.h; path = NMSSH/NMSSH.h; sourceTree = "<group>"; };
+		60D341C514705619BF29F7306ED0A0E3 /* Pods-LittleFTP-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LittleFTP-acknowledgements.plist"; sourceTree = "<group>"; };
+		6482DA94B52566AF58504ED937E6A01C /* SwiftFSWatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftFSWatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65BA4E885AA351801B891FC0490A8951 /* NMSSH.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = NMSSH.modulemap; sourceTree = "<group>"; };
+		65BB4B823ECB0557EC879E6B2623507C /* Pods-LittleFTP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LittleFTP.release.xcconfig"; sourceTree = "<group>"; };
+		669CFD2E3868E390B89D24D6F6B06523 /* Pods-LittleFTPTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LittleFTPTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		6888F565D0DF902BD54C22ECD5D03359 /* NMSFTPFile.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSFTPFile.m; path = NMSSH/NMSFTPFile.m; sourceTree = "<group>"; };
+		6B7D853D709C7087AADAA92B51B74BEE /* NMSSHConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHConfig.h; path = NMSSH/NMSSHConfig.h; sourceTree = "<group>"; };
+		76026AEA5D3DD3818F23C5BBE249B523 /* Pods-LittleFTP-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LittleFTP-frameworks.sh"; sourceTree = "<group>"; };
+		79E2AEFC93E99BA87C64268205E2A9DB /* NMSSH-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NMSSH-umbrella.h"; sourceTree = "<group>"; };
+		7ABDE3D5D545F1EABA389BAF48B5D434 /* FTPManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FTPManager.m; path = FTPManager/FTPManager.m; sourceTree = "<group>"; };
+		7B17D976BD56ADADB265FF707C9D5665 /* NMSFTPFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSFTPFile.h; path = NMSSH/NMSFTPFile.h; sourceTree = "<group>"; };
+		8076F383068A64CC106464E2AE6DA79B /* NMSSHSessionDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHSessionDelegate.h; path = NMSSH/Protocols/NMSSHSessionDelegate.h; sourceTree = "<group>"; };
+		8128391A8837CF95FB968982663DDC40 /* libssh2_sftp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = libssh2_sftp.h; path = "NMSSH-OSX/Libraries/include/libssh2/libssh2_sftp.h"; sourceTree = "<group>"; };
+		86492B2A15BAC7868C8DE21FE7449637 /* Pods_LittleFTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LittleFTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		872F8DC4F7D4AA93E8F5A20B794F3B8B /* Pods-LittleFTP-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LittleFTP-resources.sh"; sourceTree = "<group>"; };
+		8B7B54F9AB0900C2BCDC99DFCCF4BA96 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		8F20BD243618984EEE544A337B5317BF /* SwiftFSWatcher.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftFSWatcher.xcconfig; sourceTree = "<group>"; };
+		8F98CE0A767687FBC9E1B8F30643CA50 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9146036A195DA2C6532AEF2175E94FCE /* FTPManager-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FTPManager-dummy.m"; sourceTree = "<group>"; };
+		9583365946727155EDA99003CB65E0EC /* SwiftFSWatcher-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftFSWatcher-dummy.m"; sourceTree = "<group>"; };
+		9A14DA40031F54BE0177C12728356527 /* SwiftFSWatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SwiftFSWatcher.h; path = SwiftFSWatcher/SwiftFSWatcher.h; sourceTree = "<group>"; };
+		9EB33C32ADCD804E744D07695F0AADFB /* Pods-LittleFTPTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LittleFTPTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		9FD00C70D29EEC5F193D9259DA54B850 /* SwiftFSWatcher-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftFSWatcher-umbrella.h"; sourceTree = "<group>"; };
+		A00BFA34A9EA954039E68A005941B89C /* NMSSH+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NMSSH+Protected.h"; path = "NMSSH/Config/NMSSH+Protected.h"; sourceTree = "<group>"; };
+		A22A17C3E7575C24CA89A360774D949D /* FTPManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FTPManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A59DAA9347471411C4B30A912D8FD8D2 /* libssh2.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = libssh2.h; path = "NMSSH-OSX/Libraries/include/libssh2/libssh2.h"; sourceTree = "<group>"; };
+		A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		AA861E2D8CA20CCA8497D4C53007F7A1 /* NMSSHConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSSHConfig.m; path = NMSSH/NMSSHConfig.m; sourceTree = "<group>"; };
+		AE6BEB082EB4DA777A779000B017FD2C /* Pods-LittleFTPTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LittleFTPTests-frameworks.sh"; sourceTree = "<group>"; };
+		B3F6893BE1F3ECBFBBAFC09ACFDA19E8 /* SwiftFSWatcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SwiftFSWatcher.m; path = SwiftFSWatcher/SwiftFSWatcher.m; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BCDD53354496AC6826F94A4CF8BDBE6C /* FTPManager-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FTPManager-umbrella.h"; sourceTree = "<group>"; };
+		BCFA56B2FA41DFED8447DB393FEEC0A3 /* SwiftFSWatcher.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwiftFSWatcher.modulemap; sourceTree = "<group>"; };
+		C941E5270F29EADCBB2C974CAF1A0DCD /* libssh2.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libssh2.a; path = "NMSSH-OSX/Libraries/lib/libssh2.a"; sourceTree = "<group>"; };
+		D5AD0680C5E904D981D2D50BBE7C2F71 /* Pods-LittleFTPTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LittleFTPTests-resources.sh"; sourceTree = "<group>"; };
+		D6D4499040554EB1DC55FCF2CC3A2274 /* Pods-LittleFTP-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LittleFTP-dummy.m"; sourceTree = "<group>"; };
+		D6F7879AFA1C955468BEF5D7FAC9DA4D /* NMSSH-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NMSSH-dummy.m"; sourceTree = "<group>"; };
+		D9ABB99426F62341BC72939FC1DAD022 /* NMSSHLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSSHLogger.h; path = NMSSH/Config/NMSSHLogger.h; sourceTree = "<group>"; };
+		DB6A606614C89947FE10D7624F39B8B4 /* NMSFTP.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMSFTP.h; path = NMSSH/NMSFTP.h; sourceTree = "<group>"; };
+		DCAFBD4C32A3669234F8CF4CBC403612 /* Pods-LittleFTPTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LittleFTPTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD63ACE6DD1CFBCA54DBF8C38857DB0F /* NMSSHChannel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSSHChannel.m; path = NMSSH/NMSSHChannel.m; sourceTree = "<group>"; };
+		DE5CA676AD1D197FB1B2F87BBD81C5D5 /* SwiftFSWatcher-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftFSWatcher-prefix.pch"; sourceTree = "<group>"; };
+		E00BA5B6699296BFAD06A8CFA41C2873 /* FTPManager.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FTPManager.xcconfig; sourceTree = "<group>"; };
+		E1E7097BD8C7404451EEC0E5368909A5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E793B25CB4271FD227F4F050DFB3C919 /* Pods-LittleFTP.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-LittleFTP.modulemap"; sourceTree = "<group>"; };
+		F199C132A24228EEA65292350A9A467F /* NMSSH.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NMSSH.xcconfig; sourceTree = "<group>"; };
+		F39F31E13563CA2C28F95F807D4A5DA2 /* NMSSH.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NMSSH.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F81F01A9423D1BBA1F9BE8B24E354A28 /* NMSSHHostConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSSHHostConfig.m; path = NMSSH/NMSSHHostConfig.m; sourceTree = "<group>"; };
+		FB1812906E527299B8896A3BB658F5A5 /* NMSSHSession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMSSHSession.m; path = NMSSH/NMSSHSession.m; sourceTree = "<group>"; };
+		FBE3B767439E5A25ADF16F2DA10D7691 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		FC10DBA3D947101D2C457A6B379B7E6E /* Pods-LittleFTPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LittleFTPTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		57B42E9E708D482CE702C733E187D5CF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D3EFA80B089F9BFC8B4888A2343FEFC /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83C7B7F568B446DF9AF5F4B8BDF15A60 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D54FB10C11341582ADCE73CD7DB7CE /* Cocoa.framework in Frameworks */,
+				76207F8C48E0F2DF2A4BDAD919652435 /* CoreServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A74666185D318102C7E1BF6C3124050E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426EF85D2C08DA9409E1129C71D13FD9 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF0C78402B42984B4149EF2150D8E685 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757F25F7F9574AA546C95F81EDB75C1A /* CFNetwork.framework in Frameworks */,
+				D70C4A9F6132BE03947EBE6F67E65BE4 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBB4404C55999FC03698830CAB867700 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF7262FDF4513DDDCE48DED3C379F9D9 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		070A4942FB9B26ACEAAFA506303D5049 /* Pods-LittleFTP */ = {
+			isa = PBXGroup;
+			children = (
+				3D1577770188E96A431A02CD21D51167 /* Info.plist */,
+				E793B25CB4271FD227F4F050DFB3C919 /* Pods-LittleFTP.modulemap */,
+				024447F554991429522260132E6B0BAC /* Pods-LittleFTP-acknowledgements.markdown */,
+				60D341C514705619BF29F7306ED0A0E3 /* Pods-LittleFTP-acknowledgements.plist */,
+				D6D4499040554EB1DC55FCF2CC3A2274 /* Pods-LittleFTP-dummy.m */,
+				76026AEA5D3DD3818F23C5BBE249B523 /* Pods-LittleFTP-frameworks.sh */,
+				872F8DC4F7D4AA93E8F5A20B794F3B8B /* Pods-LittleFTP-resources.sh */,
+				28B29ECFE772904867002CFAE2CEF46A /* Pods-LittleFTP-umbrella.h */,
+				39A455CB27C2419975A0C5463D3CECFA /* Pods-LittleFTP.debug.xcconfig */,
+				65BB4B823ECB0557EC879E6B2623507C /* Pods-LittleFTP.release.xcconfig */,
+			);
+			name = "Pods-LittleFTP";
+			path = "Target Support Files/Pods-LittleFTP";
+			sourceTree = "<group>";
+		};
+		0C13B0AEBB9949E264C3C392524DE276 /* Pods-LittleFTPTests */ = {
+			isa = PBXGroup;
+			children = (
+				49DECF1578C7A90E410AC1B987764760 /* Info.plist */,
+				13139791A501FD5597101CD1D364AD79 /* Pods-LittleFTPTests.modulemap */,
+				9EB33C32ADCD804E744D07695F0AADFB /* Pods-LittleFTPTests-acknowledgements.markdown */,
+				669CFD2E3868E390B89D24D6F6B06523 /* Pods-LittleFTPTests-acknowledgements.plist */,
+				0778A8BA0357A2E48B378E711B8AF061 /* Pods-LittleFTPTests-dummy.m */,
+				AE6BEB082EB4DA777A779000B017FD2C /* Pods-LittleFTPTests-frameworks.sh */,
+				D5AD0680C5E904D981D2D50BBE7C2F71 /* Pods-LittleFTPTests-resources.sh */,
+				2F69F8B699C087BE55471CB3F1D13423 /* Pods-LittleFTPTests-umbrella.h */,
+				FC10DBA3D947101D2C457A6B379B7E6E /* Pods-LittleFTPTests.debug.xcconfig */,
+				DCAFBD4C32A3669234F8CF4CBC403612 /* Pods-LittleFTPTests.release.xcconfig */,
+			);
+			name = "Pods-LittleFTPTests";
+			path = "Target Support Files/Pods-LittleFTPTests";
+			sourceTree = "<group>";
+		};
+		39E111C05095D513A354828C9C9EEF86 /* FTPManager */ = {
+			isa = PBXGroup;
+			children = (
+				37A63CBE173094D914C3A07516F46752 /* FTPManager.h */,
+				7ABDE3D5D545F1EABA389BAF48B5D434 /* FTPManager.m */,
+				EC95B5EB24C4A1FE7D5240A9BD1DF875 /* Support Files */,
+			);
+			path = FTPManager;
+			sourceTree = "<group>";
+		};
+		3BD6199AA6C8713FF893069CA52D0A02 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				070A4942FB9B26ACEAAFA506303D5049 /* Pods-LittleFTP */,
+				0C13B0AEBB9949E264C3C392524DE276 /* Pods-LittleFTPTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		4A4BFF2015D7151A09E4CD77A05FF80C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				39E111C05095D513A354828C9C9EEF86 /* FTPManager */,
+				4F3D5EBE41513FDE3B2D199C20545300 /* NMSSH */,
+				5AB88647AEAA5EC3CC97639A26EA13A9 /* SwiftFSWatcher */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		4DA93B08740FC5532114D0B7C54A8828 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				387D8438D312C1256281567523C8E82F /* Info.plist */,
+				65BA4E885AA351801B891FC0490A8951 /* NMSSH.modulemap */,
+				F199C132A24228EEA65292350A9A467F /* NMSSH.xcconfig */,
+				D6F7879AFA1C955468BEF5D7FAC9DA4D /* NMSSH-dummy.m */,
+				426D5E14A9DF9686A64315BB02F3F611 /* NMSSH-prefix.pch */,
+				79E2AEFC93E99BA87C64268205E2A9DB /* NMSSH-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/NMSSH";
+			sourceTree = "<group>";
+		};
+		4F3D5EBE41513FDE3B2D199C20545300 /* NMSSH */ = {
+			isa = PBXGroup;
+			children = (
+				A59DAA9347471411C4B30A912D8FD8D2 /* libssh2.h */,
+				06644273259A207FCE1680F6B39B9DA5 /* libssh2_publickey.h */,
+				8128391A8837CF95FB968982663DDC40 /* libssh2_sftp.h */,
+				DB6A606614C89947FE10D7624F39B8B4 /* NMSFTP.h */,
+				4902A60E662ADB3CA8A0B98FE0E89AE4 /* NMSFTP.m */,
+				7B17D976BD56ADADB265FF707C9D5665 /* NMSFTPFile.h */,
+				6888F565D0DF902BD54C22ECD5D03359 /* NMSFTPFile.m */,
+				4FECFC54B7F4A991B82AE3252C98225A /* NMSSH.h */,
+				A00BFA34A9EA954039E68A005941B89C /* NMSSH+Protected.h */,
+				484C4A691088CD6F8A40BE9A24F3CAAE /* NMSSHChannel.h */,
+				DD63ACE6DD1CFBCA54DBF8C38857DB0F /* NMSSHChannel.m */,
+				07E43A33A4F6173AB649408388205F4C /* NMSSHChannelDelegate.h */,
+				6B7D853D709C7087AADAA92B51B74BEE /* NMSSHConfig.h */,
+				AA861E2D8CA20CCA8497D4C53007F7A1 /* NMSSHConfig.m */,
+				062E13EBCFF221532BCBC62C3C70EFEC /* NMSSHHostConfig.h */,
+				F81F01A9423D1BBA1F9BE8B24E354A28 /* NMSSHHostConfig.m */,
+				D9ABB99426F62341BC72939FC1DAD022 /* NMSSHLogger.h */,
+				344F5F43D2A6D8EAE399DE429F1F8866 /* NMSSHLogger.m */,
+				4D36C4434D42D3A694A09292AAB3ED2B /* NMSSHSession.h */,
+				FB1812906E527299B8896A3BB658F5A5 /* NMSSHSession.m */,
+				8076F383068A64CC106464E2AE6DA79B /* NMSSHSessionDelegate.h */,
+				24AD9D1D2BE3C11E3028E08E80799091 /* socket_helper.h */,
+				2C81F8DC946B11AD12D6FB62ABC4ED41 /* socket_helper.m */,
+				A89C92D23B111C861570FCF04E7CE433 /* Frameworks */,
+				4DA93B08740FC5532114D0B7C54A8828 /* Support Files */,
+			);
+			path = NMSSH;
+			sourceTree = "<group>";
+		};
+		5AB88647AEAA5EC3CC97639A26EA13A9 /* SwiftFSWatcher */ = {
+			isa = PBXGroup;
+			children = (
+				9A14DA40031F54BE0177C12728356527 /* SwiftFSWatcher.h */,
+				B3F6893BE1F3ECBFBBAFC09ACFDA19E8 /* SwiftFSWatcher.m */,
+				D1E8CE66C50102BF1DCB1027BF4CB5EC /* Support Files */,
+			);
+			path = SwiftFSWatcher;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				96D996393384F21972E2DD81788EE22C /* Frameworks */,
+				4A4BFF2015D7151A09E4CD77A05FF80C /* Pods */,
+				F185AAAB2E1984C5D46AA5605F0DB227 /* Products */,
+				3BD6199AA6C8713FF893069CA52D0A02 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		96D996393384F21972E2DD81788EE22C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FD5DBA100ADB7B41E41068CB793BBD19 /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A89C92D23B111C861570FCF04E7CE433 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C941E5270F29EADCBB2C974CAF1A0DCD /* libssh2.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D1E8CE66C50102BF1DCB1027BF4CB5EC /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				8F98CE0A767687FBC9E1B8F30643CA50 /* Info.plist */,
+				BCFA56B2FA41DFED8447DB393FEEC0A3 /* SwiftFSWatcher.modulemap */,
+				8F20BD243618984EEE544A337B5317BF /* SwiftFSWatcher.xcconfig */,
+				9583365946727155EDA99003CB65E0EC /* SwiftFSWatcher-dummy.m */,
+				DE5CA676AD1D197FB1B2F87BBD81C5D5 /* SwiftFSWatcher-prefix.pch */,
+				9FD00C70D29EEC5F193D9259DA54B850 /* SwiftFSWatcher-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SwiftFSWatcher";
+			sourceTree = "<group>";
+		};
+		EC95B5EB24C4A1FE7D5240A9BD1DF875 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A6B544D67347C6C462776DA06EA7FC6 /* FTPManager.modulemap */,
+				E00BA5B6699296BFAD06A8CFA41C2873 /* FTPManager.xcconfig */,
+				9146036A195DA2C6532AEF2175E94FCE /* FTPManager-dummy.m */,
+				08EE5310DFCAE2B5AE2D7189D7F7E11B /* FTPManager-prefix.pch */,
+				BCDD53354496AC6826F94A4CF8BDBE6C /* FTPManager-umbrella.h */,
+				E1E7097BD8C7404451EEC0E5368909A5 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FTPManager";
+			sourceTree = "<group>";
+		};
+		F185AAAB2E1984C5D46AA5605F0DB227 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A22A17C3E7575C24CA89A360774D949D /* FTPManager.framework */,
+				F39F31E13563CA2C28F95F807D4A5DA2 /* NMSSH.framework */,
+				86492B2A15BAC7868C8DE21FE7449637 /* Pods_LittleFTP.framework */,
+				122112E3271E840D8309252817BCB230 /* Pods_LittleFTPTests.framework */,
+				6482DA94B52566AF58504ED937E6A01C /* SwiftFSWatcher.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD5DBA100ADB7B41E41068CB793BBD19 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				FBE3B767439E5A25ADF16F2DA10D7691 /* CFNetwork.framework */,
+				A8180EF1222EB3444FD5B28DFA174AEF /* Cocoa.framework */,
+				8B7B54F9AB0900C2BCDC99DFCCF4BA96 /* CoreServices.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6A46E28ADF954D646109E04D2D2CFAC1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E55A5F2662F557EA3BED1ACBEBF8D198 /* FTPManager-umbrella.h in Headers */,
+				66C4E1571F73DBDBC84770C63F868D72 /* FTPManager.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F8E770B82581F73152BF39B21007A2C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B07B038FC566D4206A73544C81717F5 /* SwiftFSWatcher-umbrella.h in Headers */,
+				CF2C51036FB0E7A01E0E99A334454518 /* SwiftFSWatcher.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		809F5E119AB278390AC5B902A5E443F0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05AE0FC3D0AF53DD9F6E80A9C2800F07 /* libssh2.h in Headers */,
+				39EACAE57A0D6A35AE7686FF93A81FAD /* libssh2_publickey.h in Headers */,
+				3D5D20F00D7F40D7840BA6C6B862C300 /* libssh2_sftp.h in Headers */,
+				F017B7DCC01A4C2624B045FCA6C787EC /* NMSFTP.h in Headers */,
+				2ECDB86723BB08B593278BCD061BC609 /* NMSFTPFile.h in Headers */,
+				D3682026B877A7EE0ACCC6A0B4762698 /* NMSSH+Protected.h in Headers */,
+				B04A2CA5F79824348C671E741793EC48 /* NMSSH-umbrella.h in Headers */,
+				F70F2029354F3255A681D827DBAE1E79 /* NMSSH.h in Headers */,
+				DE685C8D8DA469FCC3A816A8A4F48E4E /* NMSSHChannel.h in Headers */,
+				841A68F7EF83EF4F4FB98B39DF05E5FA /* NMSSHChannelDelegate.h in Headers */,
+				52E38A0F7C116F7533A44365CC841BA9 /* NMSSHConfig.h in Headers */,
+				CE84C055D9B681E5E4C100459AC3C913 /* NMSSHHostConfig.h in Headers */,
+				CAF66ED023002643C0D5F2ED444BE054 /* NMSSHLogger.h in Headers */,
+				3E7583623EBC183B99ADD1513FCE775F /* NMSSHSession.h in Headers */,
+				021AB2DE0B3CB21A563CC4B427771D28 /* NMSSHSessionDelegate.h in Headers */,
+				25A3FC3CFB49E2830F82E7958FEA849D /* socket_helper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A1518C9CAE5D2CE7573DAC93BE5C331 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86D3AD8EA2F594FBB868836BB51D4431 /* Pods-LittleFTP-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB654A267A7BC30B5CA72C84037CD9C4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8A6224C85FF104CC7761C9CFD428CD1 /* Pods-LittleFTPTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1660B55730347CBA632ABD498F9D148F /* SwiftFSWatcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55C1DD7435C013ACB3E4F7BFD9EBEE2A /* Build configuration list for PBXNativeTarget "SwiftFSWatcher" */;
+			buildPhases = (
+				6A76A649A4719610FD4E5CBD9AC2B42B /* Sources */,
+				57B42E9E708D482CE702C733E187D5CF /* Frameworks */,
+				6F8E770B82581F73152BF39B21007A2C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftFSWatcher;
+			productName = SwiftFSWatcher;
+			productReference = 6482DA94B52566AF58504ED937E6A01C /* SwiftFSWatcher.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		5A082EC2257E16C66ADBC0A9A7859418 /* FTPManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D2486BB1644FEB5AACD8E4A3A8B8683 /* Build configuration list for PBXNativeTarget "FTPManager" */;
+			buildPhases = (
+				D074BC38434EF7520B701B148027935C /* Sources */,
+				83C7B7F568B446DF9AF5F4B8BDF15A60 /* Frameworks */,
+				6A46E28ADF954D646109E04D2D2CFAC1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FTPManager;
+			productName = FTPManager;
+			productReference = A22A17C3E7575C24CA89A360774D949D /* FTPManager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8AA244D830B4F015940ED95A49EB2073 /* Pods-LittleFTPTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A14062507D050EC33D783312DB2CD7F /* Build configuration list for PBXNativeTarget "Pods-LittleFTPTests" */;
+			buildPhases = (
+				0913EA89129C15310DADC78FFF648C25 /* Sources */,
+				FBB4404C55999FC03698830CAB867700 /* Frameworks */,
+				DB654A267A7BC30B5CA72C84037CD9C4 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-LittleFTPTests";
+			productName = "Pods-LittleFTPTests";
+			productReference = 122112E3271E840D8309252817BCB230 /* Pods_LittleFTPTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9629D8439E50D010094BFE0E7367414D /* Pods-LittleFTP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A98AD594849BC2181D15A679C0033DF /* Build configuration list for PBXNativeTarget "Pods-LittleFTP" */;
+			buildPhases = (
+				FA4BD516CF63EFB15C3932B7FCEFBC1A /* Sources */,
+				A74666185D318102C7E1BF6C3124050E /* Frameworks */,
+				9A1518C9CAE5D2CE7573DAC93BE5C331 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				88CE82284A8B15C54FDDE62C75E7CDA8 /* PBXTargetDependency */,
+				337A34FAD7C409AD2F7979E8B22DA7CE /* PBXTargetDependency */,
+				D2AB67F384121E98DA654B6C3B04A59E /* PBXTargetDependency */,
+			);
+			name = "Pods-LittleFTP";
+			productName = "Pods-LittleFTP";
+			productReference = 86492B2A15BAC7868C8DE21FE7449637 /* Pods_LittleFTP.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E3AF62E0F5CBC7634ED1F1BE464492FD /* NMSSH */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AC494B1BF9D99F0E9AB93474CADB01B /* Build configuration list for PBXNativeTarget "NMSSH" */;
+			buildPhases = (
+				5FAA80D18B6BA89600791DA1EAF0CF0E /* Sources */,
+				EF0C78402B42984B4149EF2150D8E685 /* Frameworks */,
+				809F5E119AB278390AC5B902A5E443F0 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NMSSH;
+			productName = NMSSH;
+			productReference = F39F31E13563CA2C28F95F807D4A5DA2 /* NMSSH.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = F185AAAB2E1984C5D46AA5605F0DB227 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5A082EC2257E16C66ADBC0A9A7859418 /* FTPManager */,
+				E3AF62E0F5CBC7634ED1F1BE464492FD /* NMSSH */,
+				9629D8439E50D010094BFE0E7367414D /* Pods-LittleFTP */,
+				8AA244D830B4F015940ED95A49EB2073 /* Pods-LittleFTPTests */,
+				1660B55730347CBA632ABD498F9D148F /* SwiftFSWatcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0913EA89129C15310DADC78FFF648C25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10473E26AE06D60BC4391A181FBA8251 /* Pods-LittleFTPTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FAA80D18B6BA89600791DA1EAF0CF0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5725F1678F1B5E9C4B34D1CF0D3BB28E /* NMSFTP.m in Sources */,
+				CC2FF4C1DB4E61C82ACA561FE3B459FF /* NMSFTPFile.m in Sources */,
+				EB93CAEB7463B1B7F1BD59EE4CB84C65 /* NMSSH-dummy.m in Sources */,
+				0E7DD35F21989FD30CB2F582725A398F /* NMSSHChannel.m in Sources */,
+				52CEF69187E42A43395B33BE24B86674 /* NMSSHConfig.m in Sources */,
+				1C0E1028FB6618C56537C3C00BE8FA2C /* NMSSHHostConfig.m in Sources */,
+				67160014164BFD09B27065E5196ADEA3 /* NMSSHLogger.m in Sources */,
+				6DD1E5114A989E95E050709563F072DB /* NMSSHSession.m in Sources */,
+				5E8F6451C12363CA18A8842FF119C25C /* socket_helper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A76A649A4719610FD4E5CBD9AC2B42B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				202FB45980CD83044C3AF72208817C47 /* SwiftFSWatcher-dummy.m in Sources */,
+				DC1522D0C77124DA867E560764037F3E /* SwiftFSWatcher.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D074BC38434EF7520B701B148027935C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77FA14878E6311AA5D154DAD2B8BBDF9 /* FTPManager-dummy.m in Sources */,
+				DD8EE5864778E81D1DED95E983D46B86 /* FTPManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA4BD516CF63EFB15C3932B7FCEFBC1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D954EFD98BA0DAFBC7264D61CF2975C2 /* Pods-LittleFTP-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		337A34FAD7C409AD2F7979E8B22DA7CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NMSSH;
+			target = E3AF62E0F5CBC7634ED1F1BE464492FD /* NMSSH */;
+			targetProxy = 3E4B36B875937EB67D56279D1DF10243 /* PBXContainerItemProxy */;
+		};
+		88CE82284A8B15C54FDDE62C75E7CDA8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FTPManager;
+			target = 5A082EC2257E16C66ADBC0A9A7859418 /* FTPManager */;
+			targetProxy = B1363F6732E03C105CC38EC4750D27E0 /* PBXContainerItemProxy */;
+		};
+		D2AB67F384121E98DA654B6C3B04A59E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftFSWatcher;
+			target = 1660B55730347CBA632ABD498F9D148F /* SwiftFSWatcher */;
+			targetProxy = 14E922DE729D76A579D8BC39DB6039EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		200617EA0D50A7A037D4A47CB6900492 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		214CC4D5FACDA553EEB2EB336399E4EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65BB4B823ECB0557EC879E6B2623507C /* Pods-LittleFTP.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LittleFTP/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = "Target Support Files/Pods-LittleFTP/Pods-LittleFTP.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LittleFTP;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		2A731585770BCA9A985351570BF4B0B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F20BD243618984EEE544A337B5317BF /* SwiftFSWatcher.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftFSWatcher/SwiftFSWatcher-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftFSWatcher/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = "Target Support Files/SwiftFSWatcher/SwiftFSWatcher.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = SwiftFSWatcher;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		42E0B13BBCEE1F71D98F0E48811FF508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		47736B09212B08AE4DF9CE8B5C469733 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCAFBD4C32A3669234F8CF4CBC403612 /* Pods-LittleFTPTests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LittleFTPTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = "Target Support Files/Pods-LittleFTPTests/Pods-LittleFTPTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LittleFTPTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		4DF68C4E37F5C0C6768AF0163743527C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC10DBA3D947101D2C457A6B379B7E6E /* Pods-LittleFTPTests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LittleFTPTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = "Target Support Files/Pods-LittleFTPTests/Pods-LittleFTPTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LittleFTPTests;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		78E5E950A4843B0A9FB7C858D0F80B38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E00BA5B6699296BFAD06A8CFA41C2873 /* FTPManager.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FTPManager/FTPManager-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FTPManager/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = "Target Support Files/FTPManager/FTPManager.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = FTPManager;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		84BA4CC79FB8CFBFB670B0920F6A5A52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F199C132A24228EEA65292350A9A467F /* NMSSH.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/NMSSH/NMSSH-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NMSSH/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MODULEMAP_FILE = "Target Support Files/NMSSH/NMSSH.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = NMSSH;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		965579B25E4B29AEB55A3B734DF61FEC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E00BA5B6699296BFAD06A8CFA41C2873 /* FTPManager.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FTPManager/FTPManager-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FTPManager/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = "Target Support Files/FTPManager/FTPManager.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = FTPManager;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		AB49E37380D90DDEC2131ECA3826508A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F199C132A24228EEA65292350A9A467F /* NMSSH.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/NMSSH/NMSSH-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NMSSH/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MODULEMAP_FILE = "Target Support Files/NMSSH/NMSSH.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = NMSSH;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		F410443D47CB2B8050CC6FEE36821B7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F20BD243618984EEE544A337B5317BF /* SwiftFSWatcher.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftFSWatcher/SwiftFSWatcher-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftFSWatcher/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = "Target Support Files/SwiftFSWatcher/SwiftFSWatcher.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = SwiftFSWatcher;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F46600EC051F72C6F1EC0C48E8FDE310 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39A455CB27C2419975A0C5463D3CECFA /* Pods-LittleFTP.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LittleFTP/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MODULEMAP_FILE = "Target Support Files/Pods-LittleFTP/Pods-LittleFTP.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LittleFTP;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A98AD594849BC2181D15A679C0033DF /* Build configuration list for PBXNativeTarget "Pods-LittleFTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F46600EC051F72C6F1EC0C48E8FDE310 /* Debug */,
+				214CC4D5FACDA553EEB2EB336399E4EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42E0B13BBCEE1F71D98F0E48811FF508 /* Debug */,
+				200617EA0D50A7A037D4A47CB6900492 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A14062507D050EC33D783312DB2CD7F /* Build configuration list for PBXNativeTarget "Pods-LittleFTPTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DF68C4E37F5C0C6768AF0163743527C /* Debug */,
+				47736B09212B08AE4DF9CE8B5C469733 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55C1DD7435C013ACB3E4F7BFD9EBEE2A /* Build configuration list for PBXNativeTarget "SwiftFSWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A731585770BCA9A985351570BF4B0B9 /* Debug */,
+				F410443D47CB2B8050CC6FEE36821B7F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AC494B1BF9D99F0E9AB93474CADB01B /* Build configuration list for PBXNativeTarget "NMSSH" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB49E37380D90DDEC2131ECA3826508A /* Debug */,
+				84BA4CC79FB8CFBFB670B0920F6A5A52 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D2486BB1644FEB5AACD8E4A3A8B8683 /* Build configuration list for PBXNativeTarget "FTPManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				965579B25E4B29AEB55A3B734DF61FEC /* Debug */,
+				78E5E950A4843B0A9FB7C858D0F80B38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

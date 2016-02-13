@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import NMSSH
+import FTPManager
 
 
 class ServerModel: NSObject, NSCoding {
@@ -53,7 +55,7 @@ class ServerModel: NSObject, NSCoding {
         }
     }
 	
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		self.serverURL = aDecoder.decodeObjectForKey(Server.URL) as? String
 		self.serverPort = aDecoder.decodeObjectForKey(Server.PORT) as? Int
 		self.userName = aDecoder.decodeObjectForKey(Server.UNAME) as? String

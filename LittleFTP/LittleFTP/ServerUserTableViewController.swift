@@ -91,7 +91,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		editingRow = -1
         
         // show popover where the view is, where we clicked
-        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSMaxXEdge)
+        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSRectEdge.MaxX)
 	}
     
     
@@ -138,7 +138,8 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		for i in createdServers {
 			if i.serverState == 1 { activeServer = i }
 		}
-        ServerManager.activeServer = activeServer!
+        
+//        ServerManager.activeServer = activeServer!
 		
 		// notification observer for listening right clicks on switch Button
         // notification gets sent from the button view
@@ -191,7 +192,7 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
 		serverPassword.stringValue = selectedServer.userPass!
 		
         // show popover where the view is, where we clicked
-		mPopover.showRelativeToRect(view.bounds, ofView: view, preferredEdge: NSMaxXEdge)
+		mPopover.showRelativeToRect(view.bounds, ofView: view, preferredEdge: NSRectEdge.MaxX)
 		
 	}
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NMSSH
 
 class SFTPController {
     
@@ -33,27 +34,29 @@ class SFTPController {
     }
     
     init() {
-        println(__FUNCTION__)
+        print(__FUNCTION__)
     }
     
     
     func fetchDir(path:String, completed: ([RemoteResource]) -> Void) {
         // fetch dir
-        let response = self.sftpServer.channel.execute("ls -al \(path)", error: nil)
+        let response = try? self.sftpServer.channel.execute("ls -al \(path)")
         
         // FIXME: how to check for no response ?
         if response != "" {
             
             var fetchedResources = [RemoteResource]()
             
-            var folderContents = split(response) {$0 == "\n"}
+            var folderContents = response?.characters.split {$0 == "\n"}.map { String($0) }
             
-            if folderContents.first?.contains("total") == true { folderContents.removeAtIndex(folderContents.startIndex) }
+            if folderContents?.first?.contains("total") == true {
+                folderContents?.removeAtIndex(folderContents!.startIndex)
+            }
             
-            for i in folderContents {
-                let resourceArr = split(i) {$0 == " "}
+            for i in (folderContents)! {
+                let resourceArr = i.characters.split {$0 == " "}.map { String($0) }
                 
-                let sz = (resourceArr[4].toInt() == 4096) ? 1 : 0
+                let sz = (Int(resourceArr[4]) == 4096) ? 1 : 0
                 let createdResource = RemoteResource(
                     resourceName: resourceArr.last!,
                     resourceLastChanged: SFTPManager.getResourceDate(resourceArr),

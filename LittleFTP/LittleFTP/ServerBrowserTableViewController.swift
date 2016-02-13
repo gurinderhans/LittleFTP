@@ -71,7 +71,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
         // register tableview for drag/drop & for double click on each cell
 		fileBrowserTblView?.target = self
         fileBrowserTblView?.doubleAction = "fileBrowserTblView_dblClick:"
-        fileBrowserTblView?.registerForDraggedTypes([kUTTypeFileURL]) // for only files
+        fileBrowserTblView?.registerForDraggedTypes([kUTTypeFileURL as String]) // for only files
 		
         // start spinning the spinner
         progressSpinner?.startAnimation(self)
@@ -191,12 +191,12 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
 		var tmpConnectionObjs = [ConnectedPathModel]()
         
         for el in droppedURLs {
-            if let urlAttrs: NSDictionary = fm.attributesOfItemAtPath((el?.absoluteString)!, error: nil) {
+            if let urlAttrs: NSDictionary = try? fm.attributesOfItemAtPath((el?.absoluteString)!) {
                 
                 // now create a connection path
                 var connection: ConnectedPathModel = ConnectedPathModel(isEnabled: false,
                     localPath: (el?.absoluteString)!,
-                    remotePath: AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: "").absoluteString!)
+                    remotePath: AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: "").absoluteString)
                 
                 // removing file names from the local path
                 if (urlAttrs["NSFileType"] as! String) == "NSFileTypeRegular" {
@@ -231,7 +231,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
         ServerManager.activeServer.isSpinning = true
         
         // create goto path
-        let gotoPath = AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: path).absoluteString!
+        let gotoPath = AppUtils.makeURL(ServerManager.activeServer.serverAbsoluteURL, relativePath: path).absoluteString
 
         
         // then fetch dir
@@ -253,7 +253,7 @@ class ServerBrowserTableViewController: NSObject, NSTableViewDataSource, NSTable
             self.remoteResources = contents as [RemoteResource]
             
             // sort by type -> folders first, then files
-            self.remoteResources.sort({$0.resourceType < $1.resourceType})
+            self.remoteResources.sortInPlace({$0.resourceType < $1.resourceType})
             
             // reload table
             self.fileBrowserTblView?.reloadData()

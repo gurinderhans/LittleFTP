@@ -15,12 +15,12 @@ class SFTPManager: NSObject {
     }
     
     class func getResourceDate(resources: [String]) -> NSDate {
-        var dt = ",".join(resources[5..<8])
+        let dt = resources[5..<8].joinWithSeparator(",")
         
         var dtFormat = ""
         if resources[7].contains(":") == true {
-            let tmSplit = split(resources[7]) {$0 == ":"}
-            if tmSplit.first?.toInt() > 12 {
+            let tmSplit = resources[7].characters.split {$0 == ":"}.map { String($0) }
+            if Int(tmSplit.first!) > 12 {
                 dtFormat = "MMM,dd,HH:mm"
             } else {
                 dtFormat = "MMM,dd,hh:mm"
@@ -44,8 +44,8 @@ class SFTPManager: NSObject {
     /**
     Returns the resource type - file || folder
     
-    :param: resources An array containg information about the resource such as date, type, name, etc..
-    :returns: The type of resource, one of [file, folder]
+    - parameter resources: An array containg information about the resource such as date, type, name, etc..
+    - returns: The type of resource, one of [file, folder]
     */
     class func getResourceType(resources: [String]) -> Int {
         // this gets the perms of the file / folder

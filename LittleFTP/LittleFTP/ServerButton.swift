@@ -12,7 +12,7 @@ import Cocoa
 class ServerButton: NSButton {
 	override func rightMouseDown(theEvent: NSEvent) {
 		let view = self as NSView
-        println("clicked button")
+        Swift.print("clicked button")
 		NSNotificationCenter.defaultCenter().postNotificationName("switchRClick", object: view)
 	}
 }

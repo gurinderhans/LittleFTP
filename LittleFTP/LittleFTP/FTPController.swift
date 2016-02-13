@@ -7,13 +7,10 @@
 //
 
 import Foundation
+import FTPManager
 
 class FTPController {
-    
-    //
-    //
-    //
-    
+
     private static var instance: FTPController!
     
     var ftpServer: FMServer!
@@ -26,7 +23,7 @@ class FTPController {
             self.instance = FTPController()
             
             // assign ftp server
-            self.instance.ftpServer = FMServer(destination: server.serverURL!, onPort: Int32(server.serverPort!), username: server.userName!, password: server.userPass!)
+            self.instance.ftpServer = FMServer(destination: server.serverURL, username: server.userName, password: server.userPass)
             
             // assign ftp manager
             self.instance.ftpManager = FTPManager()
@@ -37,7 +34,7 @@ class FTPController {
     }
     
     init() {
-        println(__FUNCTION__)
+        print(__FUNCTION__)
     }
     
     
@@ -45,7 +42,7 @@ class FTPController {
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             // fetch in background
-            let response = self.ftpManager.contentsOfServer(self.ftpServer, atLocation: path)
+            let response = self.ftpManager.contentsOfServer(self.ftpServer)
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
 
@@ -85,12 +82,12 @@ class FTPController {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             
             // upload the file
-            self.ftpManager.uploadFile(filePath, toServer: self.ftpServer, atLocation: path)
+//            self.ftpManager.uploadFile(filePath, toServer: self.ftpServer, atLocation: path)
             
             // assign a progress listener
-            self.ftpManager.onProgress = { totalProgress, fileName in
-                ServerManager.progressBlock(type: ProgressType.UPLOAD, progress: totalProgress, filename: fileName)
-            }
+//            self.ftpManager.onProgress = { totalProgress, fileName in
+//                ServerManager.progressBlock(type: ProgressType.UPLOAD, progress: totalProgress, filename: fileName)
+//            }
             
             // call completion block on complete
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

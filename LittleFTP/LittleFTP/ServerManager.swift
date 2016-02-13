@@ -55,9 +55,9 @@ class ServerManager {
     /**
     Reads contents of a folder
     
-    :param: path The folder path to read from
-    :param: onFetched The completion block, gets called when we have fetched the read data
-    :returns: List<RemoteResources> containing the read contents
+    - parameter path: The folder path to read from
+    - parameter onFetched: The completion block, gets called when we have fetched the read data
+    - returns: List<RemoteResources> containing the read contents
     */
     
     class func list_directory(path: String, ofServer server: ServerModel, onFetched: ([RemoteResource]) -> Void) {
@@ -146,7 +146,7 @@ class ServerManager {
                 if server.serverType == ServerType.FTP {
                     
                     let ftpController = FTPController.sharedController(server)
-                    ftpController.createFolder(remotePath.absoluteString!, completed: { success -> Void in
+                    ftpController.createFolder(remotePath.absoluteString, completed: { success -> Void in
                         createDirs(dirs: dirQ, files: flQ)
                     })
                     
@@ -172,7 +172,7 @@ class ServerManager {
             
             
             // create a new queue <type: dict> for files and folders
-            var filesQueue = Queue<Dictionary<NSURL, NSURL>>(),
+            let filesQueue = Queue<Dictionary<NSURL, NSURL>>(),
             foldersQueue = Queue<Dictionary<NSURL, NSURL>>()
             
             // create an enumerator to index through file paths
@@ -190,7 +190,7 @@ class ServerManager {
                 let remoteURL = NSURL(string: pathTo)?.URLByAppendingPathComponent(element)
                 
                 // get element attributes to check if type is file or folder
-                if let attribs = fm.attributesOfItemAtPath((localURL?.absoluteString)!, error: nil) {
+                if let attribs = try? fm.attributesOfItemAtPath((localURL?.absoluteString)!) {
                     // the type
                     let type = attribs["NSFileType"] as! String
                     

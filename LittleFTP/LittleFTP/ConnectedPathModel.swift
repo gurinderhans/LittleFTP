@@ -24,7 +24,7 @@ class ConnectedPathModel: NSObject, NSCoding {
         self.remotePath = remotePath
     }
 	
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		self.isEnabled = aDecoder.decodeBoolForKey(keyIsEnabled)
 		self.localPath = aDecoder.decodeObjectForKey(keyLocalPath) as? String
 		self.remotePath = aDecoder.decodeObjectForKey(keyRemotePath) as? String

@@ -6,18 +6,11 @@
 //  Copyright (c) 2015 Gurinder Hans. All rights reserved.
 //
 
-import Foundation
-
-//
-// MARK: Extensions
-//
-
-
 extension String {
     
     // removes all given characters from string
     func stripCharactersInSet(chars: [Character]) -> String {
-        return String(filter(self) {find(chars, $0) == nil})
+        return String(self.characters.filter {chars.indexOf($0) == nil})
     }
 }
 
