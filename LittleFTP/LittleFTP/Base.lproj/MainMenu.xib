@@ -1001,7 +1001,7 @@
         </customObject>
         <customObject id="Awm-YT-uJb" customClass="ServerUserTableViewController" customModule="LittleFTP" customModuleProvider="target">
             <connections>
-                <outlet property="mPopover" destination="sQ0-Ku-Lhj" id="rhu-ql-wUf"/>
+                <outlet property="popoverForm" destination="sQ0-Ku-Lhj" id="Fod-3e-6Xc"/>
                 <outlet property="popoverTitle" destination="YHd-TE-PMr" id="GI4-Ds-fbc"/>
                 <outlet property="secondaryButton" destination="nq3-6J-eFb" id="LVU-qJ-FQw"/>
                 <outlet property="serverPassword" destination="xn0-tD-87g" id="bCQ-C2-BkO"/>

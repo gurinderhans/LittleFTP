@@ -18,9 +18,7 @@
 		41869B7E1AD121A200200297 /* ServerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41869B7D1AD121A200200297 /* ServerButton.swift */; };
 		418747811ABFBC0C00E12407 /* ServerBrowserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */; };
 		418811291AC0DE4A003E16A6 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418811281AC0DE4A003E16A6 /* AppUtils.swift */; };
-		41A214D21B124137004FA963 /* SFTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A214D11B124137004FA963 /* SFTPManager.swift */; };
 		41CB7AD71B12A5F2009A715F /* FTPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB7AD61B12A5F2009A715F /* FTPController.swift */; };
-		41CB7AD91B12A829009A715F /* SFTPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CB7AD81B12A829009A715F /* SFTPController.swift */; };
 		41EE9EB41AB8C65500C96D7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EE9EB31AB8C65500C96D7D /* AppDelegate.swift */; };
 		41EE9EB61AB8C65500C96D7D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41EE9EB51AB8C65500C96D7D /* Images.xcassets */; };
 		41EE9EB91AB8C65500C96D7D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41EE9EB71AB8C65500C96D7D /* MainMenu.xib */; };
@@ -52,9 +50,7 @@
 		41869B7D1AD121A200200297 /* ServerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerButton.swift; sourceTree = "<group>"; };
 		418747801ABFBC0C00E12407 /* ServerBrowserTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerBrowserTableViewController.swift; sourceTree = "<group>"; };
 		418811281AC0DE4A003E16A6 /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
-		41A214D11B124137004FA963 /* SFTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPManager.swift; sourceTree = "<group>"; };
 		41CB7AD61B12A5F2009A715F /* FTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPController.swift; sourceTree = "<group>"; };
-		41CB7AD81B12A829009A715F /* SFTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPController.swift; sourceTree = "<group>"; };
 		41EE9EAE1AB8C65400C96D7D /* LittleFTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittleFTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41EE9EB21AB8C65500C96D7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41EE9EB31AB8C65500C96D7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -106,9 +102,7 @@
 		415A68921B119058009254D8 /* NetworkProtocols */ = {
 			isa = PBXGroup;
 			children = (
-				41A214D11B124137004FA963 /* SFTPManager.swift */,
 				41CB7AD61B12A5F2009A715F /* FTPController.swift */,
-				41CB7AD81B12A829009A715F /* SFTPController.swift */,
 			);
 			name = NetworkProtocols;
 			sourceTree = "<group>";
@@ -435,12 +429,10 @@
 				4165BB0B1ABAA5E300FA9E8E /* RemoteResource.swift in Sources */,
 				414901901ABE08FB001550A1 /* ServerModel.swift in Sources */,
 				418747811ABFBC0C00E12407 /* ServerBrowserTableViewController.swift in Sources */,
-				41A214D21B124137004FA963 /* SFTPManager.swift in Sources */,
 				410756171B14DD8600A30ED5 /* ClassExtensions.swift in Sources */,
 				41F5C7D41AC114F2003504C5 /* Queue.swift in Sources */,
 				41869B7E1AD121A200200297 /* ServerButton.swift in Sources */,
 				41EE9EB41AB8C65500C96D7D /* AppDelegate.swift in Sources */,
-				41CB7AD91B12A829009A715F /* SFTPController.swift in Sources */,
 				411BE7C81ACB94F400C4903F /* ServerManager.swift in Sources */,
 				418811291AC0DE4A003E16A6 /* AppUtils.swift in Sources */,
 				417D6FAF1ABD4EE100C9167B /* ServerUserTableViewController.swift in Sources */,

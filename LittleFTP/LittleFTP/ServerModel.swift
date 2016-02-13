@@ -13,19 +13,19 @@ import FTPManager
 
 class ServerModel: NSObject, NSCoding {
 
-	var serverURL:String? // server IP address
-	var serverPort:Int? // port used to make a conn with the server
-	var userName:String? // username
-    var userPass:String? // password
-	var serverState:Int? // is this server currently being used ? 1 (if it is) : 0 (if not)
-    var serverType: String? // is server FTP or SFTP ?
+	var serverURL:String! // server IP address
+	var serverPort:String! // port used to make a conn with the server
+	var userName:String! // username
+    var userPass:String! // password
+    var serverType: String! // FTP or SFTP or Whatever...
+    var serverState:Int! // is this server currently being used ? 1 (if it is) : 0 (if not)
     
     // tmp vars only kept in memory
     var serverAbsoluteURL: String = "" // the absolute path for the server where we are currently standing
     var sftp_manager: NMSSHSession?
     var ftp_manager: FTPManager?
     
-    // applies mostly to FTP as that blocks the thread, TODO: FTP only?
+    // applies mostly to FTP server as they are synchrounous
     var isSpinning: Bool = false
     
     // empty constructor
@@ -34,30 +34,17 @@ class ServerModel: NSObject, NSCoding {
     }
     
     // custom constructor
-	init(serverURL: String, serverPort:Int, userName: String, userPass:String, serverState:Int) {
-        super.init()
-        
-		self.serverURL = serverURL
-		self.serverPort = serverPort
-        self.userName = userName
-		self.userPass = userPass
-		self.serverState = serverState
-        self.serverType = ServerType.FTP
-        
-        // set server type to SFTP is it is
-        // TODO: check for port too
-        if self.serverURL?.uppercaseString.contains(ServerType.SFTP) == true {
-            self.serverType = ServerType.SFTP
-            
-            // also set proper url
-            let host: String? = self.serverURL?.stringByReplacingOccurrencesOfString("sftp://", withString: "")
-            self.serverURL = host
-        }
+	convenience init(host: String, port:String, uname: String, pass:String) {
+        self.init()
+		self.serverURL = host
+		self.serverPort = port
+        self.userName = uname
+		self.userPass = pass
     }
 	
 	required init?(coder aDecoder: NSCoder) {
 		self.serverURL = aDecoder.decodeObjectForKey(Server.URL) as? String
-		self.serverPort = aDecoder.decodeObjectForKey(Server.PORT) as? Int
+		self.serverPort = aDecoder.decodeObjectForKey(Server.PORT) as? String
 		self.userName = aDecoder.decodeObjectForKey(Server.UNAME) as? String
 		self.userPass = aDecoder.decodeObjectForKey(Server.PASS) as? String
 		self.serverState = aDecoder.decodeObjectForKey(Server.STATE) as? Int

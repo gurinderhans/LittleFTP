@@ -10,208 +10,147 @@ import Foundation
 import Cocoa
 
 class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableViewDelegate {
-	
-	// MARK: Constants
-	let ACTION_CANCEL_TEXT = "Cancel"
-	let ACTION_DELETE_TEXT = "Delete"
-	let TITLE_EDIT_SERVER = "Edit Server"
-	let TITLE_ADD_SERVER = "Add Server"
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-	
-    
-    //
-	// MARK: TableView data variables
-    //
-    
-	var createdServers = [ServerModel]()
-	var editingRow:Int = -1
-	
-    
-    //
-	// MARK: Outlets & Actions
-    //
     
     @IBOutlet var serverTableView:NSTableView?
-	@IBOutlet weak var mPopover: NSPopover!
+    @IBOutlet weak var popoverForm: NSPopover!
     
-	// popover text fields
-	@IBOutlet weak var serverUrl: NSTextField!
-	@IBOutlet weak var serverPort: NSTextField!
-	@IBOutlet weak var serverUsername: NSTextField!
-	@IBOutlet weak var serverPassword: NSSecureTextField!
-	@IBOutlet weak var secondaryButton: NSButton!
-	@IBOutlet weak var popoverTitle: NSTextField!
+    // popover text fields
+    @IBOutlet weak var serverUrl: NSTextField!
+    @IBOutlet weak var serverPort: NSTextField!
+    @IBOutlet weak var serverUsername: NSTextField!
+    @IBOutlet weak var serverPassword: NSSecureTextField!
+    @IBOutlet weak var popoverTitle: NSTextField!
+    @IBOutlet weak var secondaryButton: NSButton!
+	
+	let ACTION_CANCEL_TEXT = "Cancel",
+        ACTION_DELETE_TEXT = "Delete";
+    
+	let TITLE_EDIT_SERVER = "Edit Server",
+        TITLE_ADD_SERVER = "Add Server";
+    
+    let APP_DATA = NSUserDefaults.standardUserDefaults()
+	
+	var savedServers = [ServerModel]()
 	
 	// save server action
 	@IBAction func saveServer(sender: AnyObject) {
-		
-		if serverUrl.stringValue != "" {
-			let port = (serverPort.integerValue != 0) ? serverPort.integerValue : 21
-			let uname = (serverUsername.stringValue != "") ? serverUsername.stringValue : "anonymous"
-			let pass = (serverPassword.stringValue != "") ? serverPassword.stringValue : ""
-			
-			if popoverTitle.stringValue == TITLE_EDIT_SERVER {
-				let editingServer = createdServers[editingRow]
-				editingServer.serverURL = serverUrl.stringValue
-				editingServer.serverPort = port
-				editingServer.userName = uname
-				editingServer.userPass = pass
-			} else {
-				self.createdServers.append( ServerModel(
-					serverURL: serverUrl.stringValue,
-					serverPort: port,
-					userName: uname,
-					userPass: pass,
-					serverState: 0))
-			}
-
-			serverTableView?.reloadData()
-			saveServers()
-		}
-		
-		self.mPopover.close()
-
+        
+        print("saving server...")
+        
+        // Input sanitization and checks
+        let host = serverUrl.stringValue
+        let port = serverPort.stringValue
+        let uname = serverUsername.stringValue
+        let pass = serverPassword.stringValue
+        if !host.isEmpty && !port.isEmpty && !uname.isEmpty && !pass.isEmpty {
+            print("passed input checks")
+            
+            let newServer = ServerModel(host: host, port: port, uname: uname, pass: pass)
+            savedServers.append(newServer)
+            serverTableView?.reloadData()
+            popoverForm.close()
+        }
 	}
     
-    
-	// add new server button action
 	@IBAction func addServer(sender: AnyObject) {
-
-        // set title's and stuff
         popoverTitle.stringValue = TITLE_ADD_SERVER
         secondaryButton.title = ACTION_CANCEL_TEXT
-        
-        // clear all fields and reset editing row
-        serverUrl.stringValue = ""
-        serverPort.intValue = 21
-        serverUsername.stringValue = ""
-        serverPassword.stringValue = ""
-        
-        // we aren't editing any server right now
-		editingRow = -1
-        
-        // show popover where the view is, where we clicked
-        mPopover.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSRectEdge.MaxX)
+        fillForm(withServer: nil)
+        popoverForm.showRelativeToRect(sender.bounds, ofView: sender as! NSView, preferredEdge: NSRectEdge.MaxX)
 	}
     
     
 	// switch from this server to another
 	@IBAction func switchServer(sender: AnyObject) {
-		
-        if let selectedRow = serverTableView?.rowForView(sender as! NSView) {
-            
-            //
-            // change button states and stuff in the UI
-            //
-            
-            
-            // reset all to 0
-            for i in self.createdServers { i.serverState = 0 }
-            
-            // set this to 1 and save changes
-            self.createdServers[selectedRow].serverState = 1
-            saveServers()
-            
-            // update and tell table controllers
-            ServerManager.activeServer = createdServers[selectedRow]
-            NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
-
-        }
-        
-		self.serverTableView?.reloadData()
+//        if let selectedRow = serverTableView?.rowForView(sender as! NSView) {
+//            
+//            //
+//            // change button states and stuff in the UI
+//            //
+//            
+//            
+//            // reset all to 0
+//            for i in self.savedServers { i.serverState = 0 }
+//            
+//            // set this to 1 and save changes
+//            self.savedServers[selectedRow].serverState = 1
+//            saveServers()
+//            
+//            // update and tell table controllers
+////            ServerManager.activeServer = createdServers[selectedRow]
+//            NSNotificationCenter.defaultCenter().postNotificationName("serverChanged", object: nil)
+//
+//        }
+//        
+//		self.serverTableView?.reloadData()
 	}
     
 	
     
-    //
-	// MARK: App init methods
-    //
+	// MARK: - App init methods
     
     override init() {
         super.init()
 		
-		// load saved servers
-		createdServers = ServerManager.allServers()
-		
-		// load active server
-		var activeServer:ServerModel?
-		for i in createdServers {
-			if i.serverState == 1 { activeServer = i }
-		}
-        if let _ = activeServer{}
-        
+//		// load saved servers
+//		savedServers = ServerManager.allServers()
+//		
+//		// load active server
+//		var activeServer:ServerModel?
+//		for i in savedServers {
+//			if i.serverState == 1 { activeServer = i }
+//		}
+//        if let _ = activeServer{}
+//        
 //        ServerManager.activeServer = activeServer!
 		
-		// notification observer for listening right clicks on switch Button
-        // notification gets sent from the button view
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchRightClick:", name:"switchRClick", object: nil)
-		
+		// notification observer for listening right clicks on switch button notification gets sent from the button view
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchRightClick:", name:"switchRightClick", object: nil)
     }
 	
 	override func awakeFromNib() {
-		mPopover.behavior = NSPopoverBehavior.Transient
+		popoverForm.behavior = NSPopoverBehavior.Transient
 		secondaryButton.target = self
 		secondaryButton.action = "manageSecondaryButton:"
 	}
 	
-    
-    
-    //
-	// MARK: selector methods
-	//
-    
+	
+    // MARK: - Selector methods
     
     func manageSecondaryButton(sender: AnyObject) {
 		if self.secondaryButton.title == ACTION_DELETE_TEXT {
-			createdServers.removeAtIndex(editingRow)
+//			savedServers.removeAtIndex(editingRow)
 			saveServers()
 			
 			self.serverTableView?.reloadData()
 
 		}
-		self.mPopover.close()
+		self.popoverForm.close()
 	}
 	
 	func switchRightClick(notification: NSNotification) {
-        
-        // set title and secondary button action value
 		secondaryButton.title = ACTION_DELETE_TEXT
 		popoverTitle.stringValue = TITLE_EDIT_SERVER
-		
-        // get selected row index
-		let view = notification.object as! NSView
-		let selectedRow = serverTableView?.rowForView(view)
-        
-        // we are editing this row
-		editingRow = selectedRow!
-        
-		// load saved values in to their respective values
-		let selectedServer = createdServers[selectedRow!]
-		serverUrl.stringValue = selectedServer.serverURL!
-		serverPort.integerValue = selectedServer.serverPort!
-		serverUsername.stringValue = selectedServer.userName!
-		serverPassword.stringValue = selectedServer.userPass!
-		
-        // show popover where the view is, where we clicked
-		mPopover.showRelativeToRect(view.bounds, ofView: view, preferredEdge: NSRectEdge.MaxX)
-		
+
+        let view = notification.object as! NSView
+        if let selectedRow = serverTableView?.rowForView(view) {
+            fillForm(withServer: savedServers[selectedRow])
+            popoverForm.showRelativeToRect(view.bounds, ofView: view, preferredEdge: NSRectEdge.MaxX)
+        } else {
+            // TODO: display an error occured trying to edit server
+        }
 	}
     
 	
     
-    //
-    // MARK: NSTableViewDataSource methods
-	//
+    // MARK: - NSTableViewDataSource methods
     
-    
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int { return createdServers.count }
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return savedServers.count
+    }
 	
-	
-    
-    //
-    // MARK: NSTableView methods
-    //
-    
+
+    // MARK: - NSTableView methods
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         if let selectedRow = notification.object?.selectedRow {
@@ -222,22 +161,34 @@ class ServerUserTableViewController: NSObject, NSTableViewDataSource, NSTableVie
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
 		let cellView:ServerUserTableCellView? = tableView.makeViewWithIdentifier("ServerUserCell", owner: self) as? ServerUserTableCellView
         cellView?.serverUserImage?.image = NSImage(named: "server")
-		cellView?.serverState.state = createdServers[row].serverState!
+		cellView?.serverState.state = 1
         return cellView
     }
 	
     
-    //
-	// MARK: Custom methods
-    //
+	// MARK: - Custom methods
+    
+    
+    func fillForm(withServer server: ServerModel?) {
+        if let s = server { // fill with this server info
+            serverUrl.stringValue = s.serverURL
+            serverPort.stringValue = s.serverPort
+            serverUsername.stringValue = s.userName
+            serverPassword.stringValue = s.userPass
+        } else { // clear all fields
+            serverUrl.stringValue = ""
+            serverPort.stringValue = "21"
+            serverUsername.stringValue = ""
+            serverPassword.stringValue = ""
+        }
+    }
     
     
 	func saveServers() {
-		userDefaults.setObject( NSKeyedArchiver.archivedDataWithRootObject(createdServers),
-			forKey: Storage.SERVERS)
+//		APP_DATA.setObject( NSKeyedArchiver.archivedDataWithRootObject(savedServers),
+//			forKey: Storage.SERVERS)
 	}
     
-
 }
 
 class ServerUserTableCellView:NSTableCellView {

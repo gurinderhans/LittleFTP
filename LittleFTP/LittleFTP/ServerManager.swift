@@ -68,12 +68,6 @@ class ServerManager {
             // fetch
             ftp.fetchDir(path, completed: onFetched)
 
-        } else if server.serverType == ServerType.SFTP {
-            
-            // create controller from the server
-            let sftp = SFTPController.sharedController(server)
-            // fetch
-            sftp.fetchDir(path, completed: onFetched)
         }
     }
     

@@ -6,23 +6,21 @@
 //  Copyright (c) 2015 Gurinder Hans. All rights reserved.
 //
 
-import Foundation
-
 // progress types
-struct ProgressType {
-    static let UPLOAD = "progTypeUpload"
-    static let DOWNLOAD = "progTypeDownload"
+class ProgressType {
+    static let UPLOAD       = "progTypeUpload"
+    static let DOWNLOAD     = "progTypeDownload"
 }
 
 // app observers used for various purposes
-struct Observers {
-    static let FILE_BROWSER_OVERLAY_PANEL = "setOverlay"
-    static let CURRENT_SERVER_CHANGED = "serverChanged"
-    static let NEW_CONNECTION_PATH = "newConnectionPath"
+class Observers {
+    static let FILE_BROWSER_OVERLAY_PANEL   = "setOverlay"
+    static let CURRENT_SERVER_CHANGED       = "serverChanged"
+    static let NEW_CONNECTION_PATH          = "newConnectionPath"
 }
 
 // server keys
-struct Server {
+class Server {
     static let URL          = "serverURL"
     static let PORT         = "serverPort"
     static let UNAME        = "userName"
@@ -34,7 +32,7 @@ struct Server {
 
 
 // all server types
-struct ServerType {
-    static let FTP      = "FTP"
-    static let SFTP     = "SFTP"
+class ServerType {
+    static let FTP          = "FTP"
+    static let SFTP         = "SFTP"
 }
