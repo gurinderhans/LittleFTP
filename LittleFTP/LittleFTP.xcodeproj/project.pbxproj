@@ -14,6 +14,7 @@
 		410C5EDC1C6EE83F00C16180 /* LittleFTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C5EDB1C6EE83F00C16180 /* LittleFTPTests.swift */; };
 		410C5EE71C6EE83F00C16180 /* LittleFTPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C5EE61C6EE83F00C16180 /* LittleFTPUITests.swift */; };
 		4125A0621C6F2DE500FD859D /* LFServerFilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125A0611C6F2DE500FD859D /* LFServerFilesTableViewController.swift */; };
+		4125A0641C6F33A800FD859D /* LFServersListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125A0631C6F33A800FD859D /* LFServersListController.swift */; };
 		419502701C6F07E400D828BB /* LFWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4195026F1C6F07E400D828BB /* LFWindowController.swift */; };
 		5797FC0CABC34286BEF604FD /* Pods_LittleFTPUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE3DB4882BCEF5ECDBFDA16 /* Pods_LittleFTPUITests.framework */; };
 		D361D174E08829007345FA19 /* Pods_LittleFTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF4AD9A0810FF810F4184C0F /* Pods_LittleFTP.framework */; };
@@ -53,6 +54,7 @@
 		410C5EE61C6EE83F00C16180 /* LittleFTPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittleFTPUITests.swift; sourceTree = "<group>"; };
 		410C5EE81C6EE83F00C16180 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4125A0611C6F2DE500FD859D /* LFServerFilesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFServerFilesTableViewController.swift; sourceTree = "<group>"; };
+		4125A0631C6F33A800FD859D /* LFServersListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFServersListController.swift; sourceTree = "<group>"; };
 		4195026F1C6F07E400D828BB /* LFWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFWindowController.swift; sourceTree = "<group>"; };
 		6155335962AE389327D5F6BB /* Pods_LittleFTPTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LittleFTPTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ACA40085F523E2E439D0976 /* Pods-LittleFTPUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LittleFTPUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LittleFTPUITests/Pods-LittleFTPUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				410C5ED21C6EE83F00C16180 /* Info.plist */,
 				4195026F1C6F07E400D828BB /* LFWindowController.swift */,
 				4125A0611C6F2DE500FD859D /* LFServerFilesTableViewController.swift */,
+				4125A0631C6F33A800FD859D /* LFServersListController.swift */,
 			);
 			path = LittleFTP;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				410C5ECC1C6EE83F00C16180 /* ViewController.swift in Sources */,
 				410C5ECA1C6EE83E00C16180 /* AppDelegate.swift in Sources */,
 				419502701C6F07E400D828BB /* LFWindowController.swift in Sources */,
+				4125A0641C6F33A800FD859D /* LFServersListController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
