@@ -85,9 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-LittleFTP/FTPManager.framework"
-  install_framework "Pods-LittleFTP/INAppStoreWindow.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-LittleFTP/FTPManager.framework"
-  install_framework "Pods-LittleFTP/INAppStoreWindow.framework"
 fi

@@ -1,15 +1,12 @@
 PODS:
   - FTPManager (1.6.5)
-  - INAppStoreWindow (1.4)
 
 DEPENDENCIES:
   - FTPManager
-  - INAppStoreWindow
 
 SPEC CHECKSUMS:
   FTPManager: e820e8880b0cc85d4db8d9c02322a92493e875aa
-  INAppStoreWindow: 4fd569f7435557239e78316de139e886ccbaec4d
 
-PODFILE CHECKSUM: a0440f238dabf9dce7d4b85cb1eb16f511d0e010
+PODFILE CHECKSUM: dba3c174b3e0f495dc0ffeb3f2043e09f3b6c245
 
 COCOAPODS: 1.0.0.beta.2

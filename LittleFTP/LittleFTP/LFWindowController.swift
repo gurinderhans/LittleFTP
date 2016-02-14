@@ -7,19 +7,17 @@
 //
 
 import Cocoa
-import INAppStoreWindow
 
 class LFWindowController: NSWindowController {
-
+    
+    @IBAction func navButtonsClicked(nav:NSSegmentedControl!){
+        NSNotificationCenter.defaultCenter().postNotificationName("navigationChanged", object: nav.selectedSegment)
+    }
+    
     override func windowDidLoad() {
         super.windowDidLoad()
         
-        if let aWindow = self.window as? INAppStoreWindow {
-            aWindow.titleBarHeight = 50
-            aWindow.titleBarStartColor = NSColor(calibratedWhite: 0.8, alpha: 1.0)
-            aWindow.titleBarEndColor = NSColor(calibratedWhite: 0.9, alpha: 1.0)
-            aWindow.baselineSeparatorColor = NSColor(calibratedWhite: 0.6, alpha: 1.0)
-        }
+        self.window?.titleVisibility = .Hidden
     }
 
 }

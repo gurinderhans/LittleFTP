@@ -1,7 +1,6 @@
 use_frameworks!
 
 target 'LittleFTP' do
-	pod 'INAppStoreWindow'
 	pod 'FTPManager'
 end
 

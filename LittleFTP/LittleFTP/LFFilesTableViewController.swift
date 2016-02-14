@@ -34,6 +34,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
         super.init()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "listServer:", name: "listServer", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "navigationChanged:", name: "navigationChanged", object: nil)
     }
     
     override func awakeFromNib() {
@@ -43,14 +44,26 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     // MARK: - Selector methods
     
+    func navigationChanged(sender: AnyObject!) {
+        if let code = sender.object as? Int {
+            if code == 0 {
+                // BACK
+                let prevPath = currentPath.URLByDeletingLastPathComponent?.absoluteString
+                LFServerManager.activeServer?.destination = prevPath
+                fetchDir(prevPath!, onComplete: nil)
+            } else if code == 1 {
+                // FORWARD
+                print("forward")
+            }
+        }
+    }
+    
     func doubleClickRow(sender: AnyObject?) {
         print("dbl clicked row")
         if filesList[filesListTableView.clickedRow].isFolder == true {
             let path = currentPath.URLByAppendingPathComponent(filesList[filesListTableView.clickedRow].name, isDirectory: filesList[filesListTableView.clickedRow].isFolder).absoluteString
             LFServerManager.activeServer?.destination = path
-            fetchDir(path) { (finish) -> Void in
-                //
-            }
+            fetchDir(path, onComplete: nil)
         }
     }
     
@@ -94,7 +107,6 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             
             print("fetch: \(path)")
-//            print("fetch: \(self.currentPath.ab)")
             
             let resp = LFServerManager.ftpManager.contentsOfServer(LFServerManager.activeServer)
             
