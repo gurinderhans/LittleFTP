@@ -8,15 +8,20 @@
 
 import Foundation
 import Cocoa
+import FTPManager
 
 struct TableViewColIds {
     static let NAME_ID = "NameCol"
     static let DATE_MOD_ID = "ModDateCol"
 }
 
-class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
+class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource, FTPManagerDelegate {
     
     @IBOutlet weak var filesListTableView: NSTableView!
+    
+    // these two views reside in the toolbar in the center
+    var filenameLabel: NSTextView?
+    var filenameProgress: NSProgressIndicator?
     
     private var _filesList = [LFFile]()
     var filesList: [LFFile] {
@@ -33,16 +38,27 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     override init() {
         super.init()
         
+        LFServerManager.ftpManager.delegate = self
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "listServer:", name: "listServer", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "navigationChanged:", name: "navigationChanged", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "progressAreaReady:", name: "progressAreaReady", object: nil)
     }
     
     override func awakeFromNib() {
         filesListTableView.target = self
         filesListTableView.doubleAction = "doubleClickRow:"
+        filesListTableView.registerForDraggedTypes([NSFilenamesPboardType])
     }
     
     // MARK: - Selector methods
+    
+    func progressAreaReady(sender: AnyObject!) {
+        if let progressViews = sender.object as? [NSView] {
+            filenameLabel = progressViews[0] as? NSTextView
+            filenameProgress = progressViews[1] as? NSProgressIndicator
+        }
+    }
     
     func navigationChanged(sender: AnyObject!) {
         if let code = sender.object as? Int {
@@ -61,6 +77,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     func doubleClickRow(sender: AnyObject?) {
         print("dbl clicked row")
+        // FIXME: - index out of range error
         if filesList[filesListTableView.clickedRow].isFolder == true {
             let path = currentPath.URLByAppendingPathComponent(filesList[filesListTableView.clickedRow].name, isDirectory: filesList[filesListTableView.clickedRow].isFolder).absoluteString
             LFServerManager.activeServer?.destination = path
@@ -84,7 +101,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
             return cell
         } else {
             let cell = tableView.makeViewWithIdentifier("ServerItemModDateCell", owner: self) as! LFItemModDateItemCell
-            cell.dateModified.stringValue = AppUtils.dateToStr(filesList[row].modifiedDate, withFormat: "EE hh:mm a dd/yy")
+            cell.dateModified.stringValue = AppUtils.dateToStr(filesList[row].modifiedDate, withFormat: "EE, hh:mm a")
             return cell
         }
     }
@@ -92,6 +109,28 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return filesList.count
     }
+
+    func tableView(tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
+        return .Every
+    }
+    
+    func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
+        if let droppedFileUrls = info.draggingPasteboard().propertyListForType(NSFilenamesPboardType) as? [String] {
+            // FIXME: - filesList[row] can throw index out of range
+            if filesList[row].isFolder == true {
+                uploadFiles(atUrls: droppedFileUrls, toFolder: filesList[row].name, nil)
+            } else {
+                uploadFiles(atUrls: droppedFileUrls, toFolder: nil, nil)
+            }
+            return true
+        }
+        return false
+    }
+    
+    func tableView(tableView: NSTableView, writeRowsWithIndexes rowIndexes: NSIndexSet, toPasteboard pboard: NSPasteboard) -> Bool {
+        return true
+    }
+    
     
     // MARK: - Selector methods
     
@@ -104,27 +143,73 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     // MARK: - Custom methods
     
     func fetchDir(path:String, onComplete: ((finish:Bool) -> Void)?) {
-        
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
             
-            print("fetch: \(path)")
-            
             let resp = LFServerManager.ftpManager.contentsOfServer(LFServerManager.activeServer)
-            
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if let data:[NSDictionary] = resp as? [NSDictionary] {
-                    
                     self.filesList.removeAll()
                     for i in data {
                         let fl = LFFile(name: i["kCFFTPResourceName"] as! String, modDate: i["kCFFTPResourceModDate"] as! NSDate, type: i["kCFFTPResourceType"] as! NSInteger)
                         self.filesList.append(fl)
                     }
-                    
                     self.filesListTableView.reloadData()
                     self.currentPath = NSURL(string: path)
                 }
             })
         })
+    }
+    
+    func uploadFiles(atUrls urls: [String], toFolder: String?, _: (() -> Void)?) {
+        
+        var uploadFile: (fQueue:LFQueue<NSURL>) -> () = { _ in }
+        uploadFile = { flQ in
+            if (flQ.isEmpty()) {
+                return
+            }
+            
+            let url:NSURL = flQ.deQueue()!
+            
+            self.filenameLabel?.string = url.lastPathComponent
+            
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+                let didUpload = LFServerManager.ftpManager.uploadFile(url, toServer: LFServerManager.activeServer)
+                print("did upload file: \(didUpload)")
+                
+                // call completion block on complete
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    uploadFile(fQueue: flQ)
+                })
+            })
+        }
+        
+        
+        /*-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-*/
+        
+        let filesQueue = LFQueue<NSURL>()
+        let fm = NSFileManager.defaultManager()
+        for url in urls {
+            if let attrs: NSDictionary = try? fm.attributesOfItemAtPath(url) {
+                if attrs[NSFileType] as! String == NSFileTypeRegular {
+                    // add file path to queue for uploading
+                    filesQueue.enQueue(NSURL(string: url)!)
+                }
+            }
+        }
+        uploadFile(fQueue: filesQueue) // start the uploading
+    }
+    
+    
+    
+    // MARK: - FTPManagerDelegate methods
+    
+    func ftpManagerUploadProgressDidChange(processInfo: [NSObject : AnyObject]!) {
+        let progress = processInfo["progress"] as! Double
+        filenameProgress?.doubleValue = progress * 100
+    }
+    
+    func ftpManagerDownloadProgressDidChange(processInfo: [NSObject : AnyObject]!) {
+        //
     }
 }
 

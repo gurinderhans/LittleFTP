@@ -656,7 +656,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="254" y="416" width="720" height="480"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="1D43E939-534A-494B-B9E1-56B6B6AE7B8D" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="small" id="3BM-dX-4dp">
+                        <toolbar key="toolbar" implicitIdentifier="1D43E939-534A-494B-B9E1-56B6B6AE7B8D" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="3BM-dX-4dp">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="C9CDF731-DA1E-4C49-9CCE-90911D987E31" label="" paletteLabel="" id="Svj-aj-91G">
                                     <nil key="toolTip"/>
@@ -677,19 +677,6 @@
                                         <action selector="navButtonsClicked:" target="Oky-zY-oP4" id="pzi-D8-L5t"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="4654D96B-D31A-412F-A7FB-1825EA6258A5" label="" paletteLabel="" image="NSPathTemplate" id="7Ot-rC-Hd1">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="82" height="24"/>
-                                    <size key="maxSize" width="400" height="32"/>
-                                    <button key="view" verticalHuggingPriority="750" id="rDc-iK-0er">
-                                        <rect key="frame" x="0.0" y="14" width="300" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="NSPathTemplate" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M1j-gO-NM3">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="v4y-pl-sqh"/>
                                 <toolbarItem implicitItemIdentifier="E29BA12D-129A-411E-9214-EF59C74CCA17" label="" paletteLabel="" id="7l4-D0-6tq">
                                     <nil key="toolTip"/>
@@ -705,21 +692,36 @@
                                         </searchFieldCell>
                                     </searchField>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="D47EB040-6361-472B-8277-1F0562135BE4" label="" paletteLabel="" id="WV4-6I-VG4">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="71" height="32"/>
+                                    <size key="maxSize" width="489" height="32"/>
+                                    <button key="view" verticalHuggingPriority="750" id="SVA-7r-wbT">
+                                        <rect key="frame" x="0.0" y="14" width="320" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yEU-p1-sSP">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Svj-aj-91G"/>
                                 <toolbarItem reference="v4y-pl-sqh"/>
-                                <toolbarItem reference="7Ot-rC-Hd1"/>
+                                <toolbarItem reference="WV4-6I-VG4"/>
                                 <toolbarItem reference="v4y-pl-sqh"/>
                                 <toolbarItem reference="7l4-D0-6tq"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
                     <connections>
+                        <outlet property="windowProgressField" destination="SVA-7r-wbT" id="u8a-mv-15d"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="UTe-Fc-HGJ"/>
             </objects>
             <point key="canvasLocation" x="-495" y="544"/>
         </scene>
@@ -839,7 +841,7 @@
                                     <constraint firstAttribute="width" constant="212" id="My0-pr-vQD"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="U0s-EQ-WYj">
-                                    <rect key="frame" x="1" y="468" width="149" height="16"/>
+                                    <rect key="frame" x="1" y="468" width="210" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="r9g-um-deu">
@@ -923,7 +925,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="ServerItemModDateCell" id="wHw-lB-vyK" customClass="LFItemModDateItemCell" customModule="LittleFTP" customModuleProvider="target">
-                                                            <rect key="frame" x="321" y="1" width="449" height="17"/>
+                                                            <rect key="frame" x="320.70723266601567" y="1" width="449" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Z16-Xy-cte">
@@ -956,7 +958,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="IXh-II-qY7">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.011538461538461539" horizontal="YES" id="IXh-II-qY7">
                                     <rect key="frame" x="1" y="468" width="512" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1002,6 +1004,5 @@
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSGoLeftTemplate" width="9" height="12"/>
         <image name="NSGoRightTemplate" width="9" height="12"/>
-        <image name="NSPathTemplate" width="16" height="10"/>
     </resources>
 </document>
