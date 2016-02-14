@@ -43,19 +43,5 @@ class LFWindowController: NSWindowController {
         self.window?.titleVisibility = .Hidden
         
         NSNotificationCenter.defaultCenter().postNotificationName("progressAreaReady", object: [filenameLabel, fileProgress])
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateWindowProgressField:", name: "updateWindowProgressField", object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateWindowProgressBar:", name: "updateWindowProgressBar", object: nil)
     }
-//    
-//    // MARK: - Selector methods
-//    func updateWindowProgressField(sender: AnyObject!) {
-//        if let currentUploadingFileUrl = sender.object as? String {
-//            filenameLabel.string = currentUploadingFileUrl
-//        }
-//    }
-//    
-//    func updateWindowProgressBar(sender: AnyObject!) {
-//        fileProgress.doubleValue = Double(sender.object as! Int)
-//    }
-
 }

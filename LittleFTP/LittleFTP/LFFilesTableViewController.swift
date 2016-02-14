@@ -34,6 +34,8 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     }
     
     var currentPath: NSURL!
+    let filesQueue = LFQueue<NSURL>()
+    var uploaderIsLooping:Bool = false
     
     override init() {
         super.init()
@@ -162,31 +164,6 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     func uploadFiles(atUrls urls: [String], toFolder: String?, _: (() -> Void)?) {
         
-        var uploadFile: (fQueue:LFQueue<NSURL>) -> () = { _ in }
-        uploadFile = { flQ in
-            if (flQ.isEmpty()) {
-                return
-            }
-            
-            let url:NSURL = flQ.deQueue()!
-            
-            self.filenameLabel?.string = url.lastPathComponent
-            
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-                let didUpload = LFServerManager.ftpManager.uploadFile(url, toServer: LFServerManager.activeServer)
-                print("did upload file: \(didUpload)")
-                
-                // call completion block on complete
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    uploadFile(fQueue: flQ)
-                })
-            })
-        }
-        
-        
-        /*-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-*/
-        
-        let filesQueue = LFQueue<NSURL>()
         let fm = NSFileManager.defaultManager()
         for url in urls {
             if let attrs: NSDictionary = try? fm.attributesOfItemAtPath(url) {
@@ -196,7 +173,36 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
                 }
             }
         }
-        uploadFile(fQueue: filesQueue) // start the uploading
+        
+        if !uploaderIsLooping {
+            loopUploader()
+        }
+    }
+    
+    func loopUploader() {
+        if (filesQueue.isEmpty()) {
+            filenameProgress?.doubleValue = 0
+            filenameLabel?.string = "Finished"
+            uploaderIsLooping = false
+            return
+        }
+        
+        uploaderIsLooping = true
+        
+        let url:NSURL = filesQueue.deQueue()!
+        
+        filenameLabel?.string = url.lastPathComponent
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+            let didUpload = LFServerManager.ftpManager.uploadFile(url, toServer: LFServerManager.activeServer)
+            // TODO: if didUpload == false {// tell user }
+            print("did upload file: \(didUpload)")
+            
+            // call completion block on complete
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.loopUploader()
+            })
+        })
     }
     
     
@@ -209,7 +215,8 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     }
     
     func ftpManagerDownloadProgressDidChange(processInfo: [NSObject : AnyObject]!) {
-        //
+        let progress = processInfo["progress"] as! Double
+        filenameProgress?.doubleValue = progress * 100
     }
 }
 
