@@ -660,16 +660,16 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="C9CDF731-DA1E-4C49-9CCE-90911D987E31" label="" paletteLabel="" id="Svj-aj-91G">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="104" height="24"/>
-                                    <size key="maxSize" width="104" height="24"/>
+                                    <size key="minSize" width="54" height="24"/>
+                                    <size key="maxSize" width="104" height="26"/>
                                     <segmentedControl key="view" verticalHuggingPriority="750" id="vJR-h1-mdK">
-                                        <rect key="frame" x="0.0" y="14" width="104" height="24"/>
+                                        <rect key="frame" x="0.0" y="14" width="66" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="momentaryAccelerator" id="1aW-Np-ggq">
                                             <font key="font" metaFont="system"/>
                                             <segments>
                                                 <segment image="NSGoLeftTemplate" width="32"/>
-                                                <segment image="NSGoRightTemplate" width="32" tag="1"/>
+                                                <segment image="NSGoRightTemplate" width="31" tag="1"/>
                                             </segments>
                                         </segmentedCell>
                                     </segmentedControl>
@@ -677,9 +677,41 @@
                                         <action selector="navButtonsClicked:" target="Oky-zY-oP4" id="pzi-D8-L5t"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="4654D96B-D31A-412F-A7FB-1825EA6258A5" label="" paletteLabel="" image="NSPathTemplate" id="7Ot-rC-Hd1">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="82" height="24"/>
+                                    <size key="maxSize" width="400" height="32"/>
+                                    <button key="view" verticalHuggingPriority="750" id="rDc-iK-0er">
+                                        <rect key="frame" x="0.0" y="14" width="300" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="NSPathTemplate" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M1j-gO-NM3">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="v4y-pl-sqh"/>
+                                <toolbarItem implicitItemIdentifier="E29BA12D-129A-411E-9214-EF59C74CCA17" label="" paletteLabel="" id="7l4-D0-6tq">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="96" height="22"/>
+                                    <size key="maxSize" width="96" height="22"/>
+                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" id="zcs-cC-56E">
+                                        <rect key="frame" x="0.0" y="14" width="96" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="gkK-A6-9bQ">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </searchFieldCell>
+                                    </searchField>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Svj-aj-91G"/>
+                                <toolbarItem reference="v4y-pl-sqh"/>
+                                <toolbarItem reference="7Ot-rC-Hd1"/>
+                                <toolbarItem reference="v4y-pl-sqh"/>
+                                <toolbarItem reference="7l4-D0-6tq"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
@@ -706,7 +738,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="dcY-Na-Yxv">
-                                            <rect key="frame" x="0.0" y="0.0" width="210" height="483"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="210" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -963,28 +995,6 @@
             </objects>
             <point key="canvasLocation" x="-496" y="1243"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="k25-uG-a11">
-            <objects>
-                <customObject id="xeq-ln-6qk" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController id="6BF-hz-UzW" sceneMemberID="viewController">
-                    <view key="view" id="FJN-zy-Jjb">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aSW-IA-OWK">
-                                <rect key="frame" x="190" y="218" width="81" height="32"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="s5T-sH-a3k">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                        </subviews>
-                    </view>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="-367" y="1704"/>
-        </scene>
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
@@ -992,5 +1002,6 @@
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSGoLeftTemplate" width="9" height="12"/>
         <image name="NSGoRightTemplate" width="9" height="12"/>
+        <image name="NSPathTemplate" width="16" height="10"/>
     </resources>
 </document>

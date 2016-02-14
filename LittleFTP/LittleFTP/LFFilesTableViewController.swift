@@ -48,9 +48,10 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
         if let code = sender.object as? Int {
             if code == 0 {
                 // BACK
+                // TODO: nullity checks
                 let prevPath = currentPath.URLByDeletingLastPathComponent?.absoluteString
                 LFServerManager.activeServer?.destination = prevPath
-                fetchDir(prevPath!, onComplete: nil)
+                fetchDir(prevPath!, onComplete: nil) // TOOD: onComplete set currentPath to new path
             } else if code == 1 {
                 // FORWARD
                 print("forward")
