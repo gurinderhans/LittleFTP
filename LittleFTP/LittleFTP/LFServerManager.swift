@@ -7,38 +7,32 @@
 //
 
 import Foundation
-import FTPManager
 
 class LFServerManager: NSObject {
     
-    private static var _activeServer: FMServer?
-    class var activeServer: FMServer? {
+    private static var _activeServer: LFServer?
+    class var activeServer: LFServer? {
         get {
             if let s = _activeServer {
                 return s
+            } else {
+                return nil
             }
-            return nil
         }
         set {
             _activeServer = newValue
         }
     }
     
-    static var ftpManager: FTPManager = {
-        return FTPManager()
+    static var ftpController = {
+        return LFFTPController()
     }()
     
-    // MARK: - Any server methods
+    // MARK: - abstract server methods
     
-    class func uploadFile(id:Int) {
-        print("starting new thread w/ ID: \(id)")
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-            let url = NSURL(string: (LFServerManager.activeServer?.destination)!)
-            LFServerManager.activeServer?.destination = (url?.URLByAppendingPathComponent("test", isDirectory: true))!.absoluteString
-            FTPManager().uploadFile(NSURL(string: "/Users/ghans/Desktop/testzip5-\(id).zip"), toServer: LFServerManager.activeServer)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                print("finished w/ ID:\(id)")
-            })
-        })
+    class func openFolder(withName name:String, files:[LFFile]? -> Void) {
+        if LFServerManager.activeServer?.type == .FTP {
+            ftpController.listServerFolder(name, files: files)
+        }
     }
 }

@@ -13,12 +13,13 @@ class LFProgressViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadfiles:", name: "uploadfiles", object: nil)
     }
     
-    override var representedObject: AnyObject? {
-        didSet {
-            // Update the view, if already loaded.
-        }
+    // MARK: - Selector methods
+    
+    func uploadfiles(sender: AnyObject!) {
+        print("upload files: \(sender.object)")
     }
     
 }

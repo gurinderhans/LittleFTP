@@ -136,6 +136,7 @@
 			children = (
 				410C5EC91C6EE83E00C16180 /* AppDelegate.swift */,
 				410C5ECB1C6EE83F00C16180 /* ViewController.swift */,
+				412C50A11C7138C800101C24 /* LFProgressViewController.swift */,
 				410C5ECD1C6EE83F00C16180 /* Assets.xcassets */,
 				410C5ECF1C6EE83F00C16180 /* Main.storyboard */,
 				410C5ED21C6EE83F00C16180 /* Info.plist */,
@@ -149,7 +150,6 @@
 				4158FE591C7003E9009B1A16 /* AppUtils.swift */,
 				414262FF1C70595D000DD54B /* LFQueue.swift */,
 				412C509D1C712B9300101C24 /* LFFTPController.swift */,
-				412C50A11C7138C800101C24 /* LFProgressViewController.swift */,
 			);
 			path = LittleFTP;
 			sourceTree = "<group>";

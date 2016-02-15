@@ -71,21 +71,13 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
         print(__FUNCTION__)
         if let _ = LFServerManager.activeServer {
             print("closing an already opened instance of another server")
-            // TODO: close the server or not
-            LFServerManager.activeServer = nil
+            // TODO: - support multi server operating and switching servers
+        } else {
+            print("now opening server")
+            LFServerManager.activeServer = server
+            NSNotificationCenter.defaultCenter().postNotificationName("listServer", object: nil)
         }
-        
-        print("now opening server")
-        LFServerManager.activeServer = FMServer(destination: server.hostname, username: server.userName, password: server.password)
-        LFServerManager.activeServer?.port = Int32(server.port)!
-        listServer()
     }
-    
-    func listServer() {
-        NSNotificationCenter.defaultCenter().postNotificationName("listServer", object: nil)
-    }
-    
-    
 }
 
 class LFServerItemCell: NSTableCellView {
