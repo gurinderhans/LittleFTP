@@ -138,8 +138,17 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     func listServer(sender: AnyObject?) {
         print(__FUNCTION__)
-        fetchDir((LFServerManager.activeServer?.destination)!, onComplete: nil)
-        currentPath = NSURL(string: (LFServerManager.activeServer?.destination)!)
+        
+        let board = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let vc = board.instantiateControllerWithIdentifier("LFProgressWindowController")
+        vc.showWindow(self)
+        vc.makeMainWindow()
+        
+//        LFServerManager.uploadFile(1)
+//        LFServerManager.uploadFile(2)
+        
+//        fetchDir((LFServerManager.activeServer?.destination)!, onComplete: nil)
+//        currentPath = NSURL(string: (LFServerManager.activeServer?.destination)!)
     }
     
     // MARK: - Custom methods

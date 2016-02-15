@@ -15,6 +15,9 @@
 		410C5EE71C6EE83F00C16180 /* LittleFTPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C5EE61C6EE83F00C16180 /* LittleFTPUITests.swift */; };
 		4125A0621C6F2DE500FD859D /* LFFilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125A0611C6F2DE500FD859D /* LFFilesTableViewController.swift */; };
 		4125A0641C6F33A800FD859D /* LFServersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125A0631C6F33A800FD859D /* LFServersTableViewController.swift */; };
+		412C509E1C712B9300101C24 /* LFFTPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412C509D1C712B9300101C24 /* LFFTPController.swift */; };
+		412C50A01C71377500101C24 /* LFProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412C509F1C71377500101C24 /* LFProgressWindowController.swift */; };
+		412C50A21C7138C800101C24 /* LFProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 412C50A11C7138C800101C24 /* LFProgressViewController.swift */; };
 		414263001C70595D000DD54B /* LFQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262FF1C70595D000DD54B /* LFQueue.swift */; };
 		4158FE4E1C6FD885009B1A16 /* LFServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4158FE4D1C6FD885009B1A16 /* LFServer.swift */; };
 		4158FE521C6FDC79009B1A16 /* LFServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4158FE511C6FDC79009B1A16 /* LFServerManager.swift */; };
@@ -60,6 +63,9 @@
 		410C5EE81C6EE83F00C16180 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4125A0611C6F2DE500FD859D /* LFFilesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFFilesTableViewController.swift; sourceTree = "<group>"; };
 		4125A0631C6F33A800FD859D /* LFServersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFServersTableViewController.swift; sourceTree = "<group>"; };
+		412C509D1C712B9300101C24 /* LFFTPController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFFTPController.swift; sourceTree = "<group>"; };
+		412C509F1C71377500101C24 /* LFProgressWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFProgressWindowController.swift; sourceTree = "<group>"; };
+		412C50A11C7138C800101C24 /* LFProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFProgressViewController.swift; sourceTree = "<group>"; };
 		414262FF1C70595D000DD54B /* LFQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFQueue.swift; sourceTree = "<group>"; };
 		4158FE4D1C6FD885009B1A16 /* LFServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFServer.swift; sourceTree = "<group>"; };
 		4158FE511C6FDC79009B1A16 /* LFServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LFServerManager.swift; sourceTree = "<group>"; };
@@ -134,13 +140,16 @@
 				410C5ECF1C6EE83F00C16180 /* Main.storyboard */,
 				410C5ED21C6EE83F00C16180 /* Info.plist */,
 				4195026F1C6F07E400D828BB /* LFWindowController.swift */,
+				412C509F1C71377500101C24 /* LFProgressWindowController.swift */,
 				4125A0611C6F2DE500FD859D /* LFFilesTableViewController.swift */,
 				4125A0631C6F33A800FD859D /* LFServersTableViewController.swift */,
-				4158FE4D1C6FD885009B1A16 /* LFServer.swift */,
 				4158FE511C6FDC79009B1A16 /* LFServerManager.swift */,
+				4158FE4D1C6FD885009B1A16 /* LFServer.swift */,
 				4158FE571C6FFBD5009B1A16 /* LFFile.swift */,
 				4158FE591C7003E9009B1A16 /* AppUtils.swift */,
 				414262FF1C70595D000DD54B /* LFQueue.swift */,
+				412C509D1C712B9300101C24 /* LFFTPController.swift */,
+				412C50A11C7138C800101C24 /* LFProgressViewController.swift */,
 			);
 			path = LittleFTP;
 			sourceTree = "<group>";
@@ -455,8 +464,11 @@
 				4158FE4E1C6FD885009B1A16 /* LFServer.swift in Sources */,
 				410C5ECA1C6EE83E00C16180 /* AppDelegate.swift in Sources */,
 				419502701C6F07E400D828BB /* LFWindowController.swift in Sources */,
+				412C50A01C71377500101C24 /* LFProgressWindowController.swift in Sources */,
 				4125A0641C6F33A800FD859D /* LFServersTableViewController.swift in Sources */,
 				414263001C70595D000DD54B /* LFQueue.swift in Sources */,
+				412C50A21C7138C800101C24 /* LFProgressViewController.swift in Sources */,
+				412C509E1C712B9300101C24 /* LFFTPController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
