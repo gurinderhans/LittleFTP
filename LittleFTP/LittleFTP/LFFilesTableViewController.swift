@@ -63,9 +63,11 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     func doubleClickRow(sender: AnyObject?) {
         print(__FUNCTION__)
-        if filesListTableView.clickedRow < filesList.count {
+        if filesListTableView.clickedRow > -1 {
             if filesList[filesListTableView.clickedRow].isFolder == true {
                 fetchDir(filesList[filesListTableView.clickedRow].name)
+            } else {
+                // download the file or something
             }
         }
     }

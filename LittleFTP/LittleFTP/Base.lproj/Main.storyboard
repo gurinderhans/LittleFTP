@@ -909,7 +909,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="ServerItemModDateCell" id="wHw-lB-vyK" customClass="LFItemModDateItemCell" customModule="LittleFTP" customModuleProvider="target">
-                                                            <rect key="frame" x="320.17369411972146" y="1" width="449" height="17"/>
+                                                            <rect key="frame" x="321" y="1" width="449" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Z16-Xy-cte">
@@ -942,7 +942,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="IXh-II-qY7">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.026923076923076925" horizontal="YES" id="IXh-II-qY7">
                                     <rect key="frame" x="1" y="468" width="512" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -988,7 +988,7 @@
                     <window key="window" identifier="LFProgressWindowController" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qvf-zI-6g3">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="149" width="480" height="200"/>
+                        <rect key="contentRect" x="196" y="149" width="480" height="300"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
                     </window>
                     <connections>
@@ -1004,9 +1004,115 @@
             <objects>
                 <viewController id="DSK-47-pY4" customClass="LFProgressViewController" customModule="LittleFTP" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="YOm-cJ-nPF">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="57" horizontalPageScroll="10" verticalLineScroll="57" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7S-mi-411">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="278"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="pPw-fZ-uvR">
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="278"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="55" rowSizeStyle="automatic" viewBased="YES" id="HLh-wC-xtA">
+                                            <rect key="frame" x="0.0" y="0.0" width="480" height="278"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <size key="intercellSpacing" width="3" height="2"/>
+                                            <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                            <tableColumns>
+                                                <tableColumn width="477" minWidth="40" maxWidth="1000" id="tqU-pm-l4P">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="laC-yt-jJg">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="LFProgressViewItem" id="0U0-a9-LrV" customClass="LFProgressViewItem" customModule="LittleFTP" customModuleProvider="target">
+                                                            <rect key="frame" x="1" y="1" width="477" height="55"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="pTn-Vn-NMR">
+                                                                    <rect key="frame" x="58" y="35" width="418" height="17"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="filename.zip" id="Teq-BE-Lce">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Hkd-6A-Gkc">
+                                                                    <rect key="frame" x="58" y="3" width="403" height="14"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="50.3 MB of 340 MB transferred" id="bHU-rY-Q9F">
+                                                                        <font key="font" metaFont="system" size="11"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Ae-O1-UT0">
+                                                                    <rect key="frame" x="15" y="12" width="30" height="34"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="30" id="HPe-OW-KCh"/>
+                                                                    </constraints>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSMultipleDocuments" id="A2F-qf-pwN"/>
+                                                                </imageView>
+                                                                <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="sKL-Dw-VVS">
+                                                                    <rect key="frame" x="60" y="18" width="399" height="20"/>
+                                                                </progressIndicator>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="pTn-Vn-NMR" secondAttribute="trailing" constant="3" id="A9B-Bn-uEB"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="leading" secondItem="pTn-Vn-NMR" secondAttribute="leading" id="Bvj-XD-Rt7"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="centerY" secondItem="3Ae-O1-UT0" secondAttribute="centerY" constant="1" id="DnB-eg-Cql"/>
+                                                                <constraint firstItem="pTn-Vn-NMR" firstAttribute="top" secondItem="0U0-a9-LrV" secondAttribute="top" constant="3" id="ICZ-bT-xgV"/>
+                                                                <constraint firstItem="3Ae-O1-UT0" firstAttribute="top" secondItem="0U0-a9-LrV" secondAttribute="top" constant="9" id="ORs-Zp-EgK"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="leading" secondItem="Hkd-6A-Gkc" secondAttribute="leading" id="RA6-JX-aas"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="centerY" secondItem="0U0-a9-LrV" secondAttribute="centerY" id="TdL-4y-aeQ"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Hkd-6A-Gkc" secondAttribute="bottom" constant="3" id="ZJH-bH-zI3"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="trailing" secondItem="Hkd-6A-Gkc" secondAttribute="trailing" id="ZSv-uT-oVy"/>
+                                                                <constraint firstItem="sKL-Dw-VVS" firstAttribute="trailing" secondItem="pTn-Vn-NMR" secondAttribute="trailing" constant="-15" id="ec2-0O-eMt"/>
+                                                                <constraint firstItem="pTn-Vn-NMR" firstAttribute="leading" secondItem="3Ae-O1-UT0" secondAttribute="trailing" constant="15" id="p6e-dv-XJe"/>
+                                                                <constraint firstItem="3Ae-O1-UT0" firstAttribute="leading" secondItem="0U0-a9-LrV" secondAttribute="leading" constant="15" id="vfH-Ik-yyO"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <outlet property="progress" destination="sKL-Dw-VVS" id="2TE-bD-yjz"/>
+                                                                <outlet property="progressBar" destination="sKL-Dw-VVS" id="cVs-Ip-j4y"/>
+                                                                <outlet property="progressText" destination="Hkd-6A-Gkc" id="iea-ZD-AsH"/>
+                                                                <outlet property="textField" destination="pTn-Vn-NMR" id="Z0v-QI-num"/>
+                                                                <outlet property="title" destination="pTn-Vn-NMR" id="1RS-Th-Sh6"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
+                                            </tableColumns>
+                                        </tableView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="C99-qJ-wwQ">
+                                    <rect key="frame" x="-100" y="-100" width="223" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Ebb-xb-fDT">
+                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="f7S-mi-411" firstAttribute="leading" secondItem="YOm-cJ-nPF" secondAttribute="leading" id="9bU-et-Bf6"/>
+                            <constraint firstItem="f7S-mi-411" firstAttribute="top" secondItem="YOm-cJ-nPF" secondAttribute="top" constant="22" id="Jwo-6V-Trz"/>
+                            <constraint firstAttribute="trailing" secondItem="f7S-mi-411" secondAttribute="trailing" id="gLG-ez-Va2"/>
+                            <constraint firstAttribute="bottom" secondItem="f7S-mi-411" secondAttribute="bottom" id="uqq-CO-G5f"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="progressListTableView" destination="HLh-wC-xtA" id="h4P-nl-uuq"/>
+                    </connections>
                 </viewController>
                 <customObject id="rIZ-PV-P0c" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1019,5 +1125,6 @@
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSGoLeftTemplate" width="9" height="12"/>
         <image name="NSGoRightTemplate" width="9" height="12"/>
+        <image name="NSMultipleDocuments" width="32" height="32"/>
     </resources>
 </document>
