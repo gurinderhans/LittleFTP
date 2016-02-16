@@ -11,13 +11,13 @@ import FTPManager
 
 class LFFtpManager: NSObject, FTPManagerDelegate {
     
-    private var ftpManager: FTPManager = FTPManager()
+    private var ftpManager = FTPManager()
     private var uploadCallback: ([NSObject: AnyObject] -> ())?
     private var downloadCallback: ([NSObject: AnyObject] -> ())?
     
     override init() {
         super.init()
-        ftpManager.delegate = self
+        self.ftpManager.delegate = self
     }
     
     func ftpManagerDownloadProgressDidChange(processInfo: [NSObject : AnyObject]!) {
@@ -32,10 +32,11 @@ class LFFtpManager: NSObject, FTPManagerDelegate {
         }
     }
     
-    func uploadFile(file: NSURL, withServer server: FMServer, progCb: ([NSObject: AnyObject] -> ())?) {
+    func uploadFile(file: NSURL, withServer server: FMServer, finish: Bool -> (), progCb: ([NSObject: AnyObject] -> ())?) {
         self.uploadCallback = progCb
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-            self.ftpManager.uploadFile(file, toServer: server)
+            let result = self.ftpManager.uploadFile(file, toServer: server)
+            finish(result)
         })
     }
     

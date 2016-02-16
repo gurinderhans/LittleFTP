@@ -36,9 +36,10 @@ class LFServerManager: NSObject {
         }
     }
     
-    class func uploadFile(file: NSURL, cb: ([NSObject: AnyObject] -> ())?) {
+    class func uploadFile(file: NSURL, finish: Bool -> (), cb: ([NSObject: AnyObject] -> ())?) {
+        print(__FUNCTION__)
         if LFServerManager.activeServer?.type == .FTP {
-            ftpController.uploadFile(file, progCb: cb)
+            ftpController.uploadFile(file, finish: finish, progCb: cb)
         }
     }
 }
