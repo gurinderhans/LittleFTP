@@ -13,6 +13,8 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     @IBOutlet weak var progressListTableView: NSTableView!
     
+    var progressList = [[String: AnyObject]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,12 +24,18 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadfiles:", name: "uploadfiles", object: nil)
     }
     
-    // MARK: - NSTableViewDelegate & NSTabelViewDataSource methods
+    // MARK: - NSTableViewDelegate & NSTableViewDataSource methods
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeViewWithIdentifier("LFProgressViewItem", owner: self) as? LFProgressViewItem {
-            cell.title.stringValue = "Uploading filename.zip to ftp.server.ca"
-            cell.progressBar.doubleValue = Double(arc4random_uniform(90) + 30)
+            cell.title.stringValue = "Uploading \(progressList[row]["file"] as! String)"
+            cell.progressBar.doubleValue = 0//Double(arc4random_uniform(90) + 30)
+            
+            let isUploadingThisFile = progressList[row]["uploading"] as! Bool
+            if isUploadingThisFile == false {
+                cell.progressText.stringValue = "Pending..."
+            }
+            
             return cell
         }
         return nil
@@ -38,13 +46,27 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return 5
+        return progressList.count
     }
     
     // MARK: - Selector methods
     
     func uploadfiles(sender: AnyObject!) {
-        print("upload files: \(sender.object)")
+        if let data = sender.object as? [String: AnyObject] {
+            if let uploadFiles = data["files"] as? [String],
+                intoFolder = data["intofolder"] as? String {
+                    print(intoFolder)
+                    // TODO: - be careful since here the file name is excaped
+                    progressList.appendContentsOf(uploadFiles.map({ (a) -> [String: AnyObject] in
+                        return ["file": (NSURL(string: a.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)?.lastPathComponent)!, "uploading": false]
+                    }))
+                    progressListTableView.reloadData()
+            }
+        }
+        
+//        let fm = LFFtpManager()
+//        fm.uploadFile(NSURL(string: "filepath/name.ext")!, withServer: FMServer(destination: "hostname", username: "username", password: "password")) { (info) -> () in
+//            print(info)
     }
     
 }
@@ -53,5 +75,4 @@ class LFProgressViewItem: NSTableCellView {
     @IBOutlet weak var title: NSTextField!
     @IBOutlet weak var progressBar: NSProgressIndicator!
     @IBOutlet weak var progressText: NSTextField!
-    
 }

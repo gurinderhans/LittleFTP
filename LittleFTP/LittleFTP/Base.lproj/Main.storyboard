@@ -942,7 +942,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.026923076923076925" horizontal="YES" id="IXh-II-qY7">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.046153846153846156" horizontal="YES" id="IXh-II-qY7">
                                     <rect key="frame" x="1" y="468" width="512" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1046,7 +1046,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Hkd-6A-Gkc">
-                                                                    <rect key="frame" x="58" y="3" width="403" height="14"/>
+                                                                    <rect key="frame" x="58" y="6" width="403" height="14"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="50.3 MB of 340 MB transferred" id="bHU-rY-Q9F">
                                                                         <font key="font" metaFont="system" size="11"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1072,14 +1072,13 @@
                                                                 <constraint firstItem="3Ae-O1-UT0" firstAttribute="top" secondItem="0U0-a9-LrV" secondAttribute="top" constant="9" id="ORs-Zp-EgK"/>
                                                                 <constraint firstItem="sKL-Dw-VVS" firstAttribute="leading" secondItem="Hkd-6A-Gkc" secondAttribute="leading" id="RA6-JX-aas"/>
                                                                 <constraint firstItem="sKL-Dw-VVS" firstAttribute="centerY" secondItem="0U0-a9-LrV" secondAttribute="centerY" id="TdL-4y-aeQ"/>
-                                                                <constraint firstAttribute="bottom" secondItem="Hkd-6A-Gkc" secondAttribute="bottom" constant="3" id="ZJH-bH-zI3"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Hkd-6A-Gkc" secondAttribute="bottom" constant="6" id="ZJH-bH-zI3"/>
                                                                 <constraint firstItem="sKL-Dw-VVS" firstAttribute="trailing" secondItem="Hkd-6A-Gkc" secondAttribute="trailing" id="ZSv-uT-oVy"/>
                                                                 <constraint firstItem="sKL-Dw-VVS" firstAttribute="trailing" secondItem="pTn-Vn-NMR" secondAttribute="trailing" constant="-15" id="ec2-0O-eMt"/>
                                                                 <constraint firstItem="pTn-Vn-NMR" firstAttribute="leading" secondItem="3Ae-O1-UT0" secondAttribute="trailing" constant="15" id="p6e-dv-XJe"/>
                                                                 <constraint firstItem="3Ae-O1-UT0" firstAttribute="leading" secondItem="0U0-a9-LrV" secondAttribute="leading" constant="15" id="vfH-Ik-yyO"/>
                                                             </constraints>
                                                             <connections>
-                                                                <outlet property="progress" destination="sKL-Dw-VVS" id="2TE-bD-yjz"/>
                                                                 <outlet property="progressBar" destination="sKL-Dw-VVS" id="cVs-Ip-j4y"/>
                                                                 <outlet property="progressText" destination="Hkd-6A-Gkc" id="iea-ZD-AsH"/>
                                                                 <outlet property="textField" destination="pTn-Vn-NMR" id="Z0v-QI-num"/>
