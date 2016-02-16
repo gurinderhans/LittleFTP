@@ -35,4 +35,10 @@ class LFServerManager: NSObject {
             ftpController.listServerFolder(name, files: files)
         }
     }
+    
+    class func uploadFile(file: NSURL, cb: ([NSObject: AnyObject] -> ())?) {
+        if LFServerManager.activeServer?.type == .FTP {
+            ftpController.uploadFile(file, progCb: cb)
+        }
+    }
 }

@@ -37,4 +37,22 @@ class LFFTPController: NSObject {
             })
         }
     }
+    
+    func uploadFile(file: NSURL, progCb: ([NSObject: AnyObject] -> ())?) {
+        if let s:LFServer = LFServerManager.activeServer {
+            let destination = LFServerManager.activeServer?.activeUrl.standardizedURL?.absoluteString
+            let fms = FMServer(destination: destination, username: s.userName, password: s.password)
+            
+            LFFtpManager().uploadFile(file, withServer: fms, progCb: { (cbinfo) -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    // append data to process info
+                    var data = cbinfo
+                    data["fileurl"] = file.absoluteString
+                    if let c = progCb {
+                        c(data)
+                    }
+                })
+            })
+        }
+    }
 }

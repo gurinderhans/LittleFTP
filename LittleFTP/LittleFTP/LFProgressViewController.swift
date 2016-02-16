@@ -29,7 +29,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeViewWithIdentifier("LFProgressViewItem", owner: self) as? LFProgressViewItem {
             cell.title.stringValue = "Uploading \(progressList[row]["file"] as! String)"
-            cell.progressBar.doubleValue = 0//Double(arc4random_uniform(90) + 30)
+            cell.progressBar.doubleValue = progressList[row]["progress"] as! Double //0//Double(arc4random_uniform(90) + 30)
             
             let isUploadingThisFile = progressList[row]["uploading"] as! Bool
             if isUploadingThisFile == false {
@@ -55,18 +55,25 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         if let data = sender.object as? [String: AnyObject] {
             if let uploadFiles = data["files"] as? [String],
                 intoFolder = data["intofolder"] as? String {
-                    print(intoFolder)
-                    // TODO: - be careful since here the file name is excaped
-                    progressList.appendContentsOf(uploadFiles.map({ (a) -> [String: AnyObject] in
-                        return ["file": (NSURL(string: a.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)?.lastPathComponent)!, "uploading": false]
-                    }))
+                    
+                    print(intoFolder) // to hide warning for now
+                    
+                    // TODO: - be careful since here the file name is escaped
+                    for (i, filePath) in uploadFiles.enumerate() {
+                        if let escapedStr = filePath.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                            if let url = NSURL(string: escapedStr) {
+                                progressList.append(["file": url.lastPathComponent!, "uploading": false, "progress": 0.0])
+                                LFServerManager.uploadFile(url, cb: { info -> () in
+                                    self.progressList[i]["progress"] = (info["progress"] as! Double) * 100
+                                    self.progressList[i]["uploading"] = true
+                                    self.progressListTableView.reloadData()
+                                })
+                            }
+                        }
+                    }
                     progressListTableView.reloadData()
             }
         }
-        
-//        let fm = LFFtpManager()
-//        fm.uploadFile(NSURL(string: "filepath/name.ext")!, withServer: FMServer(destination: "hostname", username: "username", password: "password")) { (info) -> () in
-//            print(info)
     }
     
 }
