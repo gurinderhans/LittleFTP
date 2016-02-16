@@ -43,7 +43,17 @@ class LFFTPController: NSObject {
             let destination = LFServerManager.activeServer?.activeUrl.standardizedURL?.absoluteString
             let fms = FMServer(destination: destination, username: s.userName, password: s.password)
             
-            LFFtpManager().uploadFile(file, withServer: fms, finish: finish, progCb: progCb)
+            LFFtpManager().uploadFile(file, withServer: fms, finish: { (success) -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    finish(success)
+                })
+            }, progCb: { (info) -> () in
+                if let c = progCb {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        c(info)
+                    })
+                }
+            })
         }
     }
 }

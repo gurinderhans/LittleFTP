@@ -15,6 +15,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var progressListTableView: NSTableView!
     
     var progressList = [[String: AnyObject]]()
+    var filesSenderIsLooping: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
             if isUploadingThisFile == false {
                 cell.progressText.stringValue = "Pending..."
             } else {
-                cell.progressText.stringValue = "Uploading..."
+                cell.progressText.stringValue = "\((progressList[row]["uploadedBytes"] as! Int) / 1000000) MB of \((progressList[row]["totalBytes"] as! Int) / 1000000) MB transferred"
             }
             
             return cell
@@ -74,19 +75,33 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
         
         // upload files...
-        //
+        if !filesSenderIsLooping {
+            fileSendLooper()
+        }
     }
     
-    func sendFile(url: NSURL, i: Int) {
-        LFServerManager.uploadFile(url, finish: { success -> () in
-            // remove file from list & reload table
-        }) { progress -> () in
-            // update progress for this file
-        }
+    func fileSendLooper() {
         
-//            self.progressList[i]["progress"] = (info["progress"] as! Double) * 100
-//            self.progressList[i]["uploading"] = true
-//            self.progressListTableView.reloadData()
+        if progressList.count == 0 {
+            filesSenderIsLooping = false
+            return
+        }
+
+        filesSenderIsLooping = true
+        let url = progressList[0]["file"] as! NSURL
+        LFServerManager.uploadFile(url, finish: { success -> () in
+            self.progressList.removeFirst()
+            self.progressListTableView.reloadData()
+            self.fileSendLooper()
+        }, cb: { progress -> () in
+            print(progress)
+            self.progressList[0]["uploading"] = true
+            self.progressList[0]["percentprogress"] = (progress["progress"] as! Double) * 100
+            self.progressList[0]["totalBytes"] = progress["fileSize"] as! Int
+            self.progressList[0]["uploadedBytes"] = progress["fileSizeProcessed"] as! Int
+            self.progressListTableView.
+            self.progressListTableView.reloadData()
+        })
     }
     
 }
