@@ -64,6 +64,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
                             if let url = NSURL(string: escapedStr) {
                                 progressList.append(["file": url.lastPathComponent!, "uploading": false, "progress": 0.0])
                                 LFServerManager.uploadFile(url, cb: { info -> () in
+                                    // FIXME: - here `i` is only updated once each file is uploaded making the upload manager seem like single threaded even thought it's not
                                     self.progressList[i]["progress"] = (info["progress"] as! Double) * 100
                                     self.progressList[i]["uploading"] = true
                                     self.progressListTableView.reloadData()
