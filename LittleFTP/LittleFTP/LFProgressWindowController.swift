@@ -15,5 +15,11 @@ class LFProgressWindowController: NSWindowController {
         super.windowDidLoad()
         self.window?.titlebarAppearsTransparent = true
         self.window?.titleVisibility = .Hidden
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeWindow:", name: "closeWindow", object: nil)
+    }
+    
+    func closeWindow(sender: AnyObject?) {
+        self.close()
     }
 }

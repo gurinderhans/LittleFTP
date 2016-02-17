@@ -13,8 +13,11 @@ import FTPManager
 class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
     @IBOutlet weak var progressListTableView: NSTableView!
+    @IBOutlet weak var uploadingFileName: NSTextField!
+    @IBOutlet weak var uploadingFileProgressIndicator: NSProgressIndicator!
+    @IBOutlet weak var uploadingFileTextProgress: NSTextField!
     
-    var progressList = [[String: AnyObject]]()
+    var progressList = [NSURL]()
     var filesSenderIsLooping: Bool = false
     
     override func viewDidLoad() {
@@ -30,15 +33,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeViewWithIdentifier("LFProgressViewItem", owner: self) as? LFProgressViewItem {
-            cell.title.stringValue = "Uploading \((progressList[row]["file"] as! NSURL).lastPathComponent!)"
-            cell.progressBar.doubleValue = progressList[row]["percentprogress"] as! Double //0//Double(arc4random_uniform(90) + 30)
-            
-            let isUploadingThisFile = progressList[row]["uploading"] as! Bool
-            if isUploadingThisFile == false {
-                cell.progressText.stringValue = "Pending..."
-            } else {
-                cell.progressText.stringValue = "\((progressList[row]["uploadedBytes"] as! Int) / 1000000) MB of \((progressList[row]["totalBytes"] as! Int) / 1000000) MB transferred"
-            }
+            cell.title.stringValue = "Uploading \(progressList[row].lastPathComponent!)"
             
             return cell
         }
@@ -66,7 +61,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
                     for filePath in uploadFiles {
                         if let escapedStr = filePath.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
                             if let url = NSURL(string: escapedStr) {
-                                progressList.append(["file": url, "uploading": false, "percentprogress": 0.0, "totalBytes": 0, "uploadedBytes": 0])
+                                progressList.append(url)
                             }
                         }
                     }
@@ -80,34 +75,44 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
+    // MARK: - Custom methods
+    
     func fileSendLooper() {
         
         if progressList.count == 0 {
             filesSenderIsLooping = false
+            resetProgressView()
+            NSNotificationCenter.defaultCenter().postNotificationName("closeWindow", object: nil)
             return
         }
 
         filesSenderIsLooping = true
-        let url = progressList[0]["file"] as! NSURL
+        
+        
+        let url = progressList.first!
+
+        resetProgressView()
+        self.uploadingFileName.stringValue = url.lastPathComponent!
+
+        self.progressList.removeFirst()
+        self.progressListTableView.reloadData()
+        
         LFServerManager.uploadFile(url, finish: { success -> () in
-            self.progressList.removeFirst()
-            self.progressListTableView.reloadData()
             self.fileSendLooper()
         }, cb: { progress -> () in
-            print(progress)
-            self.progressList[0]["uploading"] = true
-            self.progressList[0]["percentprogress"] = (progress["progress"] as! Double) * 100
-            self.progressList[0]["totalBytes"] = progress["fileSize"] as! Int
-            self.progressList[0]["uploadedBytes"] = progress["fileSizeProcessed"] as! Int
-            self.progressListTableView.
-            self.progressListTableView.reloadData()
+            self.uploadingFileProgressIndicator.doubleValue = (progress["progress"] as! Double) * 100
+            self.uploadingFileTextProgress.stringValue = "\(String(format: "%.01f", (progress["fileSizeProcessed"] as! Double) / 1000000)) MB of \(String(format: "%.01f", (progress["fileSize"] as! Double) / 1000000)) MB transferred"
         })
+    }
+    
+    func resetProgressView() {
+        self.uploadingFileName.stringValue = "Loading..."
+        self.uploadingFileProgressIndicator.doubleValue = 0
+        self.uploadingFileTextProgress.stringValue = "Pending..."
     }
     
 }
 
 class LFProgressViewItem: NSTableCellView {
     @IBOutlet weak var title: NSTextField!
-    @IBOutlet weak var progressBar: NSProgressIndicator!
-    @IBOutlet weak var progressText: NSTextField!
 }
