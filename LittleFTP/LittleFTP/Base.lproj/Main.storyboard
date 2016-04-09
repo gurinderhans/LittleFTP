@@ -942,7 +942,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.015384615384615385" horizontal="YES" id="IXh-II-qY7">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="IXh-II-qY7">
                                     <rect key="frame" x="1" y="468" width="512" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1114,7 +1114,7 @@
                                     </progressIndicator>
                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="ufU-SA-r3w">
                                         <rect key="frame" x="59" y="7" width="403" height="14"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="50.3 MB of 340 MB transferred" id="Ez0-Lr-Wsv">
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Pending..." id="Ez0-Lr-Wsv">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

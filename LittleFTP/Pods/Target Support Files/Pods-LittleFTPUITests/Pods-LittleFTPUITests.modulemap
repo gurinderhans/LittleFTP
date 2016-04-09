@@ -1,6 +1,0 @@
-framework module Pods_LittleFTPUITests {
-  umbrella header "Pods-LittleFTPUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}
