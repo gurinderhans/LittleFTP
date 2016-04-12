@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import FTPManager
 
 class ViewController: NSViewController {
 

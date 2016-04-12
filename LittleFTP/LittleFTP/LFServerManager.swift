@@ -24,22 +24,22 @@ class LFServerManager: NSObject {
         }
     }
     
-    static var ftpController = {
-        return LFFTPController()
-    }()
+//    static var ftpController = {
+//        return LFFTPController()
+//    }()
     
     // MARK: - abstract server methods
     
     class func openFolder(withName name:String, files:[LFFile]? -> Void) {
-        if LFServerManager.activeServer?.type == .FTP {
-            ftpController.listServerFolder(name, files: files)
+        if LFServerManager.activeServer?.type == .SFTP {
+//            ftpController.listServerFolder(name, files: files)
         }
     }
     
     class func uploadFile(file: NSURL, finish: Bool -> (), cb: ([NSObject: AnyObject] -> ())?) {
-        print(__FUNCTION__)
-        if LFServerManager.activeServer?.type == .FTP {
-            ftpController.uploadFile(file, finish: finish, progCb: cb)
+        print(#function)
+        if LFServerManager.activeServer?.type == .SFTP {
+//            ftpController.uploadFile(file, finish: finish, progCb: cb)
         }
     }
 }

@@ -1,8 +1,7 @@
 use_frameworks!
 
 target 'LittleFTP' do
-	pod 'FTPManager'
-	pod 'SwiftFSWatcher'
+	pod 'NMSSH'
 end
 
 target 'LittleFTPTests' do

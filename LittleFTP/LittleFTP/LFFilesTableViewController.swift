@@ -8,14 +8,8 @@
 
 import Foundation
 import Cocoa
-import FTPManager
 
-struct TableViewColIds {
-    static let NAME_ID = "NameCol"
-    static let DATE_MOD_ID = "ModDateCol"
-}
-
-class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource, FTPManagerDelegate {
+class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
     
     @IBOutlet weak var filesListTableView: NSTableView!
     
@@ -34,13 +28,13 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     override init() {
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "listServer:", name: "listServer", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "navigationChanged:", name: "navigationChanged", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.listServer(_:)), name: UIActionNotificationObserverKeys.LIST_SERVER, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.navigationChanged(_:)), name: UIActionNotificationObserverKeys.NAV_CHANGED, object: nil)
     }
     
     override func awakeFromNib() {
         filesListTableView.target = self
-        filesListTableView.doubleAction = "doubleClickRow:"
+        filesListTableView.doubleAction = #selector(LFFilesTableViewController.doubleClickRow(_:))
         filesListTableView.registerForDraggedTypes([NSFilenamesPboardType])
     }
     
@@ -62,7 +56,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     }
     
     func doubleClickRow(sender: AnyObject?) {
-        print(__FUNCTION__)
+        print(#function)
         if filesListTableView.clickedRow > -1 {
             if filesList[filesListTableView.clickedRow].isFolder == true {
                 fetchDir(filesList[filesListTableView.clickedRow].name)
@@ -118,7 +112,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     // MARK: - Selector methods
     
     func listServer(sender: AnyObject?) {
-        print(__FUNCTION__)
+        print(#function)
         fetchDir("/")
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 import Cocoa
-import FTPManager
+//import FTPManager
 
 class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
@@ -26,7 +26,7 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         progressListTableView.setDelegate(self)
         progressListTableView.setDataSource(self)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadfiles:", name: "uploadfiles", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFProgressViewController.uploadfiles(_:)), name: "uploadfiles", object: nil)
     }
     
     // MARK: - NSTableViewDelegate & NSTableViewDataSource methods

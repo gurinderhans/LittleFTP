@@ -8,7 +8,7 @@
 
 import Foundation
 import Cocoa
-import FTPManager
+//import FTPManager
 
 class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
@@ -28,7 +28,7 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     
     override func awakeFromNib() {
         serversListTableView.target = self
-        serversListTableView.doubleAction = "doubleClickRow:"
+        serversListTableView.doubleAction = #selector(LFServersTableViewController.doubleClickRow(_:))
     }
     
     // MARK: - Selector methods
@@ -68,7 +68,7 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     // MARK: - Custom methods
     
     func openServer(server: LFServer) {
-        print(__FUNCTION__)
+        print(#function)
         if let _ = LFServerManager.activeServer {
             print("closing an already opened instance of another server")
             // TODO: - support multi server operating and switching servers
