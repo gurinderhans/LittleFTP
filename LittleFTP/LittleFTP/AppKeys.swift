@@ -12,6 +12,13 @@ struct TableViewColIds {
 }
 
 struct UIActionNotificationObserverKeys {
-    static let LIST_SERVER = "listServer"
+    static let OPEN_SERVER = "openServer"
     static let NAV_CHANGED = "navigationChanged"
+}
+
+struct LFServerKeys {
+    static let HOSTNAME = "hostname"
+    static let PORT = "port"
+    static let USERNAME = "username"
+    static let PASSWORD = "password"
 }

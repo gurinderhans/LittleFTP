@@ -11,15 +11,10 @@ import Foundation
 class LFFile: NSObject {
     var name:String!
     var modifiedDate:NSDate!
-    var type: Int! // resource type, file | folder | etc
+    var type: Int! // resource type, (file || folder || etc)
     var isFolder: Bool!
     
-    override init() {
-        super.init()
-    }
-    
-    convenience init(name: String, modDate: NSDate, type: Int) {
-        self.init()
+    init(name: String, modDate: NSDate, type: Int) {
         self.name = name
         self.modifiedDate = modDate
         self.type = type

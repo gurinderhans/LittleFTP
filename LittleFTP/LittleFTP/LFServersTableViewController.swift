@@ -8,22 +8,13 @@
 
 import Foundation
 import Cocoa
-//import FTPManager
 
 class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
     @IBOutlet weak var serversListTableView: NSTableView!
     
-    var serversList = [LFServer]()
-    
-    let APPDATA = NSUserDefaults.standardUserDefaults()
-    
     override init() {
         super.init()
-        
-        if let data = APPDATA.objectForKey("allservers") as? NSData {
-            serversList = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [LFServer]
-        }
     }
     
     override func awakeFromNib() {
@@ -34,7 +25,7 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     // MARK: - Selector methods
     
     func doubleClickRow(sender: NSTableView!) {
-        openServer(serversList[sender.clickedRow-1])
+        openServer(LFServerManager.savedServers[sender.clickedRow - 1])
     }
     
     // MARK: - NSTableViewDelegate & NSTableViewDataSource methods
@@ -44,7 +35,7 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
             return tableView.makeViewWithIdentifier("HeaderCell", owner: self)
         } else {
             let cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as! LFServerItemCell
-            cell.hostname.stringValue = serversList[row-1].hostname
+            cell.hostname.stringValue = LFServerManager.savedServers[row - 1].hostname
             return cell
         }
     }
@@ -52,8 +43,9 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         if row == 0 {
             return 25.0
+        } else {
+            return 30.0
         }
-        return 30.0
     }
     
     func tableView(tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
@@ -61,21 +53,21 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     }
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return serversList.count + 1
+        return LFServerManager.savedServers.count + 1
     }
     
     
     // MARK: - Custom methods
     
     func openServer(server: LFServer) {
-        print(#function)
+        debugPrint(#function)
         if let _ = LFServerManager.activeServer {
-            print("closing an already opened instance of another server")
-            // TODO: - support multi server operating and switching servers
+            debugPrint("closing an already opened instance of another server")
+            // TODO: - support multi server ops and switching servers
+            // new window for each different server
         } else {
-            print("now opening server")
             LFServerManager.activeServer = server
-            NSNotificationCenter.defaultCenter().postNotificationName("listServer", object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(UIActionNotificationObserverKeys.OPEN_SERVER, object: nil)
         }
     }
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 import Cocoa
-//import FTPManager
 
 class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     

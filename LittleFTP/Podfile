@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'LittleFTP' do
-	pod 'NMSSH'
+	pod 'NMSSH', '~> 2.2.2'
 end
 
 target 'LittleFTPTests' do

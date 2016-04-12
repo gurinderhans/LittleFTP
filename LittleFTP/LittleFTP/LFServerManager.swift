@@ -8,25 +8,25 @@
 
 import Foundation
 
-class LFServerManager: NSObject {
+class LFServerManager {
     
-    private static var _activeServer: LFServer?
-    class var activeServer: LFServer? {
-        get {
-            if let s = _activeServer {
-                return s
-            } else {
-                return nil
+    static let KEY_SERVERS = "allservers"
+    
+    static var activeServer: LFServer?
+    
+    static let savedServers: [LFServer] = {
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey(LFServerManager.KEY_SERVERS) as? NSData {
+            if let servers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [LFServer] {
+                return servers
             }
         }
-        set {
-            _activeServer = newValue
-        }
-    }
+        
+        return []
+    }()
     
-//    static var ftpController = {
-//        return LFFTPController()
-//    }()
+    // current session url of the server
+    var activeUrl: NSURL!
+    
     
     // MARK: - abstract server methods
     

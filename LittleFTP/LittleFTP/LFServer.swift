@@ -8,31 +8,16 @@
 
 import Foundation
 
-struct LFServerKeys {
-    static let HOSTNAME = "hostname"
-    static let PORT = "port"
-    static let USERNAME = "username"
-    static let PASSWORD = "password"
-}
-
-enum ServerTypes {
-    case FTP
-    case SFTP
-}
-
 class LFServer: NSObject, NSCoding {
     
     // encoded vars
     var hostname: String!
     var port: String!
-    var userName: String!
-    var password: String!
-    
-    // tmp vars
-    var activeUrl: NSURL!
+    var userName: String! // for ssh keyed servers, this acts as .pub key
+    var password: String! // & secret key
 
-    // TODO: - this will be computed once multiple types are supported
-    var type:ServerTypes = .FTP
+    // TODO: - this will be encoded and computed once multiple types are supported
+    var type:ServerTypes = .SFTP
     
     override init() {
         super.init()
@@ -44,7 +29,6 @@ class LFServer: NSObject, NSCoding {
         self.port = port
         self.userName = uname
         self.password = pass
-        self.activeUrl = NSURL(string: url)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,7 +36,6 @@ class LFServer: NSObject, NSCoding {
         self.port = aDecoder.decodeObjectForKey(LFServerKeys.PORT) as! String
         self.userName = aDecoder.decodeObjectForKey(LFServerKeys.USERNAME) as! String
         self.password = aDecoder.decodeObjectForKey(LFServerKeys.PASSWORD) as! String
-        self.activeUrl = NSURL(string: self.hostname)
     }
     
     func encodeWithCoder(coder: NSCoder) {
@@ -61,4 +44,9 @@ class LFServer: NSObject, NSCoding {
         coder.encodeObject(self.userName, forKey: LFServerKeys.USERNAME)
         coder.encodeObject(self.password, forKey: LFServerKeys.PASSWORD)
     }
+}
+
+enum ServerTypes {
+    case FTP
+    case SFTP
 }

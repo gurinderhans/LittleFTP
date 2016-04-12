@@ -13,11 +13,9 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     @IBOutlet weak var filesListTableView: NSTableView!
     
-    private var _filesList = [LFFile]()
-    var filesList: [LFFile] {
-        get { return _filesList }
-        set(newArray) {
-            _filesList = newArray.sort({ (a, b) -> Bool in
+    var filesList: [LFFile] = [LFFile]() {
+        didSet {
+            self.filesList.sortInPlace({ a, b -> Bool in
                 return a.isFolder
             })
         }
@@ -28,7 +26,8 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     override init() {
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.listServer(_:)), name: UIActionNotificationObserverKeys.LIST_SERVER, object: nil)
+        /// register for Toolbar action button notifications
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.listServer(_:)), name: UIActionNotificationObserverKeys.OPEN_SERVER, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.navigationChanged(_:)), name: UIActionNotificationObserverKeys.NAV_CHANGED, object: nil)
     }
     
@@ -112,7 +111,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     // MARK: - Selector methods
     
     func listServer(sender: AnyObject?) {
-        print(#function)
+        debugPrint(#function)
         fetchDir("/")
     }
     
@@ -128,11 +127,12 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     }
     
     func uploadFiles(files: [String], intoFolder folder: String!) {
-        if progressWindowController == nil {
-            progressWindowController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("LFProgressWindowController") as? LFProgressWindowController
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName("uploadfiles", object: ["files": files, "intofolder": folder])
-        progressWindowController?.showWindow(self)
+        print(#function)
+//        if progressWindowController == nil {
+//            progressWindowController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("LFProgressWindowController") as? LFProgressWindowController
+//        }
+//        NSNotificationCenter.defaultCenter().postNotificationName("uploadfiles", object: ["files": files, "intofolder": folder])
+//        progressWindowController?.showWindow(self)
     }
 }
 
