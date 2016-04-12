@@ -10,27 +10,22 @@ import Foundation
 
 class LFSFTPController {
     
-    private var _activeSession:NMSSHSession? // active session storage
-    private var activeSession: NMSSHSession? {
-        if _activeSession == nil {
-            debugPrint("create session w/ server: \(currentServer.hostname), uname: \(currentServer.userName)")
-            if let tmpSession = NMSSHSession(host: currentServer.hostname, port: 22, andUsername: currentServer.userName) {
-                debugPrint("session: \(tmpSession)")
-                debugPrint("session connected: \(tmpSession.connected)")
-                
-                
-                if tmpSession.connected == true {
-                    tmpSession.authenticateByPassword(currentServer.password)
-                    if tmpSession.authorized { // session validated, this is our session now
-                        _activeSession = tmpSession
-                        return tmpSession
-                    }
+    private lazy var activeSession: NMSSHSession? = {
+        debugPrint("create session w/ server: \(self.currentServer.hostname), uname: \(self.currentServer.userName)")
+        if let tmpSession = NMSSHSession(host: self.currentServer.hostname, port: 22, andUsername: self.currentServer.userName) {
+            debugPrint("session: \(tmpSession)")
+            debugPrint("session connected: \(tmpSession.connected)")
+            
+            
+            if tmpSession.connected == true {
+                tmpSession.authenticateByPassword(self.currentServer.password)
+                if tmpSession.authorized { // session validated, this is our session now
+                    return tmpSession
                 }
             }
         }
-        
-        return _activeSession
-    }
+        return nil
+    }()
 
     private var currentServer: LFServer!
     
