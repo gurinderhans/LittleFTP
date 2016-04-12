@@ -7,22 +7,20 @@
 //
 
 import Foundation
-import NMSSH
 
 class LFSFTPController {
     
-    var aClient:String {
+    
+    private var _currentSession:NMSSHSession?
+    var activeSession:NMSSHSession {
         get {
-            if((_aClient == nil)) {
-//                _aClient = Client(ClientSession.shared())
+            if _currentSession == nil {
+                _currentSession = NMSSHSession(host: "", andUsername: "")
             }
-            return _aClient!
+            return _currentSession!
         }
     }
     
-    var _aClient:String?
-    
     func readFolder(path:String, atServer server: LFServer) {
-//        NMSSHSession
     }
 }

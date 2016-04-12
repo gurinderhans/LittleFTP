@@ -21,11 +21,15 @@ class LFServerManager {
             }
         }
         
+        
         return []
     }()
     
     // current session url of the server
     var activeUrl: NSURL!
+    
+    // SFTP Controller
+    
     
     
     // MARK: - abstract server methods
