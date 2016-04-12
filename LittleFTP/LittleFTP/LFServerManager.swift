@@ -17,10 +17,9 @@ class LFServerManager {
     static let savedServers: [LFServer] = {
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(LFServerManager.KEY_SERVERS) as? NSData {
             if let servers = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [LFServer] {
-                return servers
+//                return servers
             }
         }
-        
         
         return []
     }()
@@ -29,7 +28,9 @@ class LFServerManager {
     var activeUrl: NSURL!
     
     // SFTP Controller
-    
+    static var sftpController = {
+        return LFSFTPController(withServer: LFServerManager.activeServer!)
+    }()
     
     
     // MARK: - abstract server methods
@@ -37,6 +38,7 @@ class LFServerManager {
     class func openFolder(withName name:String, files:[LFFile]? -> Void) {
         if LFServerManager.activeServer?.type == .SFTP {
 //            ftpController.listServerFolder(name, files: files)
+            sftpController.readFolder(name, atServer: LFServerManager.activeServer!)
         }
     }
     

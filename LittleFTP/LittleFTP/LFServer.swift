@@ -13,8 +13,9 @@ class LFServer: NSObject, NSCoding {
     // encoded vars
     var hostname: String!
     var port: String!
-    var userName: String! // for ssh keyed servers, this acts as .pub key
-    var password: String! // & secret key
+    var userName: String!
+    var password: String!
+    var sshKey: String? // TODO: support using key to authenticate
 
     // TODO: - this will be encoded and computed once multiple types are supported
     var type:ServerTypes = .SFTP
