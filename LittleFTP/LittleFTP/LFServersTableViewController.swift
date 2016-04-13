@@ -19,13 +19,15 @@ class LFServersTableViewController: NSObject, NSTableViewDelegate, NSTableViewDa
     
     override func awakeFromNib() {
         serversListTableView.target = self
-        serversListTableView.doubleAction = #selector(LFServersTableViewController.doubleClickRow(_:))
+        serversListTableView.doubleAction = #selector(doubleClickRow(_:))
     }
     
     // MARK: - Selector methods
     
     func doubleClickRow(sender: NSTableView!) {
-        openServer(LFServerManager.savedServers[sender.clickedRow - 1])
+        if sender.clickedRow > 0 {
+            openServer(LFServerManager.savedServers[sender.clickedRow - 1])
+        }
     }
     
     // MARK: - NSTableViewDelegate & NSTableViewDataSource methods

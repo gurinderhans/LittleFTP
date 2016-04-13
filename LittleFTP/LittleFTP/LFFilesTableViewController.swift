@@ -27,38 +27,63 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
         super.init()
         
         /// register for Toolbar action button notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.listServer(_:)), name: UIActionNotificationObserverKeys.OPEN_SERVER, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFFilesTableViewController.navigationChanged(_:)), name: UIActionNotificationObserverKeys.NAV_CHANGED, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(openServer(_:)), name: UIActionNotificationObserverKeys.OPEN_SERVER, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(navigationChanged(_:)), name: UIActionNotificationObserverKeys.NAV_CHANGED, object: nil)
     }
     
     override func awakeFromNib() {
         filesListTableView.target = self
-        filesListTableView.doubleAction = #selector(LFFilesTableViewController.doubleClickRow(_:))
+        filesListTableView.doubleAction = #selector(doubleClickRow(_:))
         filesListTableView.registerForDraggedTypes([NSFilenamesPboardType])
     }
     
     // MARK: - Selector methods
     
     func navigationChanged(sender: AnyObject!) {
-//        if let code = sender.object as? Int {
-//            if code == 0 {
-//                // BACK
-//                // TODO: nullity checks
-//                let prevPath = currentPath.URLByDeletingLastPathComponent?.absoluteString
-//                LFServerManager.activeServer?.destination = prevPath
-//                fetchDir(prevPath!, onComplete: nil) // TOOD: onComplete set currentPath to new path
-//            } else if code == 1 {
-//                // FORWARD
-//                print("forward")
-//            }
-//        }
+        if let code = sender.object as? Int {
+            if code == 0 { // BACK
+                debugPrint("back")
+                let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByDeletingLastPathComponent
+                LFServerManager.readPath(newPath!, files: { files in
+                    if let files = files {
+                        LFServerManager.activeServer?.currentStandingUrl = newPath
+                        self.filesList = files
+                        self.filesListTableView.reloadData()
+                    }
+                })
+            } else if code == 1 {
+                // FORWARD
+                debugPrint("forward")
+                if let currentComponents = LFServerManager.activeServer?.currentStandingUrl.pathComponents,
+                    let forwardedComponents = LFServerManager.activeServer?.mostFowardedUrl.pathComponents {
+                    if currentComponents.count < forwardedComponents.count {
+                        var isNewUrl: Bool = false
+                        for (idx, el) in currentComponents.enumerate() {
+                            if el != forwardedComponents[idx] {
+                                isNewUrl = true
+                            }
+                        }
+                        if isNewUrl == false {
+                            let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(forwardedComponents[currentComponents.count], isDirectory: true).standardizedURL
+                            LFServerManager.readPath(newPath!, files: { files in
+                                if let files = files {
+                                    LFServerManager.activeServer?.currentStandingUrl = newPath
+                                    self.filesList = files
+                                    self.filesListTableView.reloadData()
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func doubleClickRow(sender: AnyObject?) {
         print(#function)
         if filesListTableView.clickedRow > -1 {
             if filesList[filesListTableView.clickedRow].isFolder == true {
-                fetchDir(filesList[filesListTableView.clickedRow].name)
+                openFolder(filesList[filesListTableView.clickedRow].name)
             } else {
                 // download the file or something
             }
@@ -110,16 +135,19 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     // MARK: - Selector methods
     
-    func listServer(sender: AnyObject?) {
+    func openServer(sender: AnyObject?) {
         debugPrint(#function)
-        fetchDir("/")
+        openFolder("/")
     }
     
     // MARK: - Custom methods
     
-    func fetchDir(path:String) {
-        LFServerManager.openFolder(withName: path) { files -> Void in
+    func openFolder(folderName:String) {
+         let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folderName, isDirectory: true).standardizedURL
+        
+        LFServerManager.readPath(newPath!) { files in
             if let files = files {
+                LFServerManager.activeServer?.currentStandingUrl = newPath
                 self.filesList = files
                 self.filesListTableView.reloadData()
             }

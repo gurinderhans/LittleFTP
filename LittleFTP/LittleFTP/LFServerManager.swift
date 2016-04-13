@@ -20,12 +20,11 @@ class LFServerManager {
                 return servers
             }
         }
-        
         return []
     }()
     
-    // current session url of the server
-    var activeUrl: NSURL!
+    
+    // TODO: later on with multiple servers at the same time the below variables will change
     
     // SFTP Controller
     static var sftpController = {
@@ -35,9 +34,10 @@ class LFServerManager {
     
     // MARK: - abstract server methods
     
-    class func openFolder(withName name:String, files:[LFFile]? -> Void) {
+    // FIXME: currently there's no way of knowing if this failed or not
+    class func readPath(path:NSURL, files:[LFFile]? -> Void) {
         if LFServerManager.activeServer?.type == .SFTP {
-            sftpController.readFolder(name, files: files)
+            sftpController.readPath(path, files: files)
         }
     }
 }

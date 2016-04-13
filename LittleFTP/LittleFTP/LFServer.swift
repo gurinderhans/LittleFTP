@@ -16,6 +16,30 @@ class LFServer: NSObject, NSCoding {
     var userName: String!
     var password: String!
     var sshKey: String? // TODO: support using key to authenticate
+    
+    // mem vars
+    var currentStandingUrl: NSURL! = NSURL(string: "/") {
+        didSet {
+            if let currentComponents = currentStandingUrl.pathComponents,
+                let forwardedComponents = mostFowardedUrl.pathComponents {
+                if currentComponents.count < forwardedComponents.count {
+                    // URL is either behind or on a new path
+                    var isNewUrl: Bool = false
+                    for (idx, el) in currentComponents.enumerate() {
+                        if el != forwardedComponents[idx] {
+                            isNewUrl = true
+                        }
+                    }
+                    if isNewUrl == true {
+                        mostFowardedUrl = currentStandingUrl
+                    }
+                } else {
+                    mostFowardedUrl = currentStandingUrl
+                }
+            }
+        }
+    }
+    var mostFowardedUrl: NSURL! = NSURL(string: "/") // the furthest deep the server was browsed
 
     // TODO: - this will be encoded and computed once multiple types are supported
     var type:ServerTypes = .SFTP

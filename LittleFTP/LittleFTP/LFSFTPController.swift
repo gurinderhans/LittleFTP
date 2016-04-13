@@ -31,15 +31,17 @@ class LFSFTPController {
         currentServer = server
     }
     
-    func readFolder(path:String, files:[LFFile]? -> Void) {
+    func readPath(path:NSURL, files:[LFFile]? -> Void) {
         debugPrint(#function)
         do {
-            let resp = try activeSession?.channel.execute(SSHDataCreator.lsCmd(path))
+            
+            let resp = try activeSession?.channel.execute(SSHDataCreator.lsCmd(path.absoluteString))
             let parsedFiles = resp!.characters.split{$0 == "\n"}.map(String.init).map ({ a -> LFFile in
                 return LFFile(parseSSHData: a)
             }).filter({ a -> Bool in
                 return a.name != nil
             })
+            
             
             files(parsedFiles)
         } catch let error as NSError  {
