@@ -21,16 +21,30 @@ class LittleFTPTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testLFServerMostForwardedURLValue() {
+        let server = LFServer()
+        
+        // test if initial equal
+        server.currentStandingUrl = NSURL(string: "/some/url/pathto/folder/")?.URLByAppendingPathComponent("somedirectory", isDirectory: true)
+        XCTAssertEqual(server.currentStandingUrl.absoluteString, server.mostFowardedUrl.absoluteString)
+        
+        // test if going back works
+        server.currentStandingUrl = server.currentStandingUrl.URLByDeletingLastPathComponent
+        XCTAssertNotEqual(server.currentStandingUrl.absoluteString, server.mostFowardedUrl.absoluteString)
+        
+        // test if going forward works
+        XCTAssertEqual(server.currentStandingUrl.URLByAppendingPathComponent(server.mostFowardedUrl.lastPathComponent!, isDirectory: true).absoluteString, server.mostFowardedUrl.absoluteString)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+    func testLFFileSSHJsonParsing() {
+        let fl = LFFile(parseSSHData: "{\"name\":\"testMyName\", \"size\":311, \"perms\":\"drw\"}")
+        XCTAssertEqual(fl.name, "testMyName")
+        XCTAssertEqual(fl.size, 311)
+        XCTAssertTrue(fl.isFolder)
+    }
+    
+    func testLFServerEncodingAndDecoding() {
+        //
     }
     
 }
