@@ -10,6 +10,8 @@ import Foundation
 
 class LFSFTPController {
     
+    // https://github.com/gurinderhans/LittleFTP/commit/3476017fbc5e84355aba81a5789d511b83d76c10
+    // lazy var propery isn't good here, in case session connect fails, we won't be able to try connecting again
     private lazy var activeSession: NMSSHSession? = {
         debugPrint("create session w/ server: \(self.currentServer.hostname), uname: \(self.currentServer.userName)")
         if let tmpSession = NMSSHSession(host: self.currentServer.hostname, port: 22, andUsername: self.currentServer.userName) {

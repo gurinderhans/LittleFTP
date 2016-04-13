@@ -43,14 +43,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
         if let code = sender.object as? Int {
             if code == 0 { // BACK
                 debugPrint("back")
-                let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByDeletingLastPathComponent
-                LFServerManager.readPath(newPath!, files: { files in
-                    if let files = files {
-                        LFServerManager.activeServer?.currentStandingUrl = newPath
-                        self.filesList = files
-                        self.filesListTableView.reloadData()
-                    }
-                })
+                openFolder("..")
             } else if code == 1 {
                 // FORWARD
                 debugPrint("forward")
@@ -65,13 +58,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
                         }
                         if isNewUrl == false {
                             let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(forwardedComponents[currentComponents.count], isDirectory: true).standardizedURL
-                            LFServerManager.readPath(newPath!, files: { files in
-                                if let files = files {
-                                    LFServerManager.activeServer?.currentStandingUrl = newPath
-                                    self.filesList = files
-                                    self.filesListTableView.reloadData()
-                                }
-                            })
+                            readPath(newPath!)
                         }
                     }
                 }
@@ -143,12 +130,17 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     // MARK: - Custom methods
     
     func openFolder(folderName:String) {
-         let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folderName, isDirectory: true).standardizedURL
-        
-        LFServerManager.readPath(newPath!) { files in
+        let newPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folderName, isDirectory: true).standardizedURL
+        readPath(newPath!)
+    }
+    
+    func readPath(path:NSURL) {
+        LFServerManager.readPath(path) { files in
             if let files = files {
-                LFServerManager.activeServer?.currentStandingUrl = newPath
-                self.filesList = files
+                LFServerManager.activeServer?.currentStandingUrl = path
+                self.filesList = files.filter({ fl -> Bool in
+                    return fl.name != "." && fl.name != ".."
+                })
                 self.filesListTableView.reloadData()
             }
         }
