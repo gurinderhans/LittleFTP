@@ -96,12 +96,12 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         self.progressList.removeFirst()
         self.progressListTableView.reloadData()
         
-        LFServerManager.uploadFile(url, finish: { success -> () in
-            self.fileSendLooper()
-        }, cb: { progress -> () in
-            self.uploadingFileProgressIndicator.doubleValue = (progress["progress"] as! Double) * 100
-            self.uploadingFileTextProgress.stringValue = "\(String(format: "%.01f", (progress["fileSizeProcessed"] as! Double) / 1000000)) MB of \(String(format: "%.01f", (progress["fileSize"] as! Double) / 1000000)) MB transferred"
-        })
+//        LFServerManager.uploadFile(url, finish: { success -> () in
+//            self.fileSendLooper()
+//        }, cb: { progress -> () in
+//            self.uploadingFileProgressIndicator.doubleValue = (progress["progress"] as! Double) * 100
+//            self.uploadingFileTextProgress.stringValue = "\(String(format: "%.01f", (progress["fileSizeProcessed"] as! Double) / 1000000)) MB of \(String(format: "%.01f", (progress["fileSize"] as! Double) / 1000000)) MB transferred"
+//        })
     }
     
     func resetProgressView() {

@@ -13,10 +13,8 @@ class LFSFTPController {
     private lazy var activeSession: NMSSHSession? = {
         debugPrint("create session w/ server: \(self.currentServer.hostname), uname: \(self.currentServer.userName)")
         if let tmpSession = NMSSHSession(host: self.currentServer.hostname, port: 22, andUsername: self.currentServer.userName) {
-            debugPrint("session: \(tmpSession)")
+            tmpSession.connect()
             debugPrint("session connected: \(tmpSession.connected)")
-            
-            
             if tmpSession.connected == true {
                 tmpSession.authenticateByPassword(self.currentServer.password)
                 if tmpSession.authorized { // session validated, this is our session now
@@ -33,15 +31,25 @@ class LFSFTPController {
         currentServer = server
     }
     
-    func readFolder(path:String, atServer server: LFServer) {
+    func readFolder(path:String, files:[LFFile]? -> Void) {
         debugPrint(#function)
-        debugPrint("activeSession: \(activeSession)")
-//        do {
-//            debugPrint("activeSession: \(activeSession)")
-//            let resp = try activeSession?.channel.execute("ls -l /")
-//            debugPrint("resp: \(resp)")
-//        } catch let error as NSError  {
-//            debugPrint("err: \(error)")
-//        }
+        do {
+            let resp = try activeSession?.channel.execute(SSHDataCreator.lsCmd(path))
+            let parsedFiles = resp!.characters.split{$0 == "\n"}.map(String.init).map ({ a -> LFFile in
+                return LFFile(parseSSHData: a)
+            }).filter({ a -> Bool in
+                return a.name != nil
+            })
+            
+            files(parsedFiles)
+        } catch let error as NSError  {
+            debugPrint("err: \(error)")
+        }
+    }
+}
+
+class SSHDataCreator {
+    class func lsCmd(dir:String) -> String {
+        return "ls -la \(dir) | awk '{print \"{\\\"name\\\":\\\"\"$9\"\\\",\\\"size\\\":\"$5\",\\\"perms\\\":\\\"\"$1\"\\\"}\"}'"
     }
 }

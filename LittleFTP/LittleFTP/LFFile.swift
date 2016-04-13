@@ -10,14 +10,20 @@ import Foundation
 
 class LFFile: NSObject {
     var name:String!
-    var modifiedDate:NSDate!
-    var type: Int! // resource type, (file || folder || etc)
+    var modifiedDate:NSDate = NSDate()
     var isFolder: Bool!
+    var size: Int!
     
-    init(name: String, modDate: NSDate, type: Int) {
-        self.name = name
-        self.modifiedDate = modDate
-        self.type = type
-        self.isFolder = type != 8
+    init(parseSSHData data:String) {
+        if let datas = data.dataUsingEncoding(NSUTF8StringEncoding),
+            let json = try? NSJSONSerialization.JSONObjectWithData(datas, options: .AllowFragments),
+            let name = json["name"] as? String,
+            let perms = json["perms"] as? String,
+            let size = json["size"] as? Int {
+            
+            self.name = name
+            self.isFolder = perms[perms.startIndex] == "d"
+            self.size = size
+        }
     }
 }
