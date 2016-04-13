@@ -10,6 +10,7 @@ import Foundation
 
 class LFFile: NSObject {
     var name:String!
+    var filePath: String!
     var modifiedDate:NSDate = NSDate()
     var isFolder: Bool!
     var size: Int!
@@ -25,5 +26,15 @@ class LFFile: NSObject {
             self.isFolder = perms[perms.startIndex] == "d"
             self.size = size
         }
+    }
+    
+    init(filePath: String) {
+        self.filePath = filePath
+        
+        let escapedStr = filePath.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        self.name = NSURL(string: escapedStr!)!.lastPathComponent
+        
+        self.isFolder = false
+        self.size = -1
     }
 }

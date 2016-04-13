@@ -36,11 +36,17 @@ class LittleFTPTests: XCTestCase {
         XCTAssertEqual(server.currentStandingUrl.URLByAppendingPathComponent(server.mostFowardedUrl.lastPathComponent!, isDirectory: true).absoluteString, server.mostFowardedUrl.absoluteString)
     }
     
-    func testLFFileSSHJsonParsing() {
+    func testLFFileinits() {
         let fl = LFFile(parseSSHData: "{\"name\":\"testMyName\", \"size\":311, \"perms\":\"drw\"}")
         XCTAssertEqual(fl.name, "testMyName")
         XCTAssertEqual(fl.size, 311)
         XCTAssertTrue(fl.isFolder)
+        
+        let fl1 = LFFile(filePath: "/Users/ghans/Documents/SFU/CMPT 276/cmpt276-projects/ex1/submit.txt")
+        XCTAssertNotEqual(fl1.filePath, nil)
+        XCTAssertEqual(fl1.filePath.absoluteString, "/Users/ghans/Documents/SFU/CMPT 276/cmpt276-projects/ex1/submit.txt".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
+        XCTAssertEqual(fl1.name, "submit.txt")
+        
     }
     
     func testLFServerEncodingAndDecoding() {

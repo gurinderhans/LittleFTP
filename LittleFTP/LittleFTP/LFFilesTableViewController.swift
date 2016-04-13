@@ -112,7 +112,7 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     func tableView(tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool {
         if let droppedFileUrls = info.draggingPasteboard().propertyListForType(NSFilenamesPboardType) as? [String] {
             // TODO: check if dropped between rows or on a folder or outside table list
-            uploadFiles(droppedFileUrls, intoFolder: ".")
+            uploadFiles(droppedFileUrls, intoFolder: filesList[row].name)
             return true
         } else {
             return false
@@ -147,7 +147,12 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     }
     
     func uploadFiles(files: [String], intoFolder folder: String!) {
-        print(#function)
+        debugPrint(#function)
+        let uploadPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folder, isDirectory: true)
+        LFServerManager.uploadFiles(files.map { a -> LFFile in return LFFile(filePath: a) }, atPath: uploadPath!, progressCb: { p in
+                debugPrint("progress: \(p)")
+        })
+        
 //        if progressWindowController == nil {
 //            progressWindowController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("LFProgressWindowController") as? LFProgressWindowController
 //        }

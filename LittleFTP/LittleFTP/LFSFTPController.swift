@@ -50,6 +50,18 @@ class LFSFTPController {
             debugPrint("err: \(error)")
         }
     }
+    
+    func uploadFile(file: LFFile, atPath path: NSURL, progressCb:Int -> Void) -> Bool {
+        
+        debugPrint("file: \(file.filePath), to: \(path)")
+        activeSession?.channel.uploadFile(file.filePath, to: path.absoluteString, progress: { i -> Bool in
+            debugPrint("rawProgress: \(i)")
+            progressCb(Int(i))
+            return true
+        })
+        
+        return false
+    }
 }
 
 class SSHDataCreator {
