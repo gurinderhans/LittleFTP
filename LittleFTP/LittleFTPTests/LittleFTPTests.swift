@@ -44,7 +44,6 @@ class LittleFTPTests: XCTestCase {
         
         let fl1 = LFFile(filePath: "/Users/ghans/Documents/SFU/CMPT 276/cmpt276-projects/ex1/submit.txt")
         XCTAssertNotEqual(fl1.filePath, nil)
-        XCTAssertEqual(fl1.filePath.absoluteString, "/Users/ghans/Documents/SFU/CMPT 276/cmpt276-projects/ex1/submit.txt".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
         XCTAssertEqual(fl1.name, "submit.txt")
         
     }

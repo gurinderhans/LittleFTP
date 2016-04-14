@@ -53,12 +53,18 @@ class LFSFTPController {
     
     func uploadFile(file: LFFile, atPath path: NSURL, progressCb:Int -> Void) -> Bool {
         
-        debugPrint("file: \(file.filePath), to: \(path)")
-        activeSession?.channel.uploadFile(file.filePath, to: path.absoluteString, progress: { i -> Bool in
-            debugPrint("rawProgress: \(i)")
-            progressCb(Int(i))
-            return true
-        })
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            self.activeSession?.channel.uploadFile(file.filePath, to: path.absoluteString, progress: { i -> Bool in
+//                debugPrint("rawProgress: \(i)")
+                progressCb(Int(i))
+                return true
+            })
+            
+            // do some task
+//            dispatch_async(dispatch_get_main_queue()) {
+//                // update some UI
+//            }
+        }
         
         return false
     }

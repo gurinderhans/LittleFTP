@@ -14,6 +14,7 @@ struct TableViewColIds {
 struct UIActionNotificationObserverKeys {
     static let OPEN_SERVER = "openServer"
     static let NAV_CHANGED = "navigationChanged"
+    static let UPLOAD_FILE = "uploadFiles"
 }
 
 struct LFServerKeys {

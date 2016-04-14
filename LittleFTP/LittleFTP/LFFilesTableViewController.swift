@@ -148,16 +148,15 @@ class LFFilesTableViewController: NSObject, NSTableViewDelegate, NSTableViewData
     
     func uploadFiles(files: [String], intoFolder folder: String!) {
         debugPrint(#function)
-        let uploadPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folder, isDirectory: true)
-        LFServerManager.uploadFiles(files.map { a -> LFFile in return LFFile(filePath: a) }, atPath: uploadPath!, progressCb: { p in
-                debugPrint("progress: \(p)")
-        })
         
-//        if progressWindowController == nil {
-//            progressWindowController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("LFProgressWindowController") as? LFProgressWindowController
-//        }
-//        NSNotificationCenter.defaultCenter().postNotificationName("uploadfiles", object: ["files": files, "intofolder": folder])
-//        progressWindowController?.showWindow(self)
+        if progressWindowController == nil {
+            progressWindowController = NSStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateControllerWithIdentifier("LFProgressWindowController") as? LFProgressWindowController
+        }
+        
+        let uploadPath = LFServerManager.activeServer?.currentStandingUrl.URLByAppendingPathComponent(folder, isDirectory: true)
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(UIActionNotificationObserverKeys.UPLOAD_FILE, object: ["files": files, "uploadPath": uploadPath!])
+        progressWindowController?.showWindow(self)
     }
 }
 

@@ -43,7 +43,6 @@ class LFServerManager {
     
     class func uploadFiles(files: [LFFile], atPath path: NSURL, progressCb:Int -> Void) {
         if LFServerManager.activeServer?.type == .SFTP {
-            // TODO: deal with multiple files upload here
             sftpController.uploadFile(files[0], atPath: path, progressCb: progressCb)
         }
     }

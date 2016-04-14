@@ -20,6 +20,7 @@ class LFProgressWindowController: NSWindowController {
     }
     
     func closeWindow(sender: AnyObject?) {
+        debugPrint(#function)
         self.close()
     }
 }

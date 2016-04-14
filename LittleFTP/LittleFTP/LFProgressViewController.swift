@@ -9,14 +9,13 @@
 import Foundation
 import Cocoa
 
+typealias ProgressClosure = Int -> Void
+
 class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
     @IBOutlet weak var progressListTableView: NSTableView!
-    @IBOutlet weak var uploadingFileName: NSTextField!
-    @IBOutlet weak var uploadingFileProgressIndicator: NSProgressIndicator!
-    @IBOutlet weak var uploadingFileTextProgress: NSTextField!
     
-    var progressList = [NSURL]()
+    var progressList = [ProgressPair]()
     var filesSenderIsLooping: Bool = false
     
     override func viewDidLoad() {
@@ -25,15 +24,17 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
         progressListTableView.setDelegate(self)
         progressListTableView.setDataSource(self)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LFProgressViewController.uploadfiles(_:)), name: "uploadfiles", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadfiles(_:)), name: UIActionNotificationObserverKeys.UPLOAD_FILE, object: nil)
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.11, target: self, selector: #selector(updateTable(_:)), userInfo: nil, repeats: true)
     }
     
     // MARK: - NSTableViewDelegate & NSTableViewDataSource methods
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeViewWithIdentifier("LFProgressViewItem", owner: self) as? LFProgressViewItem {
-            cell.title.stringValue = "Uploading \(progressList[row].lastPathComponent!)"
-            
+            cell.title.stringValue = "\(progressList[row].first)"
+            cell.progressBar.doubleValue = Double(progressList[row].second) //progressList[row].second
             return cell
         }
         return nil
@@ -50,68 +51,37 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     // MARK: - Selector methods
     
     func uploadfiles(sender: AnyObject!) {
-        if let data = sender.object as? [String: AnyObject] {
-            if let uploadFiles = data["files"] as? [String],
-                intoFolder = data["intofolder"] as? String {
-                    
-                    print(intoFolder) // to hide warning for now
-                    
-                    // TODO: - be careful since here the file name is escaped
-                    for filePath in uploadFiles {
-                        if let escapedStr = filePath.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
-                            if let url = NSURL(string: escapedStr) {
-                                progressList.append(url)
-                            }
-                        }
-                    }
-                    progressListTableView.reloadData()
+        if let data = sender.object as? [String: AnyObject],
+            let intoFolder = data["uploadPath"] as? NSURL ,
+            let files = data["files"] as? [String] {
+            
+            for i in 0..<files.count {
+                progressList.append(ProgressPair(files[i], 0))
+                LFServerManager.uploadFiles(files.map { a -> LFFile in return LFFile(filePath: a) }, atPath: intoFolder, progressCb: { p in
+                    self.progressList[i].second = p
+                })
             }
         }
-        
-        // upload files...
-        if !filesSenderIsLooping {
-            fileSendLooper()
-        }
     }
     
-    // MARK: - Custom methods
-    
-    func fileSendLooper() {
-        
-        if progressList.count == 0 {
-            filesSenderIsLooping = false
-            resetProgressView()
-            NSNotificationCenter.defaultCenter().postNotificationName("closeWindow", object: nil)
-            return
-        }
-
-        filesSenderIsLooping = true
-        
-        
-        let url = progressList.first!
-
-        resetProgressView()
-        self.uploadingFileName.stringValue = url.lastPathComponent!
-
-        self.progressList.removeFirst()
-        self.progressListTableView.reloadData()
-        
-//        LFServerManager.uploadFile(url, finish: { success -> () in
-//            self.fileSendLooper()
-//        }, cb: { progress -> () in
-//            self.uploadingFileProgressIndicator.doubleValue = (progress["progress"] as! Double) * 100
-//            self.uploadingFileTextProgress.stringValue = "\(String(format: "%.01f", (progress["fileSizeProcessed"] as! Double) / 1000000)) MB of \(String(format: "%.01f", (progress["fileSize"] as! Double) / 1000000)) MB transferred"
-//        })
+    func updateTable(sender: AnyObject?) {
+        debugPrint("update table")
+        progressListTableView.reloadData()
     }
-    
-    func resetProgressView() {
-        self.uploadingFileName.stringValue = "Loading..."
-        self.uploadingFileProgressIndicator.doubleValue = 0
-        self.uploadingFileTextProgress.stringValue = "Pending..."
-    }
-    
+
 }
 
 class LFProgressViewItem: NSTableCellView {
     @IBOutlet weak var title: NSTextField!
+    @IBOutlet weak var progressBar: NSProgressIndicator!
+}
+
+
+class ProgressPair {
+    var first: String
+    var second: Int
+    init(_ a: String, _ b: Int) {
+        self.first = a
+        self.second = b
+    }
 }
