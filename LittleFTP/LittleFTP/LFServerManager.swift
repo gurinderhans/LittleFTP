@@ -41,9 +41,9 @@ class LFServerManager {
         }
     }
     
-    class func uploadFiles(files: [LFFile], atPath path: NSURL, progressCb:Int -> Void) {
+    class func uploadFiles(file: LFFile, atPath path: NSURL, progressCb:Int -> Void) {
         if LFServerManager.activeServer?.type == .SFTP {
-            sftpController.uploadFile(files[0], atPath: path, progressCb: progressCb)
+            sftpController.uploadFile(file, atPath: path, progressCb: progressCb)
         }
     }
 }

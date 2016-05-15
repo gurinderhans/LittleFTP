@@ -33,8 +33,8 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeViewWithIdentifier("LFProgressViewItem", owner: self) as? LFProgressViewItem {
-            cell.title.stringValue = "\(progressList[row].first)"
-            cell.progressBar.doubleValue = Double(progressList[row].second) //progressList[row].second
+            cell.title.stringValue = "\(progressList[row].first.name)"
+            cell.progressBar.doubleValue = (Double(progressList[row].second) / Double(progressList[row].first.size)) * 100
             return cell
         }
         return nil
@@ -55,9 +55,20 @@ class LFProgressViewController: NSViewController, NSTableViewDelegate, NSTableVi
             let intoFolder = data["uploadPath"] as? NSURL ,
             let files = data["files"] as? [String] {
             
-            for i in 0..<files.count {
-                progressList.append(ProgressPair(files[i], 0))
-                LFServerManager.uploadFiles(files.map { a -> LFFile in return LFFile(filePath: a) }, atPath: intoFolder, progressCb: { p in
+            let fm = NSFileManager.defaultManager()
+            
+            let lfFiles = files.map { a -> LFFile in
+                do {
+                    if let attr : NSDictionary = try fm.attributesOfItemAtPath(a) {
+                        return LFFile(filePath: a, size: attr.fileSize())
+                    }
+                } catch {}
+                return LFFile()
+            }.filter({ a -> Bool in return a.name != nil })
+            
+            for i in 0..<lfFiles.count {
+                progressList.append(ProgressPair(lfFiles[i], 0))
+                LFServerManager.uploadFiles(lfFiles[i], atPath: intoFolder, progressCb: { p in
                     self.progressList[i].second = p
                 })
             }
@@ -78,9 +89,9 @@ class LFProgressViewItem: NSTableCellView {
 
 
 class ProgressPair {
-    var first: String
+    var first: LFFile
     var second: Int
-    init(_ a: String, _ b: Int) {
+    init(_ a: LFFile, _ b: Int) {
         self.first = a
         self.second = b
     }

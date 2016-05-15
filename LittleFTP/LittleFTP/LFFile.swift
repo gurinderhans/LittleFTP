@@ -13,7 +13,7 @@ class LFFile: NSObject {
     var filePath: String!
     var modifiedDate:NSDate = NSDate()
     var isFolder: Bool!
-    var size: Int!
+    var size: UInt64!
     
     init(parseSSHData data:String) {
         if let datas = data.dataUsingEncoding(NSUTF8StringEncoding),
@@ -24,17 +24,20 @@ class LFFile: NSObject {
             
             self.name = name
             self.isFolder = perms[perms.startIndex] == "d"
-            self.size = size
+            self.size = UInt64(size)
         }
     }
     
-    init(filePath: String) {
+    init(filePath: String, size: UInt64) {
         self.filePath = filePath
         
-        let escapedStr = filePath.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-        self.name = NSURL(string: escapedStr!)!.lastPathComponent
+        self.name = NSURL(string: filePath.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!.lastPathComponent
         
         self.isFolder = false
-        self.size = -1
+        self.size = size
+    }
+    
+    override init() {
+        super.init()
     }
 }
